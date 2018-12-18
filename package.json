@@ -1,0 +1,22 @@
+{
+  "name": "handycapv2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EricGaupp/HandyCapv2.git"
+  },
+  "author": "Eric Gaupp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EricGaupp/HandyCapv2/issues"
+  },
+  "homepage": "https://github.com/EricGaupp/HandyCapv2#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
