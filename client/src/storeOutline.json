@@ -1,0 +1,16 @@
+{
+	"user": {
+		"isFetching": "bool",
+		"id": "dbRef",
+		"name": "string",
+		"email": "string",
+		"handicap": "int",
+		"scores": [{}]
+	},
+	"tees": {
+		"isFetching": "bool",
+		"list": [{}]
+	},
+	"courses": [],
+	"states": []
+}
