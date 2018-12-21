@@ -8,19 +8,27 @@ export const requestUser = () => ({
 	type: FETCH_USER_REQUEST
 });
 
-export const receiveCourses = res => ({
+export const setUser = res => ({
 	type: FETCH_USER_SUCCESS,
-	courses: res.data.data.children.map(child => child.data.title)
+	id: res.data[0].id,
+	name: res.data[0].name,
+	email: res.data[0].email,
+	handicap: res.data[0].handicap
 });
 
-export function fetchUser(subreddit) {
+export const requestUserError = error => ({
+	type: FETCH_USER_FAILURE,
+	error: error
+});
+
+export function fetchUser() {
 	return function(dispatch) {
 		dispatch(requestUser());
 		return axios
-			.get(`https://www.reddit.com/r/${subreddit}.json`)
+			.get(`http://5c1c2f1b85f9df0013fb8a11.mockapi.io/api/login`)
 			.then(
-				res => dispatch(receiveCourses(res)),
-				error => console.log("An error occurred: %s", error)
+				res => dispatch(setUser(res)),
+				error => dispatch(requestUserError(error))
 			);
 	};
 }

@@ -4,24 +4,42 @@ import {
 	FETCH_USER_FAILURE
 } from "../actions/userActions";
 
-const initialState = { user: { isFetching: false }, courses: [] };
+const initialState = {
+	isFetching: false,
+	id: null,
+	name: null,
+	email: null,
+	handicap: null
+};
 
 function userReducer(state = initialState, action) {
 	switch (action.type) {
 		case FETCH_USER_REQUEST:
-			return Object.assign(
-				{},
-				{ ...state },
-				{ user: { isFetching: true } }
-			);
+			return Object.assign({}, { ...state }, { isFetching: true });
 		case FETCH_USER_SUCCESS:
 			return Object.assign(
 				{},
 				{ ...state },
-				{ user: { isFetching: false }, courses: action.courses }
+				{
+					id: action.id,
+					name: action.name,
+					email: action.email,
+					handicap: action.handicap,
+					isFetching: !state.isFetching
+				}
 			);
+		case FETCH_USER_FAILURE:
+			return Object.assign(
+				{},
+				{ ...state },
+				{
+					isFetching: !state.isFetching,
+					error: action.error
+				}
+			);
+		default:
+			return state;
 	}
-	return state;
 }
 
 export default userReducer;
