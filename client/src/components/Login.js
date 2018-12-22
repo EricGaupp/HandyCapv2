@@ -1,0 +1,60 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
+import "Login.css";
+
+const Login = () => {
+	return (
+		<div className="splashBackground">
+			<div className="customContainer">
+				<div className="row justify-content-center">
+					<div className="col loginContainer text-center">
+						<h3>Sign In</h3>
+						<form>
+							<div className="form-group my-0">
+								<label
+									htmlFor="exampleInputEmail1"
+									className="sr-only"
+								>
+									Email address
+								</label>
+								<input
+									type="email"
+									className="form-control"
+									id="exampleInputEmail1"
+									aria-describedby="emailHelp"
+									placeholder="Enter email"
+								/>
+							</div>
+							<div className="form-group">
+								<label
+									htmlFor="exampleInputPassword1"
+									className="sr-only"
+								>
+									Password
+								</label>
+								<input
+									type="password"
+									className="form-control"
+									id="exampleInputPassword1"
+									placeholder="Password"
+								/>
+							</div>
+							<button
+								type="submit"
+								className="btn btn-lg btn-block btn-primary"
+							>
+								Submit
+							</button>
+						</form>
+						<h5>
+							New User? Register <Link to="/register">here</Link>.
+						</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+export default Login;
