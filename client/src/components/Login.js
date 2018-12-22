@@ -5,8 +5,8 @@ import "Login.css";
 
 const Login = () => {
 	return (
-		<div className="splashBackground">
-			<div className="customContainer">
+		<div className="d-flex align-items-center splashBackground">
+			<div className="container">
 				<div className="row justify-content-center">
 					<div className="col loginContainer">
 						<div className="card shadow text-center">
@@ -49,10 +49,11 @@ const Login = () => {
 										Submit
 									</button>
 								</form>
-								<h5>
+								<hr />
+								<p>
 									New User? Register{" "}
 									<Link to="/register">here</Link>.
-								</h5>
+								</p>
 							</div>
 						</div>
 					</div>
