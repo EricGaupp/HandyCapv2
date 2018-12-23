@@ -7,7 +7,7 @@ import {
 const initialState = {
 	isFetching: false,
 	id: null,
-	name: null,
+	name: "Eric",
 	email: null,
 	handicap: null
 };
