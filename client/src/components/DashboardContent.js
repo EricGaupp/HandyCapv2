@@ -16,9 +16,23 @@ const DashboardContent = props => {
 					/>
 					<Route
 						exact
+						path={`${props.match.url}/scores`}
+						render={() => {
+							return <h1>Scores</h1>;
+						}}
+					/>
+					<Route
+						exact
 						path={`${props.match.url}/stats`}
 						render={() => {
 							return <h1>Stats</h1>;
+						}}
+					/>
+					<Route
+						exact
+						path={`${props.match.url}/post`}
+						render={() => {
+							return <h1>Post A Score</h1>;
 						}}
 					/>
 					<Route
