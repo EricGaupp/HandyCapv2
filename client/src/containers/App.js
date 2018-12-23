@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+import Dashboard from "Dashboard";
 import Footer from "Footer";
 import Home from "Home";
 import Login from "Login";
@@ -36,13 +37,7 @@ class App extends Component {
                 return <h1 className="customContainer">Logout</h1>;
               }}
             />
-            <Route
-              exact
-              path="/dashboard"
-              render={() => {
-                return <h1 className="customContainer">Dashboard</h1>;
-              }}
-            />
+            <Route path="/dashboard" component={Dashboard} />
             <Route
               render={() => {
                 return <h1 className="customContainer">404: Page not Found</h1>;
