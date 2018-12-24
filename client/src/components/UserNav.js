@@ -7,9 +7,20 @@ const UserNav = ({ name }) => {
 			<Link to="/" className="navbar-brand">
 				HandyCap
 			</Link>
+			<button
+				className="navbar-toggler"
+				type="button"
+				data-toggle="collapse"
+				data-target="#mainNavbar"
+				aria-controls="mainNavbar"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+			>
+				<span className="navbar-toggler-icon" />
+			</button>
 			<div
 				className="collapse navbar-collapse justify-content-end"
-				id="navbarNavDropdown"
+				id="mainNavbar"
 			>
 				<div className="navbar-nav">
 					<Link className="nav-item nav-link active" to="/">

@@ -5,7 +5,7 @@ import { FiEdit2, FiFlag, FiHome, FiPlus, FiTrendingUp } from "react-icons/fi";
 
 const DashboardNav = props => {
 	return (
-		<nav className="d-flex col-md-2 bg-light sidebar justify-content-center">
+		<div className="col-md-2 bg-light sidebar justify-content-center">
 			<div className="flex-column">
 				<Link to={`${props.match.url}`} className="nav-link text-dark">
 					<div className="d-flex justify-content-center align-items-center">
@@ -41,7 +41,7 @@ const DashboardNav = props => {
 					</div>
 				</Link>
 			</div>
-		</nav>
+		</div>
 	);
 };
 

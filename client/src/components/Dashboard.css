@@ -1,4 +1,11 @@
 .sidebar {
-	position: fixed;
-	min-height: 100vh;
+	display: flex;
+}
+
+@media screen and (min-width: 768px) {
+	.sidebar {
+		display: flex;
+		position: fixed;
+		min-height: 100vh;
+	}
 }
