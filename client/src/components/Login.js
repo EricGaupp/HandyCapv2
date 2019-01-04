@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import axios from "axios";
+
 import "Login.css";
 
 const Login = () => {
@@ -45,6 +47,12 @@ const Login = () => {
 									<button
 										type="submit"
 										className="btn btn-lg btn-block btn-primary"
+										onClick={e => {
+											e.preventDefault();
+											axios.get("/login").then(res => {
+												console.log(res);
+											});
+										}}
 									>
 										Submit
 									</button>

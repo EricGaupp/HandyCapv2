@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const UserNav = ({ name }) => {
+const UserNav = () => {
 	return (
 		<nav className="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 			<Link to="/" className="navbar-brand">
@@ -23,8 +23,8 @@ const UserNav = ({ name }) => {
 				id="mainNavbar"
 			>
 				<div className="navbar-nav">
-					<Link className="nav-item nav-link active" to="/">
-						Home <span className="sr-only">(current)</span>
+					<Link className="nav-item nav-link" to="/">
+						Home
 					</Link>
 					<Link className="nav-item nav-link" to="/news">
 						News

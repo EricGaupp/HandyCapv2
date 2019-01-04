@@ -1,11 +1,11 @@
 .sidebar {
-	display: flex;
+	display: none;
+	/* Instead make it a dropdown inside the main navbar when collapsed*/
 }
 
 @media screen and (min-width: 768px) {
 	.sidebar {
 		display: flex;
-		position: fixed;
-		min-height: 100vh;
+		min-height: 100%;
 	}
 }

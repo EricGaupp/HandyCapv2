@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { FiEdit2, FiFlag, FiHome, FiPlus, FiTrendingUp } from "react-icons/fi";
+import { FiEdit2, FiFlag, FiHome, FiTrendingUp } from "react-icons/fi";
 
 const DashboardNav = props => {
 	return (

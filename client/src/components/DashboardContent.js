@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 
 const DashboardContent = props => {
 	return (
-		<div className="col-md-10 ml-auto">
+		<div className="col ml-auto">
 			<Switch>
 				<Route
 					exact

@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 });
 
 const Navbar = ({ user }) => {
-	return user.name ? <UserNav name="Eric" /> : <LoginNav />;
+	return user.name ? <UserNav /> : <LoginNav />;
 };
 
 export default connect(mapStateToProps)(Navbar);
