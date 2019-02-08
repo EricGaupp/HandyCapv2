@@ -49,9 +49,11 @@ const Login = () => {
 										className="btn btn-lg btn-block btn-primary"
 										onClick={e => {
 											e.preventDefault();
-											axios.get("/login").then(res => {
-												console.log(res);
-											});
+											axios
+												.get("/user/login")
+												.then(res => {
+													console.log(res);
+												});
 										}}
 									>
 										Submit
