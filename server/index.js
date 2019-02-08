@@ -13,6 +13,7 @@ app.use(bodyParser.json());
 //Serve static client files from build directory
 app.use("/", express.static(path.resolve(__dirname, "./build")));
 
+//Routing
 app.use("/user", require("./routes/userRoutes.js"));
 
 //Serve static build for any other request
