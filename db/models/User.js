@@ -3,16 +3,26 @@ const db = require("../config.js");
 
 const User = db.define("user", {
 	email: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		allowNull: false,
+		isEmail: true,
+		unique: true
 	},
 	password: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		allowNull: false
 	},
 	firstName: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		allowNull: false,
+		//Allow only letters per Sequelize validation docs
+		is: /^[a-z]+$/i
 	},
 	lastName: {
-		type: Sequelize.STRING
+		type: Sequelize.STRING,
+		allowNull: false,
+		//Allow only letters per Sequelize validation docs
+		is: /^[a-z]+$/i
 	}
 });
 

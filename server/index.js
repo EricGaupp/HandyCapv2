@@ -25,8 +25,8 @@ app.get("*", (req, res) => {
 // 	.then(() => console.log("Connected to Database"))
 // 	.catch(err => console.log(err));
 
-//Drop all existing tables and create new ones from Model definitions when in the development database
-db.sync({ force: true, match: /_dev$/ })
+//Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions
+db.sync({ match: /_dev$/ })
 	.then(() =>
 		console.log(
 			"Connecting to development DB, dropping and creating tables"

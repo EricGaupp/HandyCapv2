@@ -50,7 +50,7 @@ const Login = () => {
 										onClick={e => {
 											e.preventDefault();
 											axios
-												.get("/user/login")
+												.post("/user/login", {})
 												.then(res => {
 													console.log(res);
 												});
