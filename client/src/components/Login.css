@@ -1,3 +1,7 @@
 .loginContainer {
 	max-width: 350px;
 }
+
+.loginError {
+	color: red;
+}

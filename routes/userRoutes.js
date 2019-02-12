@@ -4,8 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
-const db = require("../../db/config");
-const User = require("../../db/models/User");
+const db = require("../config/database");
+const User = require("../models/User");
 
 const saltRounds = 10;
 
@@ -16,7 +16,6 @@ router.post("/login", (req, res) => {
 	User.findOne({ where: { email: email } })
 		.then(user => {
 			if (user) {
-				console.log(user);
 				//If user exists compare password and stored hash with bcrypt compare method
 				bcrypt.compare(
 					password,
@@ -29,7 +28,8 @@ router.post("/login", (req, res) => {
 						//If password and hash don't match send error to client
 						if (!result) {
 							res.json({
-								message: "Invalid Username and/or Password"
+								loginError: true,
+								errorMessage: "Invalid Username and/or Password"
 							});
 						}
 						//If password and hash do match -> send authorization JWT to client
@@ -58,7 +58,6 @@ router.post("/login", (req, res) => {
 										console.log(err);
 									}
 									res.json({
-										message: "Logging in...",
 										token: token
 									});
 								}
@@ -69,7 +68,8 @@ router.post("/login", (req, res) => {
 			} else {
 				//If user doesn't exist send error message to client
 				res.json({
-					message: "User with that email address not found"
+					loginError: true,
+					errorMessage: "User not found"
 				});
 			}
 		})
@@ -85,7 +85,8 @@ router.post("/register", (req, res) => {
 			if (user) {
 				//If user exists send error message to client
 				res.json({
-					message: "User with that email address already exists"
+					registerError: true,
+					errorMessage: "User with that email address already exists"
 				});
 			} else {
 				//Hash plaintext password with bcrypt

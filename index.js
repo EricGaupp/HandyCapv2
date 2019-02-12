@@ -1,9 +1,9 @@
+require("dotenv").config();
+
 const bodyParser = require("body-parser");
-const db = require("../db/config");
+const db = require("./config/database");
 const express = require("express");
 const path = require("path");
-
-require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -18,7 +18,7 @@ app.use("/user", require("./routes/userRoutes.js"));
 
 //Serve static build for any other request
 app.get("*", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "../client/build/index.html"));
+	res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
 });
 
 //Can test connection to db with authenticate method

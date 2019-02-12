@@ -6,6 +6,7 @@ import Footer from "Footer";
 import Home from "Home";
 import Login from "Login";
 import Navbar from "Navbar";
+import Register from "Register";
 
 import "App.css";
 
@@ -40,6 +41,7 @@ class App extends Component {
                   return <h1 className="customContainer">Logout</h1>;
                 }}
               />
+              <Route exact path="/register" component={Register} />
               <Route path="/dashboard" component={Dashboard} />
               <Route
                 render={() => {

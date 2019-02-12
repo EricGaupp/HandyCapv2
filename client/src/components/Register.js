@@ -3,15 +3,17 @@ import { Link, Redirect } from "react-router-dom";
 
 import axios from "axios";
 
-import "Login.css";
+import "Register.css";
 
-class Login extends React.Component {
+class Register extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: "",
 			password: "",
-			loginError: false,
+			firstName: "",
+			lastName: "",
+			registerError: false,
 			errorMessage: "",
 			toDashboard: false
 		};
@@ -25,16 +27,24 @@ class Login extends React.Component {
 		this.setState({ password: e.target.value });
 	};
 
+	handleFirstNameChange = e => {
+		this.setState({ firstName: e.target.value });
+	};
+
+	handleLastNameChange = e => {
+		this.setState({ lastName: e.target.value });
+	};
+
 	handleSubmit = e => {
 		e.preventDefault();
-		const { email, password } = this.state;
+		const { email, password, firstName, lastName } = this.state;
 		axios
-			.post("/user/login", { email, password })
+			.post("/user/register", { email, password, firstName, lastName })
 			.then(response => {
 				//Display error messages to user if any
-				if (response.data.loginError) {
+				if (response.data.registerError) {
 					this.setState({
-						loginError: true,
+						registerError: true,
 						errorMessage: response.data.errorMessage
 					});
 				}
@@ -43,7 +53,7 @@ class Login extends React.Component {
 				else {
 					localStorage.setItem("token", response.data.token);
 					this.setState({
-						loginError: false,
+						registerError: false,
 						toDashboard: true
 					});
 				}
@@ -60,25 +70,24 @@ class Login extends React.Component {
 			<div className="d-flex align-items-center splashBackground">
 				<div className="container">
 					<div className="row justify-content-center">
-						<div className="col loginContainer">
-							<div className="card shadow text-center">
+						<div className="col registerContainer">
+							<div className="card shadow">
 								<div className="card-header">
-									<h3 className="my-0">Sign In</h3>
+									<h3 className="text-center my-0">
+										Register
+									</h3>
 								</div>
 								<div className="card-body">
 									<form>
-										<div className="form-group my-0">
-											<label
-												htmlFor="loginEmail"
-												className="sr-only"
-											>
-												Email address
+										<div className="form-group">
+											<label htmlFor="registerEmail">
+												Email
 											</label>
 											<input
 												type="email"
 												className="form-control"
-												id="loginEmail"
-												placeholder="Email"
+												id="registerEmail"
+												aria-describedby="emailHelp"
 												value={this.state.email}
 												onChange={
 													this.handleEmailChange
@@ -86,28 +95,53 @@ class Login extends React.Component {
 											/>
 										</div>
 										<div className="form-group">
-											<label
-												htmlFor="loginPassword"
-												className="sr-only"
-											>
+											<label htmlFor="registerPassword">
 												Password
 											</label>
 											<input
 												type="password"
 												className="form-control"
-												id="loginPassword"
-												placeholder="Password"
+												id="registerPassword"
 												value={this.state.password}
 												onChange={
 													this.handlePasswordChange
 												}
 											/>
 										</div>
-										{this.state.loginError && (
-											<p className="loginError">
+										<div className="form-group">
+											<label htmlFor="registerFirstName">
+												First Name
+											</label>
+											<input
+												type="text"
+												className="form-control"
+												id="registerFirstName"
+												value={this.state.firstName}
+												onChange={
+													this.handleFirstNameChange
+												}
+											/>
+										</div>
+										<div className="form-group">
+											<label htmlFor="registerLastName">
+												Last Name
+											</label>
+											<input
+												type="text"
+												className="form-control"
+												id="registerLastName"
+												value={this.state.lastName}
+												onChange={
+													this.handleLastNameChange
+												}
+											/>
+										</div>
+										{this.state.registerError && (
+											<p className="text-center loginError">
 												{this.state.errorMessage}
 											</p>
 										)}
+
 										<button
 											className="btn btn-lg btn-block btn-primary"
 											onClick={this.handleSubmit}
@@ -116,9 +150,9 @@ class Login extends React.Component {
 										</button>
 									</form>
 									<hr />
-									<p className="my-0">
-										New User? Register{" "}
-										<Link to="/register">here</Link>
+									<p className="text-center my-0">
+										Already Registered? Login{" "}
+										<Link to="/login">here</Link>
 									</p>
 								</div>
 							</div>
@@ -130,4 +164,4 @@ class Login extends React.Component {
 	}
 }
 
-export default Login;
+export default Register;
