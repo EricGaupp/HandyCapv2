@@ -16,6 +16,7 @@ router.post("/login", (req, res) => {
 	User.findOne({ where: { email: email } })
 		.then(user => {
 			if (user) {
+				console.log(user);
 				//If user exists compare password and stored hash with bcrypt compare method
 				bcrypt.compare(
 					password,
@@ -28,15 +29,40 @@ router.post("/login", (req, res) => {
 						//If password and hash don't match send error to client
 						if (!result) {
 							res.json({
-								message: "password does not match"
+								message: "Invalid Username and/or Password"
 							});
 						}
-						//If password and has do match send success message to client
-						//TODO: Replace res.json with a signed JWT
+						//If password and hash do match -> send authorization JWT to client
 						else {
-							res.json({
-								message: "Logging in..."
-							});
+							const {
+								id,
+								email,
+								firstName,
+								lastName
+							} = user.dataValues;
+							jwt.sign(
+								{
+									id: id,
+									email: email,
+									firstName: firstName,
+									lastName: lastName
+								},
+								process.env.JWT_KEY,
+								{
+									expiresIn: "1h",
+									issuer: "HandyCap",
+									subject: "HandyCap Authorization"
+								},
+								(err, token) => {
+									if (err) {
+										console.log(err);
+									}
+									res.json({
+										message: "Logging in...",
+										token: token
+									});
+								}
+							);
 						}
 					}
 				);
@@ -74,10 +100,38 @@ router.post("/register", (req, res) => {
 							firstName: firstName,
 							lastName: lastName
 						})
+							//Send Authorization JWT to client
 							.then(newUser => {
 								console.log(newUser);
-								//Sign JWT and send to client
-								res.sendStatus(200);
+								const {
+									id,
+									email,
+									firstName,
+									lastName
+								} = newUser.dataValues;
+								jwt.sign(
+									{
+										id: id,
+										email: email,
+										firstName: firstName,
+										lastName: lastName
+									},
+									process.env.JWT_KEY,
+									{
+										expiresIn: "1h",
+										issuer: "HandyCap",
+										subject: "HandyCap Authorization"
+									},
+									(err, token) => {
+										if (err) {
+											console.log(err);
+										}
+										res.json({
+											message: "Registered User",
+											token: token
+										});
+									}
+								);
 							})
 							.catch(error => console.log(error));
 					}
