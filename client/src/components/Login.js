@@ -1,11 +1,26 @@
 import React from "react";
+import { connect } from "react-redux";
+import { login } from "../actions/userActions";
 import { Link, Redirect } from "react-router-dom";
-
-import axios from "axios";
 
 import "Login.css";
 
-class Login extends React.Component {
+const mapStateToProps = state => {
+	return {
+		loginError: state.user.loginError,
+		errorMessage: state.user.errorMessage,
+		isAuthenticated: state.user.isAuthenticated,
+		token: state.user.token
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		login: (email, password) => dispatch(login(email, password))
+	};
+};
+
+class ConnectedLogin extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -28,7 +43,10 @@ class Login extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		const { email, password } = this.state;
-		axios
+		//Dispatch login action to redux
+		this.props.login(email, password);
+		//Copy this into action logic
+		/**axios
 			.post("/user/login", { email, password })
 			.then(response => {
 				//Display error messages to user if any
@@ -48,12 +66,13 @@ class Login extends React.Component {
 					});
 				}
 			})
-			.catch(err => console.log(err));
+			.catch(err => console.log(err));**/
 	};
 
 	render() {
-		//Redirect to dashboard on succesful login
-		if (this.state.toDashboard) {
+		//Redirect to dashboard after successful login via an updated Redux User State
+		if (this.props.isAuthenticated) {
+			localStorage.setItem("token", this.props.token);
 			return <Redirect to="/dashboard" />;
 		}
 		return (
@@ -103,9 +122,10 @@ class Login extends React.Component {
 												}
 											/>
 										</div>
-										{this.state.loginError && (
+										{/**Display Errors based on Redux User State**/}
+										{this.props.loginError && (
 											<p className="loginError">
-												{this.state.errorMessage}
+												{this.props.errorMessage}
 											</p>
 										)}
 										<button
@@ -129,5 +149,10 @@ class Login extends React.Component {
 		);
 	}
 }
+
+const Login = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ConnectedLogin);
 
 export default Login;

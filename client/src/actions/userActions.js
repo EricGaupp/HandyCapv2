@@ -10,25 +10,35 @@ export const requestUser = () => ({
 
 export const setUser = res => ({
 	type: FETCH_USER_SUCCESS,
-	id: res.data[0].id,
-	name: res.data[0].name,
-	email: res.data[0].email,
-	handicap: res.data[0].handicap
+	id: res.data.id,
+	firstName: res.data.firstName,
+	lastName: res.data.lastName,
+	email: res.data.email,
+	token: res.data.token
 });
 
-export const requestUserError = error => ({
+export const loginError = error => ({
 	type: FETCH_USER_FAILURE,
-	error: error
+	loginError: error.data.loginError,
+	errorMessage: error.data.errorMessage
 });
 
-export function fetchUser() {
+export function login(email, password) {
 	return function(dispatch) {
+		//Updates redux user.isFetching state
 		dispatch(requestUser());
+		//Post request with credentials to authentication route
 		return axios
-			.get(`http://5c1c2f1b85f9df0013fb8a11.mockapi.io/api/login`)
-			.then(
-				res => dispatch(setUser(res)),
-				error => dispatch(requestUserError(error))
-			);
+			.post("/user/login", { email, password })
+			.then(response => {
+				//Update Redux User State with any login errors
+				if (response.data.loginError) {
+					dispatch(loginError(response));
+				} else {
+					//Update Redux User State on success
+					dispatch(setUser(response));
+				}
+			})
+			.catch(error => console.log(error));
 	};
 }

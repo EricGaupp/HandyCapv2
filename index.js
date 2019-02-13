@@ -26,7 +26,7 @@ app.get("*", (req, res) => {
 // 	.catch(err => console.log(err));
 
 const db = require("./config/database");
-//Requiring unused Models for sync until they are used in separate routing
+//Requiring currently unrequired Models for sync until they are used in separate routing
 const Tee = require("./models/Tee");
 const Score = require("./models/Score");
 const Course = require("./models/Course");

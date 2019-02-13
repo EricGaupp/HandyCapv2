@@ -6,10 +6,14 @@ import {
 
 const initialState = {
 	isFetching: false,
+	isAuthenticated: false,
+	loginError: false,
+	errorMessage: null,
 	id: null,
-	name: null,
+	firstName: null,
+	lastName: null,
 	email: null,
-	handicap: null
+	token: null
 };
 
 function userReducer(state = initialState, action) {
@@ -21,11 +25,15 @@ function userReducer(state = initialState, action) {
 				{},
 				{ ...state },
 				{
+					isAuthenticated: true,
+					token: action.token,
 					id: action.id,
-					name: action.name,
+					firstName: action.firstName,
+					lastName: action.lastName,
 					email: action.email,
-					handicap: action.handicap,
-					isFetching: !state.isFetching
+					isFetching: !state.isFetching,
+					loginError: false,
+					errorMessage: null
 				}
 			);
 		case FETCH_USER_FAILURE:
@@ -34,7 +42,8 @@ function userReducer(state = initialState, action) {
 				{ ...state },
 				{
 					isFetching: !state.isFetching,
-					error: action.error
+					loginError: action.loginError,
+					errorMessage: action.errorMessage
 				}
 			);
 		default:
