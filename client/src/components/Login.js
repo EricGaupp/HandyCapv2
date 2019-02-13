@@ -45,34 +45,11 @@ class Login extends React.Component {
 		const { email, password } = this.state;
 		//Dispatch login action to redux
 		this.props.login(email, password);
-		//Copy this into action logic
-		/**axios
-			.post("/user/login", { email, password })
-			.then(response => {
-				//Display error messages to user if any
-				if (response.data.loginError) {
-					this.setState({
-						loginError: true,
-						errorMessage: response.data.errorMessage
-					});
-				}
-				//On success store JWT in localStorage
-				//TODO: Update Redux state with user information
-				else {
-					localStorage.setItem("token", response.data.token);
-					this.setState({
-						loginError: false,
-						toDashboard: true
-					});
-				}
-			})
-			.catch(err => console.log(err));**/
 	};
 
 	render() {
 		//Redirect to dashboard after successful login via an updated Redux User State
 		if (this.props.isAuthenticated) {
-			//localStorage.setItem("token", this.props.token);
 			return <Redirect to="/dashboard" />;
 		}
 		return (

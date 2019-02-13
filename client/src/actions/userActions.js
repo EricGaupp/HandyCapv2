@@ -29,12 +29,13 @@ export const loginError = error => ({
 });
 
 //Logout Action Creator
-export const logout = () => ({
+export const logoutUser = () => ({
 	type: LOGOUT_USER
 });
 
-export function login(email, password) {
-	return function(dispatch) {
+//Login Thunk
+export const login = (email, password) => {
+	return dispatch => {
 		//Updates redux user.isFetching state
 		dispatch(requestUser());
 		//Post request with credentials to authentication route
@@ -45,12 +46,22 @@ export function login(email, password) {
 				if (response.data.loginError) {
 					dispatch(loginError(response));
 				} else {
-					//Store JWT here?
 					//Update Redux User State on success
 					dispatch(setUser(response));
+					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}
 			})
 			.catch(error => console.log(error));
 	};
-}
+};
+
+//Logout Thunk
+export const logout = () => {
+	return dispatch => {
+		//Update Redux User State to initial state (no user)
+		dispatch(logoutUser());
+		//Remove JWT from localStorage
+		localStorage.removeItem("token");
+	};
+};
