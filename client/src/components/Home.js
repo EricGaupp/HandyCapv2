@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./Home.css";
 
-const Home = props => {
+const Home = () => {
 	return (
 		<div className="contentWrapper splashBackground">
 			<div className="container">

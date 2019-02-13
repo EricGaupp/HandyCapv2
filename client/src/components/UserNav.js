@@ -1,7 +1,17 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import { Link } from "react-router-dom";
 
-const UserNav = () => {
+import { logout } from "../actions/userActions";
+
+const mapDispatchToProps = dispatch => {
+	return {
+		logout: () => dispatch(logout())
+	};
+};
+
+const UserNav = props => {
 	return (
 		<nav className="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
 			<Link to="/" className="navbar-brand">
@@ -32,7 +42,11 @@ const UserNav = () => {
 					<Link className="nav-item nav-link" to="/dashboard">
 						Dashboard
 					</Link>
-					<Link className="nav-item nav-link" to="/logout">
+					<Link
+						className="nav-item nav-link"
+						onClick={props.logout}
+						to="/"
+					>
 						Log Out
 					</Link>
 				</div>
@@ -41,4 +55,7 @@ const UserNav = () => {
 	);
 };
 
-export default UserNav;
+export default connect(
+	null,
+	mapDispatchToProps
+)(UserNav);

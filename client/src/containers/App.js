@@ -6,7 +6,9 @@ import Footer from "Footer";
 import Home from "Home";
 import Login from "Login";
 import Navbar from "Navbar";
+import News from "News";
 import Register from "Register";
+import PrivateRoute from "PrivateRoute";
 
 import "App.css";
 
@@ -19,30 +21,10 @@ class App extends Component {
           <div className="contentWrapper">
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route
-                exact
-                path="/about"
-                render={() => {
-                  return <h1>About</h1>;
-                }}
-              />
-              <Route
-                exact
-                path="/news"
-                render={() => {
-                  return <h1 className="customContainer">News</h1>;
-                }}
-              />
               <Route exact path="/login" component={Login} />
-              <Route
-                exact
-                path="/logout"
-                render={() => {
-                  return <h1 className="customContainer">Logout</h1>;
-                }}
-              />
               <Route exact path="/register" component={Register} />
-              <Route path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/news" component={News} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
               <Route
                 render={() => {
                   return (

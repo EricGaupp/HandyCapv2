@@ -1,7 +1,8 @@
 import {
 	FETCH_USER_REQUEST,
 	FETCH_USER_SUCCESS,
-	FETCH_USER_FAILURE
+	FETCH_USER_FAILURE,
+	LOGOUT_USER
 } from "../actions/userActions";
 
 const initialState = {
@@ -44,6 +45,22 @@ function userReducer(state = initialState, action) {
 					isFetching: !state.isFetching,
 					loginError: action.loginError,
 					errorMessage: action.errorMessage
+				}
+			);
+		case LOGOUT_USER:
+			return Object.assign(
+				{},
+				{ ...state },
+				{
+					isFetching: false,
+					isAuthenticated: false,
+					loginError: false,
+					errorMessage: null,
+					id: null,
+					firstName: null,
+					lastName: null,
+					email: null,
+					token: null
 				}
 			);
 		default:

@@ -72,7 +72,7 @@ class Login extends React.Component {
 	render() {
 		//Redirect to dashboard after successful login via an updated Redux User State
 		if (this.props.isAuthenticated) {
-			localStorage.setItem("token", this.props.token);
+			//localStorage.setItem("token", this.props.token);
 			return <Redirect to="/dashboard" />;
 		}
 		return (
