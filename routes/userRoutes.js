@@ -54,7 +54,9 @@ router.post("/login", (req, res) => {
 								(err, token) => {
 									if (err) {
 										console.log(err);
+										//TODO Send Error status code
 									}
+									//TODO Wrap in else statement
 									res.json({
 										id: id,
 										email: email,
@@ -88,7 +90,8 @@ router.post("/register", (req, res) => {
 				//If user exists send error message to client
 				res.json({
 					registerError: true,
-					errorMessage: "User with that email address already exists"
+					registerErrorMessage:
+						"User with that email address already exists"
 				});
 			} else {
 				//Hash plaintext password with bcrypt
@@ -105,7 +108,6 @@ router.post("/register", (req, res) => {
 						})
 							//Send Authorization JWT to client
 							.then(newUser => {
-								console.log(newUser);
 								const {
 									id,
 									email,
@@ -128,9 +130,14 @@ router.post("/register", (req, res) => {
 									(err, token) => {
 										if (err) {
 											console.log(err);
+											//TODO send error response code
 										}
+										//TODO Wrap in else statement
 										res.json({
-											message: "Registered User",
+											id: id,
+											email: email,
+											firstName: firstName,
+											lastName: lastName,
 											token: token
 										});
 									}

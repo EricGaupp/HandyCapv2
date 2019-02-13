@@ -9,8 +9,7 @@ const mapStateToProps = state => {
 	return {
 		loginError: state.user.loginError,
 		errorMessage: state.user.errorMessage,
-		isAuthenticated: state.user.isAuthenticated,
-		token: state.user.token
+		isAuthenticated: state.user.isAuthenticated
 	};
 };
 

@@ -2,6 +2,8 @@ import {
 	FETCH_USER_REQUEST,
 	FETCH_USER_SUCCESS,
 	FETCH_USER_FAILURE,
+	REGISTER_USER_FAILURE,
+	REGISTER_USER_SUCCESS,
 	LOGOUT_USER
 } from "../actions/userActions";
 
@@ -45,6 +47,31 @@ function userReducer(state = initialState, action) {
 					isFetching: !state.isFetching,
 					loginError: action.loginError,
 					errorMessage: action.errorMessage
+				}
+			);
+		case REGISTER_USER_SUCCESS:
+			return Object.assign(
+				{},
+				{ ...state },
+				{
+					isAuthenticated: true,
+					token: action.token,
+					id: action.id,
+					firstName: action.firstName,
+					lastName: action.lastName,
+					email: action.email,
+					isFetching: !state.isFetching,
+					loginError: false,
+					errorMessage: null
+				}
+			);
+		case REGISTER_USER_FAILURE:
+			return Object.assign(
+				{},
+				{ ...state },
+				{
+					registerError: error.data.registerError,
+					registerErrorMessage: error.data.registerErrorMessage
 				}
 			);
 		case LOGOUT_USER:

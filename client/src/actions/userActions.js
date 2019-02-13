@@ -5,6 +5,10 @@ export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAILURE = "FETCH_USER_FAILURE";
 
+//Register Action Types
+export const REGISTER_USER_FAILURE = "REGISTER_USER_FAILURE";
+export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
+
 //Logout Action Types
 export const LOGOUT_USER = "LOGOUT_USER";
 
@@ -28,6 +32,22 @@ export const loginError = error => ({
 	errorMessage: error.data.errorMessage
 });
 
+//Register Action Creator
+export const registerError = error => ({
+	type: REGISTER_USER_FAILURE,
+	registerError: error.data.registerError,
+	registerErrorMessage: error.data.registerErrorMessage
+});
+
+export const registerSetUser = res => ({
+	type: REGISTER_USER_SUCCESS,
+	id: res.data.id,
+	firstName: res.data.firstName,
+	lastName: res.data.lastName,
+	email: res.data.email,
+	token: res.data.token
+});
+
 //Logout Action Creator
 export const logoutUser = () => ({
 	type: LOGOUT_USER
@@ -46,8 +66,28 @@ export const login = (email, password) => {
 				if (response.data.loginError) {
 					dispatch(loginError(response));
 				} else {
-					//Update Redux User State on success
+					//Update Redux User State on successful login
 					dispatch(setUser(response));
+					//Store JWT token in localStorage
+					localStorage.setItem("token", response.data.token);
+				}
+			})
+			.catch(error => console.log(error));
+	};
+};
+
+//Register Thunk
+export const registerUser = (email, password, firstName, lastName) => {
+	return dispath => {
+		return axios
+			.post("/user/register", { email, password, firstName, lastName })
+			.then(response => {
+				//Update Redux User State with any registration errors
+				if (response.data.registerError) {
+					dispatch(registerError(response));
+				} else {
+					//Update Redux User State on successful registration
+					dispatch(registerSetUser(response));
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}

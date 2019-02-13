@@ -1,9 +1,24 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
 import axios from "axios";
 
 import "Register.css";
+
+const mapStateToProps = state => {
+	return {
+		registerError: state.user.registerError,
+		registerErrorMessage: state.user.registerErrorMessage,
+		isAuthenticated: state.user.isAuthenticated
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		register: dispatch(registerUser)
+	};
+};
 
 class Register extends React.Component {
 	constructor(props) {
@@ -12,10 +27,7 @@ class Register extends React.Component {
 			email: "",
 			password: "",
 			firstName: "",
-			lastName: "",
-			registerError: false,
-			errorMessage: "",
-			toDashboard: false
+			lastName: ""
 		};
 	}
 
@@ -38,6 +50,9 @@ class Register extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		const { email, password, firstName, lastName } = this.state;
+		//Dispatch register action to redux
+		this.props.register(email, password, firstName, lastName);
+		/*
 		axios
 			.post("/user/register", { email, password, firstName, lastName })
 			.then(response => {
@@ -58,12 +73,12 @@ class Register extends React.Component {
 					});
 				}
 			})
-			.catch(err => console.log(err));
+			.catch(err => console.log(err));*/
 	};
 
 	render() {
-		//Redirect to dashboard on succesful login
-		if (this.state.toDashboard) {
+		//Redirect to dashboard on succesful registration
+		if (this.props.isAuthenticated) {
 			return <Redirect to="/dashboard" />;
 		}
 		return (
@@ -136,9 +151,13 @@ class Register extends React.Component {
 												}
 											/>
 										</div>
-										{this.state.registerError && (
+										{/*Display Registration Error Messages*/}
+										{this.props.registerError && (
 											<p className="text-center loginError">
-												{this.state.errorMessage}
+												{
+													this.props
+														.registerErrorMessage
+												}
 											</p>
 										)}
 
@@ -164,4 +183,7 @@ class Register extends React.Component {
 	}
 }
 
-export default Register;
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Register);
