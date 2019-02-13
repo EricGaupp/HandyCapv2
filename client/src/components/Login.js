@@ -20,7 +20,7 @@ const mapDispatchToProps = dispatch => {
 	};
 };
 
-class ConnectedLogin extends React.Component {
+class Login extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -150,9 +150,7 @@ class ConnectedLogin extends React.Component {
 	}
 }
 
-const Login = connect(
+export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(ConnectedLogin);
-
-export default Login;
+)(Login);
