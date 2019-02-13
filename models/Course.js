@@ -16,4 +16,8 @@ const Course = db.define("course", {
 	}
 });
 
+const Tee = require("./Tee");
+Course.hasMany(Tee);
+
 module.exports = Course;
+

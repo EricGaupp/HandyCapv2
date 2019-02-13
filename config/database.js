@@ -2,7 +2,8 @@ const Sequelize = require("sequelize");
 
 const { DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 
-module.exports = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+const db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+	operatorsAliases: false,
 	host: "localhost",
 	dialect: "mysql",
 	pool: {
@@ -12,3 +13,5 @@ module.exports = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 		idle: 10000
 	}
 });
+
+module.exports = db;

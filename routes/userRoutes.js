@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 const router = express.Router();
 
-const db = require("../config/database");
 const User = require("../models/User");
 
 const saltRounds = 10;

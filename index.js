@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const bodyParser = require("body-parser");
-const db = require("./config/database");
 const express = require("express");
 const path = require("path");
 
@@ -26,13 +25,16 @@ app.get("*", (req, res) => {
 // 	.then(() => console.log("Connected to Database"))
 // 	.catch(err => console.log(err));
 
+const db = require("./config/database");
+//Requiring unused Models for sync until they are used in separate routing
+const Tee = require("./models/Tee");
+const Score = require("./models/Score");
+const Course = require("./models/Course");
 //Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions
-db.sync({ match: /_dev$/ })
-	.then(() =>
-		console.log(
-			"Connecting to development DB, dropping and creating tables"
-		)
-	)
+db.sync({ logging: false })
+	.then(() => {
+		console.log("Connecting to dev DB, dropping and creating tables");
+	})
 	.catch(err => console.log(err));
 
 app.listen(PORT, () => {
