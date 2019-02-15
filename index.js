@@ -17,6 +17,7 @@ app.use("/login", require("./routes/login"));
 app.use("/register", require("./routes/register"));
 //Private Routing for authenticated users
 app.use(require("./routes/jwtVerification"));
+app.use("/scores", require("./routes/scores"));
 
 //Serve static build for any other request
 app.get("*", (req, res) => {

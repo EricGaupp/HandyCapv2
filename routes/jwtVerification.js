@@ -4,6 +4,7 @@ const router = express.Router();
 
 //JWT Verification Middleware
 router.use((req, res, next) => {
+	//Check for authorization header
 	if (req.headers.authorization) {
 		//Extract token from Bearer string
 		let { authorization } = req.headers;
@@ -12,6 +13,7 @@ router.use((req, res, next) => {
 		//Verify JWT
 		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
 			if (err) {
+				//Send error message if JWT can't be verified
 				res.json({
 					jwtError: true,
 					jwtErrorMessage: err
@@ -23,12 +25,9 @@ router.use((req, res, next) => {
 			}
 		});
 	} else {
+		//Send error response if no authorization headers in request
 		res.send("no headers");
 	}
-});
-
-router.use((req, res) => {
-	res.json({ message: "Valid JWT", ...res.locals });
 });
 
 module.exports = router;
