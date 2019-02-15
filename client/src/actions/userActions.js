@@ -78,7 +78,7 @@ export const login = (email, password) => {
 
 //Register Thunk
 export const registerUser = (email, password, firstName, lastName) => {
-	return dispath => {
+	return dispatch => {
 		return axios
 			.post("/user/register", { email, password, firstName, lastName })
 			.then(response => {

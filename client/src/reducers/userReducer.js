@@ -10,8 +10,6 @@ import {
 const initialState = {
 	isFetching: false,
 	isAuthenticated: false,
-	loginError: false,
-	errorMessage: null,
 	id: null,
 	firstName: null,
 	lastName: null,
@@ -21,12 +19,21 @@ const initialState = {
 
 function userReducer(state = initialState, action) {
 	switch (action.type) {
-		case FETCH_USER_REQUEST:
+		case FETCH_USER_REQUEST: {
 			return Object.assign({}, { ...state }, { isFetching: true });
-		case FETCH_USER_SUCCESS:
+		}
+		case FETCH_USER_SUCCESS: {
+			//Remove any error state objects from User state on success
+			const {
+				loginError,
+				loginErrorMessage,
+				registerError,
+				registerErrorMessage,
+				...rest
+			} = state;
 			return Object.assign(
 				{},
-				{ ...state },
+				{ ...rest },
 				{
 					isAuthenticated: true,
 					token: action.token,
@@ -34,55 +41,60 @@ function userReducer(state = initialState, action) {
 					firstName: action.firstName,
 					lastName: action.lastName,
 					email: action.email,
-					isFetching: !state.isFetching,
-					loginError: false,
-					errorMessage: null
+					isFetching: false
 				}
 			);
-		case FETCH_USER_FAILURE:
+		}
+		case FETCH_USER_FAILURE: {
 			return Object.assign(
 				{},
 				{ ...state },
 				{
-					isFetching: !state.isFetching,
+					isFetching: false,
 					loginError: action.loginError,
-					errorMessage: action.errorMessage
+					loginErrorMessage: action.errorMessage
 				}
 			);
-		case REGISTER_USER_SUCCESS:
+		}
+		case REGISTER_USER_SUCCESS: {
+			//Remove any error state objects from User state on success
+			const {
+				loginError,
+				loginErrorMessage,
+				registerError,
+				registerErrorMessage,
+				...rest
+			} = state;
 			return Object.assign(
 				{},
-				{ ...state },
+				{ ...rest },
 				{
 					isAuthenticated: true,
 					token: action.token,
 					id: action.id,
 					firstName: action.firstName,
 					lastName: action.lastName,
-					email: action.email,
-					isFetching: !state.isFetching,
-					loginError: false,
-					errorMessage: null
+					email: action.email
 				}
 			);
-		case REGISTER_USER_FAILURE:
+		}
+		case REGISTER_USER_FAILURE: {
 			return Object.assign(
 				{},
 				{ ...state },
 				{
-					registerError: error.data.registerError,
-					registerErrorMessage: error.data.registerErrorMessage
+					registerError: action.registerError,
+					registerErrorMessage: action.registerErrorMessage
 				}
 			);
-		case LOGOUT_USER:
+		}
+		case LOGOUT_USER: {
 			return Object.assign(
 				{},
 				{ ...state },
 				{
 					isFetching: false,
 					isAuthenticated: false,
-					loginError: false,
-					errorMessage: null,
 					id: null,
 					firstName: null,
 					lastName: null,
@@ -90,8 +102,10 @@ function userReducer(state = initialState, action) {
 					token: null
 				}
 			);
-		default:
+		}
+		default: {
 			return state;
+		}
 	}
 }
 

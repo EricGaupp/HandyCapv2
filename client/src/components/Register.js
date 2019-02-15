@@ -1,8 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { registerUser } from "../actions/userActions";
 import { Link, Redirect } from "react-router-dom";
-
-import axios from "axios";
 
 import "Register.css";
 
@@ -16,7 +15,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		register: dispatch(registerUser)
+		register: (email, password, firstName, lastName) =>
+			dispatch(registerUser(email, password, firstName, lastName))
 	};
 };
 
@@ -52,28 +52,6 @@ class Register extends React.Component {
 		const { email, password, firstName, lastName } = this.state;
 		//Dispatch register action to redux
 		this.props.register(email, password, firstName, lastName);
-		/*
-		axios
-			.post("/user/register", { email, password, firstName, lastName })
-			.then(response => {
-				//Display error messages to user if any
-				if (response.data.registerError) {
-					this.setState({
-						registerError: true,
-						errorMessage: response.data.errorMessage
-					});
-				}
-				//On success store JWT in localStorage
-				//TODO: Update Redux state with user information
-				else {
-					localStorage.setItem("token", response.data.token);
-					this.setState({
-						registerError: false,
-						toDashboard: true
-					});
-				}
-			})
-			.catch(err => console.log(err));*/
 	};
 
 	render() {

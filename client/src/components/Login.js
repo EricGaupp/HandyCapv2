@@ -8,7 +8,7 @@ import "Login.css";
 const mapStateToProps = state => {
 	return {
 		loginError: state.user.loginError,
-		errorMessage: state.user.errorMessage,
+		errorMessage: state.user.loginErrorMessage,
 		isAuthenticated: state.user.isAuthenticated
 	};
 };
@@ -26,8 +26,7 @@ class Login extends React.Component {
 			email: "",
 			password: "",
 			loginError: false,
-			errorMessage: "",
-			toDashboard: false
+			errorMessage: ""
 		};
 	}
 
