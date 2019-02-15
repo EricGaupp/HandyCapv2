@@ -10,14 +10,25 @@ router.use((req, res, next) => {
 		authorization = authorization.split(" ");
 		const token = authorization[1];
 		//Verify JWT
-		next();
+		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+			if (err) {
+				res.json({
+					jwtError: true,
+					jwtErrorMessage: err
+				});
+			} else {
+				//Spread decoded user information onto res.locals object for use at route endpoint
+				res.locals = { ...decoded };
+				next();
+			}
+		});
 	} else {
 		res.send("no headers");
 	}
 });
 
 router.use((req, res) => {
-	res.send("headers");
+	res.json({ message: "Valid JWT", ...res.locals });
 });
 
 module.exports = router;
