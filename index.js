@@ -12,8 +12,11 @@ app.use(bodyParser.json());
 //Serve static client files from build directory
 app.use("/", express.static(path.resolve(__dirname, "./build")));
 
-//Routing
-app.use("/user", require("./routes/userRoutes.js"));
+//Public Routes for User Login Registration
+app.use("/login", require("./routes/login"));
+app.use("/register", require("./routes/register"));
+//Private Routing for authenticated users
+app.use(require("./routes/jwtVerification"));
 
 //Serve static build for any other request
 app.get("*", (req, res) => {

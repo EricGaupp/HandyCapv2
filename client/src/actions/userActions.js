@@ -60,7 +60,7 @@ export const login = (email, password) => {
 		dispatch(requestUser());
 		//Post request with credentials to authentication route
 		return axios
-			.post("/user/login", { email, password })
+			.post("/login", { email, password })
 			.then(response => {
 				//Update Redux User State with any login errors
 				if (response.data.loginError) {
@@ -80,7 +80,7 @@ export const login = (email, password) => {
 export const registerUser = (email, password, firstName, lastName) => {
 	return dispatch => {
 		return axios
-			.post("/user/register", { email, password, firstName, lastName })
+			.post("/register", { email, password, firstName, lastName })
 			.then(response => {
 				//Update Redux User State with any registration errors
 				if (response.data.registerError) {
