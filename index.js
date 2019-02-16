@@ -32,7 +32,6 @@ app.get("*", (req, res) => {
 const db = require("./config/database");
 //Requiring currently unrequired Models for sync until they are used in separate routing
 const Tee = require("./models/Tee");
-const Score = require("./models/Score");
 const Course = require("./models/Course");
 //Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions
 db.sync({ logging: false })

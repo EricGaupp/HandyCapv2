@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
 			if (err) {
 				//Send error message if JWT can't be verified
-				res.json({
+				res.status(401).json({
 					jwtError: true,
 					jwtErrorMessage: err
 				});
@@ -26,7 +26,7 @@ router.use((req, res, next) => {
 		});
 	} else {
 		//Send error response if no authorization headers in request
-		res.send("no headers");
+		res.sendStatus(401);
 	}
 });
 

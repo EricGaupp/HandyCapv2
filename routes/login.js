@@ -9,7 +9,6 @@ const saltRounds = 10;
 
 //Login route
 router.post("/", (req, res) => {
-	console.log("hitting login post route");
 	const { email, password } = req.body;
 	//Search for existing user by unique email address
 	User.findOne({ where: { email: email } })

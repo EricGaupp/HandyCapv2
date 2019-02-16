@@ -1,6 +1,8 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
+import Scores from "./Scores";
+
 const DashboardContent = props => {
 	return (
 		<div className="col ml-auto">
@@ -15,9 +17,7 @@ const DashboardContent = props => {
 				<Route
 					exact
 					path={`${props.match.url}/scores`}
-					render={() => {
-						return <h1>Scores</h1>;
-					}}
+					component={Scores}
 				/>
 				<Route
 					exact
