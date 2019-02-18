@@ -30,7 +30,4 @@ const Tee = db.define("tee", {
 	}
 });
 
-const Score = require("./Score");
-Tee.hasMany(Score);
-
 module.exports = Tee;

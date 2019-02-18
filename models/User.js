@@ -26,7 +26,4 @@ const User = db.define("user", {
 	}
 });
 
-const Score = require("./Score");
-User.hasMany(Score);
-
 module.exports = User;

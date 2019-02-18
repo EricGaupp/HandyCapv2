@@ -2,6 +2,10 @@ const Sequelize = require("sequelize");
 const db = require("../config/database");
 
 const Score = db.define("score", {
+	date: {
+		type: Sequelize.DATEONLY,
+		allowNull: false
+	},
 	gross: {
 		type: Sequelize.TINYINT.UNSIGNED,
 		allowNull: false
@@ -16,7 +20,7 @@ const Score = db.define("score", {
 		defaultValue: 0
 	},
 	net: {
-		type: Sequelize.STRING,
+		type: Sequelize.TINYINT.UNSIGNED,
 		allowNull: false
 	}
 });

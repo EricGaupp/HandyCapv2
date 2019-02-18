@@ -62,12 +62,14 @@ export const login = (email, password) => {
 		return axios
 			.post("/login", { email, password })
 			.then(response => {
+				console.log(response.data.scores);
 				//Update Redux User State with any login errors
 				if (response.data.loginError) {
 					dispatch(loginError(response));
 				} else {
 					//Update Redux User State on successful login
 					dispatch(setUser(response));
+					//TODO Lookup scores for user with another AJAX call or put that logic in express /login POST route
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}

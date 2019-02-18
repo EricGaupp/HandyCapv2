@@ -29,12 +29,23 @@ app.get("*", (req, res) => {
 // 	.then(() => console.log("Connected to Database"))
 // 	.catch(err => console.log(err));
 
+//Database Configuration
 const db = require("./config/database");
-//Requiring currently unrequired Models for sync until they are used in separate routing
+//Model Definitions
+const User = require("./models/User");
 const Tee = require("./models/Tee");
+const Score = require("./models/Score");
 const Course = require("./models/Course");
+//Model Associations
+User.hasMany(Score);
+Score.belongsTo(User);
+Tee.hasMany(Score);
+Score.belongsTo(Tee);
+Tee.belongsTo(Course);
+Course.hasMany(Tee);
+
 //Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions
-db.sync({ logging: false })
+db.sync({ match: /_dev$/, logging: false })
 	.then(() => {
 		console.log("Connecting to dev DB, dropping and creating tables");
 	})
