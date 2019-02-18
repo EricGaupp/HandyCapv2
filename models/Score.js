@@ -23,6 +23,7 @@ const Score = db.define("score", {
 		type: Sequelize.TINYINT.UNSIGNED,
 		allowNull: false
 	}
+	//Differential?
 });
 
 module.exports = Score;

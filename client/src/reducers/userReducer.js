@@ -4,7 +4,8 @@ import {
 	FETCH_USER_FAILURE,
 	REGISTER_USER_FAILURE,
 	REGISTER_USER_SUCCESS,
-	LOGOUT_USER
+	LOGOUT_USER,
+	SET_TOKEN
 } from "../actions/userActions";
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
 	firstName: null,
 	lastName: null,
 	email: null,
-	token: null
+	token: null,
+	scores: []
 };
 
 function userReducer(state = initialState, action) {
@@ -41,6 +43,7 @@ function userReducer(state = initialState, action) {
 					firstName: action.firstName,
 					lastName: action.lastName,
 					email: action.email,
+					scores: action.scores,
 					isFetching: false
 				}
 			);
@@ -55,6 +58,9 @@ function userReducer(state = initialState, action) {
 					loginErrorMessage: action.errorMessage
 				}
 			);
+		}
+		case SET_TOKEN: {
+			return Object.assign({}, { ...state }, { token: action.token });
 		}
 		case REGISTER_USER_SUCCESS: {
 			//Remove any error state objects from User state on success
@@ -99,7 +105,8 @@ function userReducer(state = initialState, action) {
 					firstName: null,
 					lastName: null,
 					email: null,
-					token: null
+					token: null,
+					scores: []
 				}
 			);
 		}

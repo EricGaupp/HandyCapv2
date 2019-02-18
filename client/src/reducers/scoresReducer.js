@@ -2,7 +2,7 @@ import {
 	FETCH_SCORES_REQUEST,
 	FETCH_SCORES_SUCCESS,
 	FETCH_SCORES_FAILURE
-} from "../actions/scoreActions";
+} from "../actions/courseActions";
 
 const initialState = { isFetching: false, data: [] };
 

@@ -5,6 +5,9 @@ export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAILURE = "FETCH_USER_FAILURE";
 
+//Token Action Types
+export const SET_TOKEN = "SET_TOKEN";
+
 //Register Action Types
 export const REGISTER_USER_FAILURE = "REGISTER_USER_FAILURE";
 export const REGISTER_USER_SUCCESS = "REGISTER_USER_SUCCESS";
@@ -23,13 +26,20 @@ export const setUser = res => ({
 	firstName: res.data.firstName,
 	lastName: res.data.lastName,
 	email: res.data.email,
-	token: res.data.token
+	token: res.data.token,
+	scores: res.data.scores
 });
 
 export const loginError = error => ({
 	type: FETCH_USER_FAILURE,
 	loginError: error.data.loginError,
 	errorMessage: error.data.errorMessage
+});
+
+//JWT Set Token Action Creator
+export const setToken = token => ({
+	type: SET_TOKEN,
+	token: token
 });
 
 //Register Action Creator
@@ -62,14 +72,12 @@ export const login = (email, password) => {
 		return axios
 			.post("/login", { email, password })
 			.then(response => {
-				console.log(response.data.scores);
 				//Update Redux User State with any login errors
 				if (response.data.loginError) {
 					dispatch(loginError(response));
 				} else {
 					//Update Redux User State on successful login
 					dispatch(setUser(response));
-					//TODO Lookup scores for user with another AJAX call or put that logic in express /login POST route
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}

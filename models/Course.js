@@ -11,6 +11,7 @@ const Course = db.define("course", {
 		allowNull: false
 	},
 	state: {
+		//Convert to ENUM type to choose from an array of states
 		type: Sequelize.STRING,
 		allowNull: false
 	}
