@@ -20,26 +20,67 @@ const mapDispatchToProps = dispatch => {
 class DashboardAddScore extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { options: [] };
+		this.state = {
+			courseOptions: [],
+			teeOptions: [],
+			selectedCourseId: null,
+			selectedTeeId: null
+		};
 	}
 
-	handleSelectChange = e => {
-		this.setState({ stateSelectValue: e.target.value });
+	handleCourseChange = (option, option2, option3) => {
+		console.log(option, option2, option3);
+		if (option) {
+			//Isolate the course from redux course list via the courseId
+			const courseArray = this.props.courses.filter(course => {
+				return course.id === option.value;
+			});
+			//Pull course from array into a new object
+			const course = Object.assign({}, courseArray[0]);
+			//Map Tees options
+			const teeOptions = course.tees.map(tee => {
+				return Object.assign({}, { value: tee.id, label: tee.name });
+			});
+			//Save to local state for React-Select Component
+			this.setState({
+				selectedCourseId: option.value,
+				teeOptions: teeOptions
+			});
+		} else {
+			//If select form is cleared set id values and options to null
+			this.setState({
+				selectedCourseId: null,
+				selectedTeeId: null,
+				teeOptions: null
+			});
+		}
+	};
+
+	handleTeeChange = option => {
+		this.setState({ selectedTeeId: option.value });
 	};
 
 	componentDidMount() {
+		//Fetch Courses via API and store in Redux when component mounts
 		this.props.fetchCourses();
 	}
 
 	componentDidUpdate(prevProps) {
+		//Check when courses prop from Redux updates
 		if (this.props.courses !== prevProps.courses) {
-			const options = this.props.courses.map(course => {
+			//Map the course data to an options object for React-Select
+			const courseOptions = this.props.courses.map(course => {
 				return Object.assign(
 					{},
-					{ value: course.id, label: course.name }
+					{
+						value: course.id,
+						label: `${course.name} - ${course.city}, ${
+							course.state
+						}`
+					}
 				);
 			});
-			this.setState({ options: options });
+			this.setState({ courseOptions: courseOptions });
 		}
 	}
 
@@ -55,9 +96,21 @@ class DashboardAddScore extends React.Component {
 						<Select
 							id="courseNameSearch"
 							placeholder="Pebble Beach..."
-							options={this.state.options}
+							options={this.state.courseOptions}
+							isClearable={true}
+							onChange={this.handleCourseChange}
 						/>
 					</div>
+					{this.state.selectedCourseId && (
+						<div className="form-group">
+							<label htmlFor="teeSelect">Tees</label>
+							<Select
+								id="teeSelect"
+								options={this.state.teeOptions}
+								onChange={this.handleTeeChange}
+							/>
+						</div>
+					)}
 				</form>
 				<p className="text-center">
 					Don't see your course listed? Add one{" "}
