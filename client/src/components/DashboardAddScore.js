@@ -28,8 +28,7 @@ class DashboardAddScore extends React.Component {
 		};
 	}
 
-	handleCourseChange = (option, option2, option3) => {
-		console.log(option, option2, option3);
+	handleCourseChange = option => {
 		if (option) {
 			//Isolate the course from redux course list via the courseId
 			const courseArray = this.props.courses.filter(course => {
@@ -44,6 +43,7 @@ class DashboardAddScore extends React.Component {
 			//Save to local state for React-Select Component
 			this.setState({
 				selectedCourseId: option.value,
+				selectedTeeId: teeOptions[0].value,
 				teeOptions: teeOptions
 			});
 		} else {
@@ -95,6 +95,7 @@ class DashboardAddScore extends React.Component {
 						</label>
 						<Select
 							id="courseNameSearch"
+							autoFocus={true}
 							placeholder="Pebble Beach..."
 							options={this.state.courseOptions}
 							isClearable={true}
@@ -106,6 +107,7 @@ class DashboardAddScore extends React.Component {
 							<label htmlFor="teeSelect">Tees</label>
 							<Select
 								id="teeSelect"
+								value={this.state.teeOptions[0]}
 								options={this.state.teeOptions}
 								onChange={this.handleTeeChange}
 							/>
