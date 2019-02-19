@@ -8,8 +8,8 @@ const Tee = require("../models/Tee");
 router.get("/courses", (req, res) => {
 	Course.findAll({
 		include: [Tee],
-		//Order in descending course rating
-		order: [[{ model: Tee }, "rating", "DESC"]]
+		//Order by alphabetical course name then by descending course rating
+		order: ["name", [{ model: Tee }, "rating", "DESC"]]
 	})
 		.then(results => {
 			res.json(results);
