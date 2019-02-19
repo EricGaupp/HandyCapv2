@@ -24,13 +24,15 @@ class DashboardAddScore extends React.Component {
 			courseOptions: [],
 			teeOptions: [],
 			selectedCourseId: null,
-			selectedTeeId: null
+			selectedTeeId: null,
+			selectedTee: null,
+			selectedCourse: null
 		};
 	}
 
 	handleCourseChange = option => {
 		if (option) {
-			//Isolate the course from redux course list via the courseId
+			//Isolate the selected course from redux course list by matching the courseId
 			const courseArray = this.props.courses.filter(course => {
 				return course.id === option.value;
 			});
@@ -42,22 +44,26 @@ class DashboardAddScore extends React.Component {
 			});
 			//Save to local state for React-Select Component
 			this.setState({
+				selectedCourse: option,
 				selectedCourseId: option.value,
+				selectedTee: teeOptions[0],
 				selectedTeeId: teeOptions[0].value,
 				teeOptions: teeOptions
 			});
 		} else {
 			//If select form is cleared set id values and options to null
 			this.setState({
+				selectedCourse: null,
 				selectedCourseId: null,
+				selectedTee: null,
 				selectedTeeId: null,
-				teeOptions: null
+				teeOptions: []
 			});
 		}
 	};
 
 	handleTeeChange = option => {
-		this.setState({ selectedTeeId: option.value });
+		this.setState({ selectedTee: option, selectedTeeId: option.value });
 	};
 
 	componentDidMount() {
@@ -107,12 +113,13 @@ class DashboardAddScore extends React.Component {
 							<label htmlFor="teeSelect">Tees</label>
 							<Select
 								id="teeSelect"
-								value={this.state.teeOptions[0]}
+								value={this.state.selectedTee}
 								options={this.state.teeOptions}
 								onChange={this.handleTeeChange}
 							/>
 						</div>
 					)}
+					{this.state.selectedTeeId && <p>Rest of form goes here</p>}
 				</form>
 				<p className="text-center">
 					Don't see your course listed? Add one{" "}

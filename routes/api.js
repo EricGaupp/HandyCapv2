@@ -7,9 +7,9 @@ const Tee = require("../models/Tee");
 //Route to get all courses and associated sets of tees
 router.get("/courses", (req, res) => {
 	Course.findAll({
-		include: [Tee]
+		include: [Tee],
 		//Order in descending course rating
-		//order: [[{ model: Tee }, "rating", "DESC"]]
+		order: [[{ model: Tee }, "rating", "DESC"]]
 	})
 		.then(results => {
 			res.json(results);
