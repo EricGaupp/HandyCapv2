@@ -1,16 +1,16 @@
 import {
-	FETCH_SCORES_REQUEST,
-	FETCH_SCORES_SUCCESS,
-	FETCH_SCORES_FAILURE
-} from "../actions/courseActions";
+	FETCH_COURSES_REQUEST,
+	FETCH_COURSES_SUCCESS,
+	FETCH_COURSES_FAILURE
+} from "../actions/coursesActions";
 
 const initialState = { isFetching: false, data: [] };
 
-function scoresReducer(state = initialState, action) {
+function coursesReducer(state = initialState, action) {
 	switch (action.type) {
-		case FETCH_SCORES_REQUEST:
+		case FETCH_COURSES_REQUEST:
 			return Object.assign({}, { ...state }, { isFetching: true });
-		case FETCH_SCORES_SUCCESS:
+		case FETCH_COURSES_SUCCESS:
 			return Object.assign(
 				{},
 				{ ...state },
@@ -19,7 +19,7 @@ function scoresReducer(state = initialState, action) {
 					data: action.data
 				}
 			);
-		case FETCH_SCORES_FAILURE:
+		case FETCH_COURSES_FAILURE:
 			return Object.assign(
 				{},
 				{ ...state },
@@ -33,4 +33,4 @@ function scoresReducer(state = initialState, action) {
 	}
 }
 
-export default scoresReducer;
+export default coursesReducer;

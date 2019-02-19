@@ -16,6 +16,7 @@ app.use("/", express.static(path.resolve(__dirname, "./build")));
 app.use("/login", require("./routes/login"));
 app.use("/register", require("./routes/register"));
 //Routes to get Course and Tee data for adding scores (not protected)
+app.use("/api", require("./routes/api"));
 //BONUS add some /api routes to get data via a different client as long as personal user info isn't exposed. Use url query strings/params
 //Middleware to authenticate users via JWT
 app.use(require("./routes/jwtVerification"));

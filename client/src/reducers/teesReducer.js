@@ -2,7 +2,7 @@ import {
 	FETCH_TEES_REQUEST,
 	FETCH_TEES_SUCCESS,
 	FETCH_TEES_FAILURE
-} from "../actions/teeActions";
+} from "../actions/teesActions";
 
 const initialState = { isFetching: false, data: [] };
 

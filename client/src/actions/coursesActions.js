@@ -20,17 +20,14 @@ export const requestCoursesError = error => ({
 	error: error
 });
 
-//Thunk for fetching all user associated scores
+//Thunk for fetching all courses
 export function fetchCourses() {
 	return function(dispatch) {
 		//Update isFetching scores state
 		dispatch(requestCourses());
-		return (
-			axios
-				//See if there is a method for setting authorization headers globally if token is available
-				.get("/api/courses")
-				.then(response => dispatch(receivedScores(response)))
-				.catch(error => dispatch(requestScoresError(error)))
-		);
+		return axios
+			.get("/api/courses")
+			.then(response => dispatch(receivedCourses(response)))
+			.catch(error => dispatch(requestCoursesError(error)));
 	};
 }
