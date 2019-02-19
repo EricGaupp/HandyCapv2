@@ -26,7 +26,12 @@ class DashboardAddScore extends React.Component {
 			selectedCourseId: null,
 			selectedTeeId: null,
 			selectedTee: null,
-			selectedCourse: null
+			selectedCourse: null,
+			gross: "",
+			adjustedGross: "",
+			courseHandicap: "",
+			net: "",
+			differential: ""
 		};
 	}
 
@@ -40,7 +45,15 @@ class DashboardAddScore extends React.Component {
 			const course = Object.assign({}, courseArray[0]);
 			//Map Tees options
 			const teeOptions = course.tees.map(tee => {
-				return Object.assign({}, { value: tee.id, label: tee.name });
+				return Object.assign(
+					{},
+					{
+						value: tee.id,
+						label: `${tee.name} - ${tee.yardage} yds, rating: ${
+							tee.rating
+						}, slope: ${tee.slope}`
+					}
+				);
 			});
 			//Save to local state for React-Select Component
 			this.setState({
@@ -64,6 +77,18 @@ class DashboardAddScore extends React.Component {
 
 	handleTeeChange = option => {
 		this.setState({ selectedTee: option, selectedTeeId: option.value });
+	};
+
+	handleGrossChange = e => {
+		this.setState({ gross: e.target.value });
+	};
+
+	handleAdjustedGrossChange = e => {
+		this.setState({ adjustedGross: e.target.value });
+	};
+
+	handleCourseHandicapChange = e => {
+		this.setState({ courseHandicap: e.target.value });
 	};
 
 	componentDidMount() {
@@ -119,7 +144,94 @@ class DashboardAddScore extends React.Component {
 							/>
 						</div>
 					)}
-					{this.state.selectedTeeId && <p>Rest of form goes here</p>}
+					{this.state.selectedTeeId && (
+						<React.Fragment>
+							<div className="form-group row">
+								<label
+									className="col-sm-3 col-form-label"
+									htmlFor="gross"
+								>
+									Gross
+								</label>
+								<div className="col-sm-3">
+									<input
+										className="form-control"
+										id="gross"
+										value={this.state.gross}
+										onChange={this.handleGrossChange}
+									/>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label
+									className="col-sm-3 col-form-label"
+									htmlFor="adjustedGross"
+								>
+									Adjusted Gross (if known)
+								</label>
+								<div className="col-sm-3">
+									<input
+										className="form-control"
+										id="adjustedGross"
+										value={this.state.adjustedGross}
+										onChange={
+											this.handleAdjustedGrossChange
+										}
+									/>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label
+									className="col-sm-3 col-form-label"
+									htmlFor="courseHandicap"
+								>
+									Course Handicap
+								</label>
+								<div className="col-sm-3">
+									<input
+										className="form-control"
+										id="courseHandicap"
+										value={this.state.courseHandicap}
+										onChange={
+											this.handleCourseHandicapChange
+										}
+									/>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label
+									className="col-sm-3 col-form-label"
+									htmlFor="net"
+								>
+									Net
+								</label>
+								<div className="col-sm-3">
+									<input
+										className="form-control"
+										id="net"
+										value={this.state.net}
+										readOnly
+									/>
+								</div>
+							</div>
+							<div className="form-group row">
+								<label
+									className="col-sm-3 col-form-label"
+									htmlFor="differential"
+								>
+									Differential
+								</label>
+								<div className="col-sm-3">
+									<input
+										className="form-control"
+										id="differential"
+										value={this.state.differential}
+										readOnly
+									/>
+								</div>
+							</div>
+						</React.Fragment>
+					)}
 				</form>
 				<p className="text-center">
 					Don't see your course listed? Add one{" "}

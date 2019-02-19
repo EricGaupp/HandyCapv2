@@ -11,7 +11,9 @@ router.get("/", (req, res) => {
 		.catch(error => console.log(error));
 });
 
-router.post("/add", (req, res) => {
+router.post("/add/score", (req, res) => {
+	console.log(res.locals);
+	// Score.create({});
 	res.json({ ...req.body, ...res.locals });
 });
 
