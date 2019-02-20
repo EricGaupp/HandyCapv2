@@ -38,6 +38,7 @@ class DashboardAddScore extends React.Component {
 			selectedTeeId: null,
 			selectedTee: null,
 			selectedCourse: null,
+			date: "",
 			gross: "",
 			adjustedGross: "",
 			courseHandicap: "",
@@ -101,16 +102,32 @@ class DashboardAddScore extends React.Component {
 		});
 	};
 
-	handleGrossChange = e => {
-		this.setState({ gross: e.target.value });
+	calculateNet = () => {
+		const { gross, adjustedGross, courseHandicap } = this.state;
+		this.setState({ net: gross - courseHandicap });
 	};
 
-	handleAdjustedGrossChange = e => {
-		this.setState({ adjustedGross: e.target.value });
+	calculateDifferential = () => {
+		const { gross, adjustedGross } = this.state;
+		const { rating, slope } = this.state.teeDetails;
+		if (adjustedGross) {
+			const differential = ((adjustedGross - rating) * 113) / slope;
+			this.setState({ differential });
+		} else {
+			const differential = ((gross - rating) * 113) / slope;
+			this.setState({ differential });
+		}
 	};
 
-	handleCourseHandicapChange = e => {
-		this.setState({ courseHandicap: e.target.value });
+	handleDateChange = e => {
+		this.setState({ date: e.target.value });
+	};
+
+	handleInputChange = e => {
+		this.setState({ [e.target.id]: parseInt(e.target.value) }, () => {
+			this.calculateNet();
+			this.calculateDifferential();
+		});
 	};
 
 	handleSubmit = e => {
@@ -118,27 +135,27 @@ class DashboardAddScore extends React.Component {
 		const {
 			selectedCourseId,
 			selectedTeeId,
+			date,
 			gross,
 			adjustedGross,
 			courseHandicap,
-			differential
+			differential,
+			net
 		} = this.state;
-		const data = Object.assign(
-			{},
-			{
-				selectedCourseId,
-				selectedTeeId,
-				gross,
-				adjustedGross,
-				courseHandicap,
-				differential
-			}
-		);
 		//Axios POST request to /scores/add
 		axios
 			.post(
 				"/scores/add",
-				{ data },
+				{
+					selectedCourseId,
+					selectedTeeId,
+					date,
+					gross,
+					adjustedGross,
+					courseHandicap,
+					net,
+					differential
+				},
 				{ headers: { Authorization: `Bearer ${this.props.token}` } }
 			)
 			.then(response => {
@@ -147,7 +164,6 @@ class DashboardAddScore extends React.Component {
 				//this.setState({ redirect: true });
 			})
 			.catch(error => console.log(error));
-		//this.setState({ redirect: true });
 	};
 
 	componentDidMount() {
@@ -175,9 +191,8 @@ class DashboardAddScore extends React.Component {
 	}
 
 	render() {
-		{
-			if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
-		}
+		if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
+
 		return (
 			<div className="col mx-auto">
 				<h1 className="text-center">Post A Score</h1>
@@ -235,6 +250,25 @@ class DashboardAddScore extends React.Component {
 											<div className="form-group row">
 												<label
 													className="col-sm-6 col-form-label"
+													htmlFor="date"
+												>
+													Date
+												</label>
+												<div className="col-sm-6">
+													<input
+														type="date"
+														className="form-control"
+														id="date"
+														onChange={
+															this
+																.handleDateChange
+														}
+													/>
+												</div>
+											</div>
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
 													htmlFor="gross"
 												>
 													Gross
@@ -243,10 +277,11 @@ class DashboardAddScore extends React.Component {
 													<input
 														className="form-control"
 														id="gross"
+														type="number"
 														value={this.state.gross}
 														onChange={
 															this
-																.handleGrossChange
+																.handleInputChange
 														}
 													/>
 												</div>
@@ -262,13 +297,14 @@ class DashboardAddScore extends React.Component {
 													<input
 														className="form-control"
 														id="adjustedGross"
+														type="number"
 														value={
 															this.state
 																.adjustedGross
 														}
 														onChange={
 															this
-																.handleAdjustedGrossChange
+																.handleInputChange
 														}
 													/>
 												</div>
@@ -284,13 +320,14 @@ class DashboardAddScore extends React.Component {
 													<input
 														className="form-control"
 														id="courseHandicap"
+														type="number"
 														value={
 															this.state
 																.courseHandicap
 														}
 														onChange={
 															this
-																.handleCourseHandicapChange
+																.handleInputChange
 														}
 													/>
 												</div>
