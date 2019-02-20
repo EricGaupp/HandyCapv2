@@ -11,10 +11,10 @@ router.get("/", (req, res) => {
 		.catch(error => console.log(error));
 });
 
-router.post("/add/score", (req, res) => {
-	console.log(res.locals);
+router.post("/add", (req, res) => {
+	console.log(req.body, res.locals);
 	// Score.create({});
-	res.json({ ...req.body, ...res.locals });
+	res.json({ message: "received" });
 });
 
 module.exports = router;

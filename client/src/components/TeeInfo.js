@@ -1,7 +1,6 @@
 import React from "react";
 
 const TeeInfo = props => {
-	console.log(props);
 	return (
 		<div className="card shadow">
 			<div className="card-header">Course Info</div>

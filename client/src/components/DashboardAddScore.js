@@ -1,15 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import Select from "react-select";
+import { Link, Redirect } from "react-router-dom";
+
+import axios from "axios";
 
 import { fetchCourses } from "../actions/coursesActions";
 
+import Select from "react-select";
 import TeeInfo from "./TeeInfo";
 
 const mapStateToProps = state => {
 	return {
-		courses: state.courses.data
+		courses: state.courses.data,
+		token: state.user.token
 	};
 };
 
@@ -23,9 +26,13 @@ class DashboardAddScore extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			//Object with all course and associated tee data
 			courseDetails: null,
+			//List of mapped course {value, label} objects for react-select Select component
 			courseOptions: [],
+			//Object with all tee data for currently selected tee
 			teeDetails: null,
+			//List of mapped tee {value, label} objects for react-select Select component
 			teeOptions: [],
 			selectedCourseId: null,
 			selectedTeeId: null,
@@ -35,37 +42,33 @@ class DashboardAddScore extends React.Component {
 			adjustedGross: "",
 			courseHandicap: "",
 			net: "",
-			differential: ""
+			differential: "",
+			redirect: false
 		};
 	}
 
 	handleCourseChange = option => {
 		if (option) {
 			//Isolate the selected course from redux course list by matching the courseId
-			const courseArray = this.props.courses.filter(course => {
+			const course = this.props.courses.filter(course => {
 				return course.id === option.value;
-			});
-			//Pull course from array into a new object
-			const course = Object.assign({}, courseArray[0]);
+			})[0];
 			//Map Tees options
 			const teeOptions = course.tees.map(tee => {
 				return Object.assign(
 					{},
 					{
 						value: tee.id,
-						label: `${tee.name} - ${tee.yardage} yds, rating: ${
-							tee.rating
-						}, slope: ${tee.slope}`
+						label: tee.name
 					}
 				);
 			});
-			const defaultTeeDetails = course.tees.map(tee => {
-				return Object.assign({}, { tee });
-			})[0];
-			//Save to local state for React-Select Component
+			//Initially select the first set of tees (Ordered by descending rating from sequelize query)
+			const teeDetails = course.tees[0];
+			//Save to local state for react-select Select and TeeInfo Components
 			this.setState({
 				courseDetails: course,
-				teeDetails: defaultTeeDetails,
+				teeDetails: teeDetails,
 				selectedCourse: option,
 				selectedCourseId: option.value,
 				selectedTee: teeOptions[0],
@@ -73,9 +76,10 @@ class DashboardAddScore extends React.Component {
 				teeOptions: teeOptions
 			});
 		} else {
-			//If select form is cleared set id values and options to null
+			//If select form is cleared set state details, id values and options to null
 			this.setState({
 				courseDetails: null,
+				teeDetails: null,
 				selectedCourse: null,
 				selectedCourseId: null,
 				selectedTee: null,
@@ -86,7 +90,15 @@ class DashboardAddScore extends React.Component {
 	};
 
 	handleTeeChange = option => {
-		this.setState({ selectedTee: option, selectedTeeId: option.value });
+		//Find tee details from Course details via matching Id and save to local state to display in react-select and TeeInfo components
+		const teeDetails = this.state.courseDetails.tees.filter(
+			tee => tee.id === option.value
+		)[0];
+		this.setState({
+			selectedTee: option,
+			selectedTeeId: option.value,
+			teeDetails: teeDetails
+		});
 	};
 
 	handleGrossChange = e => {
@@ -99,6 +111,43 @@ class DashboardAddScore extends React.Component {
 
 	handleCourseHandicapChange = e => {
 		this.setState({ courseHandicap: e.target.value });
+	};
+
+	handleSubmit = e => {
+		e.preventDefault();
+		const {
+			selectedCourseId,
+			selectedTeeId,
+			gross,
+			adjustedGross,
+			courseHandicap,
+			differential
+		} = this.state;
+		const data = Object.assign(
+			{},
+			{
+				selectedCourseId,
+				selectedTeeId,
+				gross,
+				adjustedGross,
+				courseHandicap,
+				differential
+			}
+		);
+		//Axios POST request to /scores/add
+		axios
+			.post(
+				"/scores/add",
+				{ data },
+				{ headers: { Authorization: `Bearer ${this.props.token}` } }
+			)
+			.then(response => {
+				console.log(response);
+				//On success Redirect to dashboard home
+				//this.setState({ redirect: true });
+			})
+			.catch(error => console.log(error));
+		//this.setState({ redirect: true });
 	};
 
 	componentDidMount() {
@@ -126,6 +175,9 @@ class DashboardAddScore extends React.Component {
 	}
 
 	render() {
+		{
+			if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
+		}
 		return (
 			<div className="col mx-auto">
 				<h1 className="text-center">Post A Score</h1>
@@ -149,6 +201,7 @@ class DashboardAddScore extends React.Component {
 								<label htmlFor="teeSelect">Tees</label>
 								<Select
 									id="teeSelect"
+									isSearchable={false}
 									value={this.state.selectedTee}
 									options={this.state.teeOptions}
 									onChange={this.handleTeeChange}
@@ -157,7 +210,6 @@ class DashboardAddScore extends React.Component {
 							<div className="row">
 								<div className="col-sm-6">
 									<TeeInfo
-										test="hello"
 										courseName={
 											this.state.courseDetails.name
 										}
@@ -167,106 +219,124 @@ class DashboardAddScore extends React.Component {
 										courseState={
 											this.state.courseDetails.state
 										}
-										teeName={this.state.teeDetails.tee.name}
-										par={this.state.teeDetails.tee.par}
-										yardage={
-											this.state.teeDetails.tee.yardage
-										}
-										rating={
-											this.state.teeDetails.tee.rating
-										}
-										slope={this.state.teeDetails.tee.slope}
+										teeName={this.state.teeDetails.name}
+										par={this.state.teeDetails.par}
+										yardage={this.state.teeDetails.yardage}
+										rating={this.state.teeDetails.rating}
+										slope={this.state.teeDetails.slope}
 									/>
 								</div>
 								<div className="col-sm-6">
-									<div className="form-group row">
-										<label
-											className="col-sm-6 col-form-label"
-											htmlFor="gross"
-										>
-											Gross
-										</label>
-										<div className="col-sm-6">
-											<input
-												className="form-control"
-												id="gross"
-												value={this.state.gross}
-												onChange={
-													this.handleGrossChange
-												}
-											/>
+									<div className="card shadow">
+										<div className="card-header">
+											Scoring Input
 										</div>
-									</div>
-									<div className="form-group row">
-										<label
-											className="col-sm-3 col-form-label"
-											htmlFor="adjustedGross"
-										>
-											Adjusted Gross (if known)
-										</label>
-										<div className="col-sm-3">
-											<input
-												className="form-control"
-												id="adjustedGross"
-												value={this.state.adjustedGross}
-												onChange={
-													this
-														.handleAdjustedGrossChange
-												}
-											/>
-										</div>
-									</div>
-									<div className="form-group row">
-										<label
-											className="col-sm-3 col-form-label"
-											htmlFor="courseHandicap"
-										>
-											Course Handicap
-										</label>
-										<div className="col-sm-3">
-											<input
-												className="form-control"
-												id="courseHandicap"
-												value={
-													this.state.courseHandicap
-												}
-												onChange={
-													this
-														.handleCourseHandicapChange
-												}
-											/>
-										</div>
-									</div>
-									<div className="form-group row">
-										<label
-											className="col-sm-3 col-form-label"
-											htmlFor="net"
-										>
-											Net
-										</label>
-										<div className="col-sm-3">
-											<input
-												className="form-control"
-												id="net"
-												value={this.state.net}
-												readOnly
-											/>
-										</div>
-									</div>
-									<div className="form-group row">
-										<label
-											className="col-sm-3 col-form-label"
-											htmlFor="differential"
-										>
-											Differential
-										</label>
-										<div className="col-sm-3">
-											<input
-												className="form-control"
-												id="differential"
-												value={this.state.differential}
-												readOnly
-											/>
+										<div className="card-body">
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
+													htmlFor="gross"
+												>
+													Gross
+												</label>
+												<div className="col-sm-6">
+													<input
+														className="form-control"
+														id="gross"
+														value={this.state.gross}
+														onChange={
+															this
+																.handleGrossChange
+														}
+													/>
+												</div>
+											</div>
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
+													htmlFor="adjustedGross"
+												>
+													Adjusted Gross (if known)
+												</label>
+												<div className="col-sm-6">
+													<input
+														className="form-control"
+														id="adjustedGross"
+														value={
+															this.state
+																.adjustedGross
+														}
+														onChange={
+															this
+																.handleAdjustedGrossChange
+														}
+													/>
+												</div>
+											</div>
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
+													htmlFor="courseHandicap"
+												>
+													Course Handicap
+												</label>
+												<div className="col-sm-6">
+													<input
+														className="form-control"
+														id="courseHandicap"
+														value={
+															this.state
+																.courseHandicap
+														}
+														onChange={
+															this
+																.handleCourseHandicapChange
+														}
+													/>
+												</div>
+											</div>
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
+													htmlFor="net"
+												>
+													Net
+												</label>
+												<div className="col-sm-6">
+													<input
+														className="form-control"
+														id="net"
+														value={this.state.net}
+														readOnly
+													/>
+												</div>
+											</div>
+											<div className="form-group row">
+												<label
+													className="col-sm-6 col-form-label"
+													htmlFor="differential"
+												>
+													Differential
+												</label>
+												<div className="col-sm-6">
+													<input
+														className="form-control"
+														id="differential"
+														value={
+															this.state
+																.differential
+														}
+														readOnly
+													/>
+												</div>
+											</div>
+											<button
+												type="submit"
+												className="btn btn-primary btn-block"
+												onClick={this.handleSubmit}
+											>
+												Submit
+											</button>
 										</div>
 									</div>
 								</div>
