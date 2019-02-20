@@ -5,6 +5,8 @@ import Select from "react-select";
 
 import { fetchCourses } from "../actions/coursesActions";
 
+import TeeInfo from "./TeeInfo";
+
 const mapStateToProps = state => {
 	return {
 		courses: state.courses.data
@@ -21,7 +23,9 @@ class DashboardAddScore extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			courseDetails: null,
 			courseOptions: [],
+			teeDetails: null,
 			teeOptions: [],
 			selectedCourseId: null,
 			selectedTeeId: null,
@@ -55,8 +59,13 @@ class DashboardAddScore extends React.Component {
 					}
 				);
 			});
+			const defaultTeeDetails = course.tees.map(tee => {
+				return Object.assign({}, { tee });
+			})[0];
 			//Save to local state for React-Select Component
 			this.setState({
+				courseDetails: course,
+				teeDetails: defaultTeeDetails,
 				selectedCourse: option,
 				selectedCourseId: option.value,
 				selectedTee: teeOptions[0],
@@ -66,6 +75,7 @@ class DashboardAddScore extends React.Component {
 		} else {
 			//If select form is cleared set id values and options to null
 			this.setState({
+				courseDetails: null,
 				selectedCourse: null,
 				selectedCourseId: null,
 				selectedTee: null,
@@ -134,100 +144,131 @@ class DashboardAddScore extends React.Component {
 						/>
 					</div>
 					{this.state.selectedCourseId && (
-						<div className="form-group">
-							<label htmlFor="teeSelect">Tees</label>
-							<Select
-								id="teeSelect"
-								value={this.state.selectedTee}
-								options={this.state.teeOptions}
-								onChange={this.handleTeeChange}
-							/>
-						</div>
-					)}
-					{this.state.selectedTeeId && (
 						<React.Fragment>
-							<div className="form-group row">
-								<label
-									className="col-sm-3 col-form-label"
-									htmlFor="gross"
-								>
-									Gross
-								</label>
-								<div className="col-sm-3">
-									<input
-										className="form-control"
-										id="gross"
-										value={this.state.gross}
-										onChange={this.handleGrossChange}
-									/>
-								</div>
+							<div className="form-group">
+								<label htmlFor="teeSelect">Tees</label>
+								<Select
+									id="teeSelect"
+									value={this.state.selectedTee}
+									options={this.state.teeOptions}
+									onChange={this.handleTeeChange}
+								/>
 							</div>
-							<div className="form-group row">
-								<label
-									className="col-sm-3 col-form-label"
-									htmlFor="adjustedGross"
-								>
-									Adjusted Gross (if known)
-								</label>
-								<div className="col-sm-3">
-									<input
-										className="form-control"
-										id="adjustedGross"
-										value={this.state.adjustedGross}
-										onChange={
-											this.handleAdjustedGrossChange
+							<div className="row">
+								<div className="col-sm-6">
+									<TeeInfo
+										test="hello"
+										courseName={
+											this.state.courseDetails.name
 										}
-									/>
-								</div>
-							</div>
-							<div className="form-group row">
-								<label
-									className="col-sm-3 col-form-label"
-									htmlFor="courseHandicap"
-								>
-									Course Handicap
-								</label>
-								<div className="col-sm-3">
-									<input
-										className="form-control"
-										id="courseHandicap"
-										value={this.state.courseHandicap}
-										onChange={
-											this.handleCourseHandicapChange
+										courseCity={
+											this.state.courseDetails.city
 										}
+										courseState={
+											this.state.courseDetails.state
+										}
+										teeName={this.state.teeDetails.tee.name}
+										par={this.state.teeDetails.tee.par}
+										yardage={
+											this.state.teeDetails.tee.yardage
+										}
+										rating={
+											this.state.teeDetails.tee.rating
+										}
+										slope={this.state.teeDetails.tee.slope}
 									/>
 								</div>
-							</div>
-							<div className="form-group row">
-								<label
-									className="col-sm-3 col-form-label"
-									htmlFor="net"
-								>
-									Net
-								</label>
-								<div className="col-sm-3">
-									<input
-										className="form-control"
-										id="net"
-										value={this.state.net}
-										readOnly
-									/>
-								</div>
-							</div>
-							<div className="form-group row">
-								<label
-									className="col-sm-3 col-form-label"
-									htmlFor="differential"
-								>
-									Differential
-								</label>
-								<div className="col-sm-3">
-									<input
-										className="form-control"
-										id="differential"
-										value={this.state.differential}
-										readOnly
-									/>
+								<div className="col-sm-6">
+									<div className="form-group row">
+										<label
+											className="col-sm-6 col-form-label"
+											htmlFor="gross"
+										>
+											Gross
+										</label>
+										<div className="col-sm-6">
+											<input
+												className="form-control"
+												id="gross"
+												value={this.state.gross}
+												onChange={
+													this.handleGrossChange
+												}
+											/>
+										</div>
+									</div>
+									<div className="form-group row">
+										<label
+											className="col-sm-3 col-form-label"
+											htmlFor="adjustedGross"
+										>
+											Adjusted Gross (if known)
+										</label>
+										<div className="col-sm-3">
+											<input
+												className="form-control"
+												id="adjustedGross"
+												value={this.state.adjustedGross}
+												onChange={
+													this
+														.handleAdjustedGrossChange
+												}
+											/>
+										</div>
+									</div>
+									<div className="form-group row">
+										<label
+											className="col-sm-3 col-form-label"
+											htmlFor="courseHandicap"
+										>
+											Course Handicap
+										</label>
+										<div className="col-sm-3">
+											<input
+												className="form-control"
+												id="courseHandicap"
+												value={
+													this.state.courseHandicap
+												}
+												onChange={
+													this
+														.handleCourseHandicapChange
+												}
+											/>
+										</div>
+									</div>
+									<div className="form-group row">
+										<label
+											className="col-sm-3 col-form-label"
+											htmlFor="net"
+										>
+											Net
+										</label>
+										<div className="col-sm-3">
+											<input
+												className="form-control"
+												id="net"
+												value={this.state.net}
+												readOnly
+											/>
+										</div>
+									</div>
+									<div className="form-group row">
+										<label
+											className="col-sm-3 col-form-label"
+											htmlFor="differential"
+										>
+											Differential
+										</label>
+										<div className="col-sm-3">
+											<input
+												className="form-control"
+												id="differential"
+												value={this.state.differential}
+												readOnly
+											/>
+										</div>
+									</div>
 								</div>
 							</div>
 						</React.Fragment>
