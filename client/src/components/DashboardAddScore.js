@@ -137,6 +137,7 @@ class DashboardAddScore extends React.Component {
 	};
 
 	handleDateChange = e => {
+		console.log(e.target.value);
 		this.setState({ date: e.target.value });
 	};
 
@@ -187,6 +188,22 @@ class DashboardAddScore extends React.Component {
 	componentDidMount() {
 		//Fetch Courses via API and store in Redux when component mounts
 		this.props.fetchCourses();
+		//Setting default date to today for datepicker input
+		{
+			const today = new Date();
+			let dd = today.getDate();
+			let mm = today.getMonth() + 1; //January is 0!
+
+			const yyyy = today.getFullYear();
+			if (dd < 10) {
+				dd = "0" + dd;
+			}
+			if (mm < 10) {
+				mm = "0" + mm;
+			}
+			const defaultDate = `${yyyy}-${mm}-${dd}`;
+			this.setState({ date: defaultDate });
+		}
 	}
 
 	componentDidUpdate(prevProps) {
@@ -277,6 +294,9 @@ class DashboardAddScore extends React.Component {
 														type="date"
 														className="form-control"
 														id="date"
+														defaultValue={
+															this.state.date
+														}
 														onChange={
 															this
 																.handleDateChange
