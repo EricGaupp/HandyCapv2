@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 const mapStateToProps = state => {
 	return {
-		scores: state.user.scores
+		scores: state.scores.data
 	};
 };
 
@@ -24,6 +24,7 @@ const DashboardScores = props => {
 						<th scope="col">Adj Gross</th>
 						<th scope="col">Course Handicap</th>
 						<th scope="col">Net</th>
+						<th scope="col">Differential</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -36,7 +37,8 @@ const DashboardScores = props => {
 							gross,
 							adjustedGross,
 							courseHandicap,
-							net
+							net,
+							differential
 						} = score;
 						return (
 							<tr
@@ -53,6 +55,7 @@ const DashboardScores = props => {
 								<td>{adjustedGross}</td>
 								<td>{courseHandicap}</td>
 								<td>{net}</td>
+								<td>{differential}</td>
 							</tr>
 						);
 					})}

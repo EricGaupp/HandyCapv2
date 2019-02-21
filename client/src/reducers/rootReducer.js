@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
 import userReducer from "./userReducer";
 import courseReducer from "./coursesReducer";
-import teeReducer from "./teesReducer";
+import scoresReducer from "./scoresReducer";
 
 const rootReducer = combineReducers({
 	user: userReducer,
 	courses: courseReducer,
-	tees: teeReducer
+	scores: scoresReducer
 });
 
 export default rootReducer;

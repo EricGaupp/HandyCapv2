@@ -64,6 +64,7 @@ router.post("/", (req, res) => {
 										adjustedGross: score.adjustedGross,
 										courseHandicap: score.courseHandicap,
 										net: score.net,
+										differential: score.differential,
 										tee: score.teeId,
 										teeName: score.tee.name,
 										yardage: score.tee.yardage,

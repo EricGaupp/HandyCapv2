@@ -15,8 +15,7 @@ const initialState = {
 	firstName: null,
 	lastName: null,
 	email: null,
-	token: null,
-	scores: []
+	token: null
 };
 
 function userReducer(state = initialState, action) {
@@ -43,7 +42,6 @@ function userReducer(state = initialState, action) {
 					firstName: action.firstName,
 					lastName: action.lastName,
 					email: action.email,
-					scores: action.scores,
 					isFetching: false
 				}
 			);
@@ -95,20 +93,7 @@ function userReducer(state = initialState, action) {
 			);
 		}
 		case LOGOUT_USER: {
-			return Object.assign(
-				{},
-				{ ...state },
-				{
-					isFetching: false,
-					isAuthenticated: false,
-					id: null,
-					firstName: null,
-					lastName: null,
-					email: null,
-					token: null,
-					scores: []
-				}
-			);
+			return Object.assign({}, initialState);
 		}
 		default: {
 			return state;

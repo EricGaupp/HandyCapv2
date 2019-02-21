@@ -1,26 +1,26 @@
 import {
-	FETCH_COURSES_REQUEST,
-	FETCH_COURSES_SUCCESS,
-	FETCH_COURSES_FAILURE,
-	CLEAR_COURSES
-} from "../actions/coursesActions";
+	FETCH_SCORES_REQUEST,
+	FETCH_SCORES_SUCCESS,
+	FETCH_SCORES_FAILURE,
+	CLEAR_SCORES
+} from "../actions/scoresActions";
 
 const initialState = { isFetching: false, data: [] };
 
-function coursesReducer(state = initialState, action) {
+function scoresReducer(state = initialState, action) {
 	switch (action.type) {
-		case FETCH_COURSES_REQUEST:
+		case FETCH_SCORES_REQUEST:
 			return Object.assign({}, { ...state }, { isFetching: true });
-		case FETCH_COURSES_SUCCESS:
+		case FETCH_SCORES_SUCCESS:
 			return Object.assign(
 				{},
 				{ ...state },
 				{
 					isFetching: false,
-					data: action.data
+					data: action.scores
 				}
 			);
-		case FETCH_COURSES_FAILURE:
+		case FETCH_SCORES_FAILURE:
 			return Object.assign(
 				{},
 				{ ...state },
@@ -29,11 +29,11 @@ function coursesReducer(state = initialState, action) {
 					error: action.error
 				}
 			);
-		case CLEAR_COURSES:
+		case CLEAR_SCORES:
 			return Object.assign({}, initialState);
 		default:
 			return state;
 	}
 }
 
-export default coursesReducer;
+export default scoresReducer;

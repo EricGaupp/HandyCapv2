@@ -5,6 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 import { fetchCourses } from "../actions/coursesActions";
+import { fetchScores } from "../actions/scoresActions";
 
 import Select from "react-select";
 import TeeInfo from "./TeeInfo";
@@ -18,7 +19,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		fetchCourses: () => dispatch(fetchCourses())
+		fetchCourses: () => dispatch(fetchCourses()),
+		fetchScores: (token, cb) => dispatch(fetchScores(token, cb))
 	};
 };
 
@@ -67,15 +69,23 @@ class DashboardAddScore extends React.Component {
 			//Initially select the first set of tees (Ordered by descending rating from sequelize query)
 			const teeDetails = course.tees[0];
 			//Save to local state for react-select Select and TeeInfo Components
-			this.setState({
-				courseDetails: course,
-				teeDetails: teeDetails,
-				selectedCourse: option,
-				selectedCourseId: option.value,
-				selectedTee: teeOptions[0],
-				selectedTeeId: teeOptions[0].value,
-				teeOptions: teeOptions
-			});
+			this.setState(
+				{
+					courseDetails: course,
+					teeDetails: teeDetails,
+					selectedCourse: option,
+					selectedCourseId: option.value,
+					selectedTee: teeOptions[0],
+					selectedTeeId: teeOptions[0].value,
+					teeOptions: teeOptions
+				},
+				() => {
+					//Recalculate differential if values were already entered
+					if (this.state.gross || this.state.adjustedGross) {
+						this.calculateDifferential();
+					}
+				}
+			);
 		} else {
 			//If select form is cleared set state details, id values and options to null
 			this.setState({
@@ -95,11 +105,18 @@ class DashboardAddScore extends React.Component {
 		const teeDetails = this.state.courseDetails.tees.filter(
 			tee => tee.id === option.value
 		)[0];
-		this.setState({
-			selectedTee: option,
-			selectedTeeId: option.value,
-			teeDetails: teeDetails
-		});
+		this.setState(
+			{
+				selectedTee: option,
+				selectedTeeId: option.value,
+				teeDetails: teeDetails
+			},
+			() => {
+				//Recalculate differential if values were already entered
+				if (this.state.gross || this.state.adjustedGross)
+					this.calculateDifferential();
+			}
+		);
 	};
 
 	calculateNet = () => {
@@ -133,7 +150,6 @@ class DashboardAddScore extends React.Component {
 	handleSubmit = e => {
 		e.preventDefault();
 		const {
-			selectedCourseId,
 			selectedTeeId,
 			date,
 			gross,
@@ -147,7 +163,6 @@ class DashboardAddScore extends React.Component {
 			.post(
 				"/scores/add",
 				{
-					selectedCourseId,
 					selectedTeeId,
 					date,
 					gross,
@@ -159,9 +174,12 @@ class DashboardAddScore extends React.Component {
 				{ headers: { Authorization: `Bearer ${this.props.token}` } }
 			)
 			.then(response => {
-				console.log(response);
-				//On success Redirect to dashboard home
-				//this.setState({ redirect: true });
+				if (response.data.redirect) {
+					//On success update Redux scores and then Redirect to dashboard scores page
+					this.props.fetchScores(this.props.token, () => {
+						this.setState({ redirect: true });
+					});
+				}
 			})
 			.catch(error => console.log(error));
 	};

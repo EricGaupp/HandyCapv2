@@ -1,4 +1,6 @@
 import axios from "axios";
+import { setScores, clearScores } from "./scoresActions";
+import { clearCourses } from "./coursesActions";
 
 //Login Action Types
 export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST";
@@ -26,8 +28,7 @@ export const setUser = res => ({
 	firstName: res.data.firstName,
 	lastName: res.data.lastName,
 	email: res.data.email,
-	token: res.data.token,
-	scores: res.data.scores
+	token: res.data.token
 });
 
 export const loginError = error => ({
@@ -78,6 +79,7 @@ export const login = (email, password) => {
 				} else {
 					//Update Redux User State on successful login
 					dispatch(setUser(response));
+					dispatch(setScores(response.data.scores));
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}
@@ -109,8 +111,10 @@ export const registerUser = (email, password, firstName, lastName) => {
 //Logout Thunk
 export const logout = () => {
 	return dispatch => {
-		//Update Redux User State to initial state (no user)
+		//Update Redux User State to initial state (no user or scores)
 		dispatch(logoutUser());
+		dispatch(clearScores());
+		dispatch(clearCourses());
 		//Remove JWT from localStorage
 		localStorage.removeItem("token");
 	};
