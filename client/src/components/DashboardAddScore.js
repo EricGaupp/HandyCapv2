@@ -103,7 +103,7 @@ class DashboardAddScore extends React.Component {
 	};
 
 	calculateNet = () => {
-		const { gross, adjustedGross, courseHandicap } = this.state;
+		const { gross, courseHandicap } = this.state;
 		this.setState({ net: gross - courseHandicap });
 	};
 

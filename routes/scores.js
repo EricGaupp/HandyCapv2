@@ -15,26 +15,31 @@ router.get("/", (req, res) => {
 });
 
 router.post("/add", (req, res) => {
-	console.log(req.body);
 	const {
 		courseId,
-		teeId,
+		selectedTeeId,
 		date,
 		gross,
 		adjustedGross,
 		courseHandicap,
+		net,
 		differential
 	} = req.body;
 	const { id, email, firstName, lastName } = res.locals;
-	console.log(date, gross, adjustedGross, courseHandicap, differential);
 	Score.create({
 		date: date,
 		gross: gross,
 		adjustedGross: adjustedGross,
 		courseHandicap: courseHandicap,
-		differential: differential
-	});
-	res.json({ message: "received" });
+		net: net,
+		differential: differential,
+		userId: id,
+		teeId: selectedTeeId
+	})
+		.then(result => {
+			res.json({ message: "received" });
+		})
+		.catch(error => res.json(error));
 });
 
 module.exports = router;

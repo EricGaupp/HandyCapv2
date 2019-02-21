@@ -41,9 +41,10 @@ const Tee = require("./models/Tee");
 const Score = require("./models/Score");
 const Course = require("./models/Course");
 //Model Associations
-User.hasMany(Score);
+//TODO look into onDelete and onUpdate to cascade changes to associated records i.e. deleting a user should delete all their scores
+Tee.hasMany(Score, { foreignKey: { allowNull: false } });
+User.hasMany(Score, { foreignKey: { allowNull: false } });
 Score.belongsTo(User);
-Tee.hasMany(Score);
 Score.belongsTo(Tee);
 Tee.belongsTo(Course);
 Course.hasMany(Tee);

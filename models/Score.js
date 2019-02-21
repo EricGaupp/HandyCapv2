@@ -22,8 +22,11 @@ const Score = db.define("score", {
 	net: {
 		type: Sequelize.TINYINT.UNSIGNED,
 		allowNull: false
+	},
+	differential: {
+		type: Sequelize.DECIMAL(3, 1),
+		allowNull: false
 	}
-	//Differential?
 });
 
 module.exports = Score;
