@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import * as d3 from "d3";
+//import * as d3 from "d3";
 
 const mapStateToProps = state => {
 	return {
@@ -10,8 +10,6 @@ const mapStateToProps = state => {
 };
 
 const HandicapGraphic = ({ scores }) => {
-	//Default handicap value
-	let handicap = 36.4;
 	//Extract differentials from scores object
 	const differentials = scores.map(score => parseFloat(score.differential));
 	//Default to lowest 10 differentials
@@ -45,7 +43,7 @@ const HandicapGraphic = ({ scores }) => {
 	//Average the appropriate number of differentials
 	if (arrayIndex && sortedDifferentials.length > 0) {
 		const minimums = sortedDifferentials.slice(0, arrayIndex);
-		handicap =
+		let handicap =
 			minimums.reduce((diff, next) => {
 				return diff + next;
 			}, 0) / minimums.length;

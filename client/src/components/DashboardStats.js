@@ -1,11 +1,7 @@
 import React from "react";
 
 const DashboardStats = props => {
-	return (
-		<div className="col mx-auto">
-			<h1>Stats</h1>
-		</div>
-	);
+	return <h1>Stats</h1>;
 };
 
 export default DashboardStats;

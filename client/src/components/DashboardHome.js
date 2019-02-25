@@ -1,15 +1,15 @@
 import React from "react";
 
 import HandicapGraphic from "./HandicapGraphic";
-import ScoresBarChart from "./ScoresBarChart";
+import BarChart from "./BarChart";
 
 const DashboardHome = props => {
 	return (
-		<div className="col mx-auto">
+		<React.Fragment>
 			<h1>Dashboard Home</h1>
 			<HandicapGraphic />
-			<ScoresBarChart width={800} height={300} />
-		</div>
+			<BarChart />
+		</React.Fragment>
 	);
 };
 
