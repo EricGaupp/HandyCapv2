@@ -9,20 +9,13 @@ const mapStateToProps = state => {
 	};
 };
 
-const ScoresBarChart = props => {
-	const { scores, height, width } = props;
+const ScoresBarChart = ({ scores, height, width }) => {
 	const margin = { top: 20, right: 5, bottom: 20, left: 35 };
 
 	//xDomain value calculations (integer values 1 thru 20 ie. display a max of 20 scores along x axis)
-	let xDomain = [];
-	for (let i = 0; i < 20; i++) {
-		xDomain[i] = i;
-	}
+	let xDomain = 20;
 	if (scores.length < 20) {
-		xDomain = [];
-		for (let i = 0; i < scores.length; i++) {
-			xDomain[i] = i;
-		}
+		xDomain = scores.length;
 	}
 
 	//yDomain value calculations (max score value in set of 20 most recent scores)
@@ -32,7 +25,7 @@ const ScoresBarChart = props => {
 	//Calculate chart scales from domain and ranges
 	const xScale = d3
 		.scaleLinear()
-		.domain(xDomain)
+		.domain([0, xDomain])
 		.range([0, width - margin.right - margin.left]);
 
 	const yScale = d3
@@ -41,23 +34,39 @@ const ScoresBarChart = props => {
 		.range([0, height - margin.top - margin.bottom]);
 
 	//Axes
-	const axis = d3
-		.axisBottom(xScale)
-		.tickSizeInner(4)
-		.tickSizeOuter(20)
-		.tickPadding(3);
+	const xAxis = d3
+		.axisBottom()
+		.scale(xScale)
+		.tickFormat(tick => `${tick}`);
+	const yAxis = d3.axisLeft().scale(yScale);
+
+	//Bar Data
+	const bars = scores.map((score, i) => {
+		const y1 = yScale(score.gross);
+		const y2 = 0;
+		return {
+			id: score.id,
+			x: xScale(i),
+			y: y1,
+			height: y1 - y2
+		};
+	});
 
 	return (
 		<svg width={width} height={height}>
-			{scores.map((score, i) => (
+			{bars.map((bar, i) => (
 				<rect
-					key={score.id}
-					x={i}
-					y={0}
+					key={bar.id}
+					x={bar.x}
+					y={bar.y}
 					width={20}
-					height={score.gross}
+					height={bar.height}
 				/>
 			))}
+			{/*<g>
+							<g ref="xAxis" />
+							<g ref="yAxis" />
+						</g>*/}
 		</svg>
 	);
 };
