@@ -1,8 +1,3 @@
-.Axis path,
-.Axis line {
-	stroke: #e0e0e0;
-}
-
 .axis text {
 	font-size: 11px;
 	fill: black;
@@ -11,4 +6,12 @@
 .axis-bottom text {
 	transform: rotate(-45deg);
 	text-anchor: end;
+}
+
+.bars {
+	fill: #0075c4;
+}
+
+.bars:hover {
+	fill: #2f4858;
 }

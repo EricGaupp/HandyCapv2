@@ -72,4 +72,26 @@ router.post("/add", (req, res) => {
 		.catch(error => res.json(error));
 });
 
+router.post("/delete", (req, res) => {
+	const { scoreId } = req.body;
+	//Find score by scoreId and also that userId matches id provided from authorization token
+	Score.findOne({ where: { id: scoreId, userId: res.locals.id } })
+		.then(score => {
+			//If score exists delete it
+			if (score) {
+				return score.destroy();
+			} else {
+				//Otherwise send error message
+				res.json({
+					message: "Unauthorized or scoreId does not exist",
+					deleted: false
+				});
+			}
+		})
+		.then(response => {
+			res.json({ message: "Score deleted", deleted: true });
+		})
+		.catch(error => res.json(error));
+});
+
 module.exports = router;

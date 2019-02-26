@@ -5,6 +5,7 @@ import DashboardAddScore from "./DashboardAddScore";
 import DashboardHome from "./DashboardHome";
 import DashboardStats from "./DashboardStats";
 import DashboardScores from "./DashboardScores";
+import DashboardScoreEdit from "./DashboardScoreEdit";
 
 import "DashboardContent.css";
 
@@ -17,6 +18,10 @@ const DashboardContent = props => {
 					exact
 					path={`${props.match.url}/scores`}
 					component={DashboardScores}
+				/>
+				<Route
+					path={`${props.match.url}/scores/:id`}
+					component={DashboardScoreEdit}
 				/>
 				<Route
 					exact

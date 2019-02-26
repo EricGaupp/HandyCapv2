@@ -1,5 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import dayjs from "dayjs";
 
 const mapStateToProps = state => {
 	return {
@@ -39,15 +41,16 @@ const DashboardScores = props => {
 						net,
 						differential
 					} = score;
+					const formattedDate = dayjs(date).format("MMM D[,] YYYY");
 					return (
 						<tr
 							onClick={() => {
-								//TODO Modal pop up with extensive stats and link to edit
-								return alert("test");
+								//Redirect to individual score page
+								props.history.push(`${props.match.url}/${id}`);
 							}}
 							key={id}
 						>
-							<td>{date}</td>
+							<td>{formattedDate}</td>
 							<td>{courseName}</td>
 							<td>{teeName}</td>
 							<td>{gross}</td>
