@@ -12,6 +12,7 @@ import TeeInfo from "./TeeInfo";
 
 const mapStateToProps = state => {
 	return {
+		isFetching: state.courses.isFetching,
 		courses: state.courses.data,
 		token: state.user.token
 	};
@@ -226,6 +227,8 @@ class DashboardAddScore extends React.Component {
 
 	render() {
 		if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
+		//TODO check redux courses isFetching component and display a spinner if true
+		if (this.props.isFetching) return <h1>Fetching...</h1>;
 
 		return (
 			<React.Fragment>

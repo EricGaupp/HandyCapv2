@@ -51,8 +51,6 @@ class Login extends React.Component {
 		if (this.props.isAuthenticated) {
 			return <Redirect to="/dashboard" />;
 		}
-		//TODO Show Spinner Component if redux user state isFetching=true (use ternary within bootstrap containers)
-		if (this.props.isFetching) return <h1>Fetching...</h1>;
 		return (
 			<div className="d-flex align-items-center splashBackground">
 				<div className="container">
@@ -63,56 +61,62 @@ class Login extends React.Component {
 									<h3 className="my-0">Sign In</h3>
 								</div>
 								<div className="card-body">
-									<form>
-										<div className="form-group my-0">
-											<label
-												htmlFor="loginEmail"
-												className="sr-only"
+									{/*TODO Show Spinner Component if redux user state isFetching=true (use ternary within bootstrap containers)*/}
+									{this.props.isFetching ? (
+										<h4>Fetching...user</h4>
+									) : (
+										<form>
+											<div className="form-group my-0">
+												<label
+													htmlFor="loginEmail"
+													className="sr-only"
+												>
+													Email address
+												</label>
+												<input
+													type="email"
+													className="form-control"
+													id="loginEmail"
+													placeholder="Email"
+													value={this.state.email}
+													onChange={
+														this.handleEmailChange
+													}
+												/>
+											</div>
+											<div className="form-group">
+												<label
+													htmlFor="loginPassword"
+													className="sr-only"
+												>
+													Password
+												</label>
+												<input
+													type="password"
+													className="form-control"
+													id="loginPassword"
+													placeholder="Password"
+													value={this.state.password}
+													onChange={
+														this
+															.handlePasswordChange
+													}
+												/>
+											</div>
+											{/**Display Errors based on Redux User State**/}
+											{this.props.loginError && (
+												<p className="loginError">
+													{this.props.errorMessage}
+												</p>
+											)}
+											<button
+												className="btn btn-lg btn-block btn-primary"
+												onClick={this.handleSubmit}
 											>
-												Email address
-											</label>
-											<input
-												type="email"
-												className="form-control"
-												id="loginEmail"
-												placeholder="Email"
-												value={this.state.email}
-												onChange={
-													this.handleEmailChange
-												}
-											/>
-										</div>
-										<div className="form-group">
-											<label
-												htmlFor="loginPassword"
-												className="sr-only"
-											>
-												Password
-											</label>
-											<input
-												type="password"
-												className="form-control"
-												id="loginPassword"
-												placeholder="Password"
-												value={this.state.password}
-												onChange={
-													this.handlePasswordChange
-												}
-											/>
-										</div>
-										{/**Display Errors based on Redux User State**/}
-										{this.props.loginError && (
-											<p className="loginError">
-												{this.props.errorMessage}
-											</p>
-										)}
-										<button
-											className="btn btn-lg btn-block btn-primary"
-											onClick={this.handleSubmit}
-										>
-											Submit
-										</button>
-									</form>
+												Submit
+											</button>
+										</form>
+									)}
 									<hr />
 									<p className="my-0">
 										New User? Register{" "}
