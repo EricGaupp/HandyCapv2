@@ -9,6 +9,7 @@ const mapStateToProps = state => {
 	return {
 		loginError: state.user.loginError,
 		errorMessage: state.user.loginErrorMessage,
+		isFetching: state.user.isFetching,
 		isAuthenticated: state.user.isAuthenticated
 	};
 };
@@ -46,10 +47,12 @@ class Login extends React.Component {
 	};
 
 	render() {
-		//Redirect to dashboard after successful login via an updated Redux User State
+		//Redirect to dashboard if user is authenticated in redux user state
 		if (this.props.isAuthenticated) {
 			return <Redirect to="/dashboard" />;
 		}
+		//TODO Show Spinner Component if redux user state isFetching=true (use ternary within bootstrap containers)
+		if (this.props.isFetching) return <h1>Fetching...</h1>;
 		return (
 			<div className="d-flex align-items-center splashBackground">
 				<div className="container">

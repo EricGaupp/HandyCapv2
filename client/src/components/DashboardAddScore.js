@@ -177,9 +177,8 @@ class DashboardAddScore extends React.Component {
 			.then(response => {
 				if (response.data.redirect) {
 					//On success update Redux scores and then Redirect to dashboard scores page
-					this.props.fetchScores(this.props.token, () => {
-						this.setState({ redirect: true });
-					});
+					this.props.fetchScores(this.props.token);
+					this.setState({ redirect: true });
 				}
 			})
 			.catch(error => console.log(error));

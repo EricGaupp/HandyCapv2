@@ -5,6 +5,7 @@ import {
 	REGISTER_USER_FAILURE,
 	REGISTER_USER_SUCCESS,
 	LOGOUT_USER,
+	VERIFY_TOKEN_FAILURE,
 	SET_TOKEN
 } from "../actions/userActions";
 
@@ -30,6 +31,7 @@ function userReducer(state = initialState, action) {
 				loginErrorMessage,
 				registerError,
 				registerErrorMessage,
+				verifyTokenError,
 				...rest
 			} = state;
 			return Object.assign(
@@ -55,6 +57,13 @@ function userReducer(state = initialState, action) {
 					loginError: action.loginError,
 					loginErrorMessage: action.errorMessage
 				}
+			);
+		}
+		case VERIFY_TOKEN_FAILURE: {
+			return Object.assign(
+				{},
+				{ ...state },
+				{ isFetching: false, verifyTokenError: action.verifyTokenError }
 			);
 		}
 		case SET_TOKEN: {

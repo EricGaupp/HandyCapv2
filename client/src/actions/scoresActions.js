@@ -24,42 +24,38 @@ export const requestScoresError = error => ({
 	error: error
 });
 
-export const deleteScoreById = id => ({
-	type: DELETE_SCORE,
-	id: id
-});
-
 export const clearScores = () => ({ type: CLEAR_SCORES });
 
 //Scores Thunks
-export function fetchScores(token, cb) {
-	return function(dispatch) {
+export function fetchScores(token) {
+	return dispatch => {
 		dispatch(requestScores());
 		return axios
 			.get("/scores", { headers: { Authorization: `Bearer ${token}` } })
 			.then(
-				response => {
-					dispatch(setScores(response.data));
-					cb();
-				},
+				response => dispatch(setScores(response.data)),
 				error => dispatch(requestScoresError(error))
 			);
 	};
 }
 
 export function deleteScore(token, scoreId) {
-	return function(dispatch) {
+	return dispatch => {
 		return axios
 			.post(
 				"/scores/delete",
-				{ scoreId: id },
+				{ scoreId: scoreId },
 				{ headers: { Authorization: `Bearer ${token}` } }
 			)
-			.then(response => {
-				if (response.deleted) {
-					dispatch(deleteScoreById(scoreId));
-				}
-			})
-			.catch(error => console.log(error));
+			.then(
+				response => {
+					//If score was deleted, clear redux scores object and refetch scores from database
+					if (response.data.deleted) {
+						dispatch(clearScores());
+						dispatch(fetchScores(token));
+					}
+				},
+				error => console.log(error)
+			);
 	};
 }

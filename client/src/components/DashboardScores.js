@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import dayjs from "dayjs";
 
 const mapStateToProps = state => {
 	return {
-		scores: state.scores.data
+		scores: state.scores.data,
+		isFetching: state.scores.isFetching
 	};
 };
 
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const DashboardScores = props => {
+	if (props.isFetching) return <h1>Fetching...</h1>;
 	return (
 		<table className="table table-hover text-center">
 			<thead className="thead-dark">

@@ -7,6 +7,9 @@ export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USER_FAILURE = "FETCH_USER_FAILURE";
 
+//JWT Verification Types
+export const VERIFY_TOKEN_FAILURE = "VERIFY_TOKEN_FAILURE";
+
 //Token Action Types
 export const SET_TOKEN = "SET_TOKEN";
 
@@ -35,6 +38,11 @@ export const loginError = error => ({
 	type: FETCH_USER_FAILURE,
 	loginError: error.data.loginError,
 	errorMessage: error.data.errorMessage
+});
+
+export const verificationError = error => ({
+	type: VERIFY_TOKEN_FAILURE,
+	verifyTokenError: error
 });
 
 //JWT Set Token Action Creator
@@ -70,9 +78,8 @@ export const login = (email, password) => {
 		//Updates redux user.isFetching state
 		dispatch(requestUser());
 		//Post request with credentials to authentication route
-		return axios
-			.post("/login", { email, password })
-			.then(response => {
+		return axios.post("/login", { email, password }).then(
+			response => {
 				//Update Redux User State with any login errors
 				if (response.data.loginError) {
 					dispatch(loginError(response));
@@ -83,8 +90,31 @@ export const login = (email, password) => {
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
 				}
-			})
-			.catch(error => console.log(error));
+			},
+			error => console.log(error)
+		);
+	};
+};
+
+//Verify Thunk
+export const verifyUserByToken = token => {
+	return dispatch => {
+		dispatch(requestUser());
+		return axios
+			.get("/verify", { headers: { Authorization: `Bearer ${token}` } })
+			.then(
+				response => {
+					if (response.data.id) {
+						dispatch(setUser(response));
+						dispatch(setToken(token));
+						dispatch(setScores(response.data.scores));
+					}
+				},
+				error => {
+					localStorage.removeItem("token");
+					dispatch(verificationError(error));
+				}
+			);
 	};
 };
 
@@ -93,18 +123,20 @@ export const registerUser = (email, password, firstName, lastName) => {
 	return dispatch => {
 		return axios
 			.post("/register", { email, password, firstName, lastName })
-			.then(response => {
-				//Update Redux User State with any registration errors
-				if (response.data.registerError) {
-					dispatch(registerError(response));
-				} else {
-					//Update Redux User State on successful registration
-					dispatch(registerSetUser(response));
-					//Store JWT token in localStorage
-					localStorage.setItem("token", response.data.token);
-				}
-			})
-			.catch(error => console.log(error));
+			.then(
+				response => {
+					//Update Redux User State with any registration errors
+					if (response.data.registerError) {
+						dispatch(registerError(response));
+					} else {
+						//Update Redux User State on successful registration
+						dispatch(registerSetUser(response));
+						//Store JWT token in localStorage
+						localStorage.setItem("token", response.data.token);
+					}
+				},
+				error => console.log(error)
+			);
 	};
 };
 

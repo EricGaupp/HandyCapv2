@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import axios from "axios";
-
-import { requestUser, setUser, setToken } from "../actions/userActions";
-import { setScores } from "../actions/scoresActions";
+import { verifyUserByToken } from "../actions/userActions";
 
 import Dashboard from "Dashboard";
 import Footer from "Footer";
@@ -20,10 +17,7 @@ import "App.css";
 
 const mapDispatchToProps = dispatch => {
   return {
-    requestUser: () => dispatch(requestUser()),
-    setUser: response => dispatch(setUser(response)),
-    setToken: token => dispatch(setToken(token)),
-    setScores: scores => dispatch(setScores(scores))
+    verifyUserByToken: token => dispatch(verifyUserByToken(token))
   };
 };
 
@@ -31,22 +25,7 @@ class App extends Component {
   componentWillMount() {
     const token = localStorage.getItem("token");
     if (token) {
-      this.props.requestUser();
-      axios
-        .get("/verify", { headers: { Authorization: `Bearer ${token}` } })
-        .then(response => {
-          if (response.data.id) {
-            this.props.setUser(response);
-            this.props.setToken(token);
-            this.props.setScores(response.data.scores);
-          }
-        })
-        .catch(error => {
-          //Non 200 range response status codes are handled in axios catch block. See https://github.com/axios/axios#handling-errors for retrieving response bodies
-          if (error) {
-            localStorage.removeItem("token");
-          }
-        });
+      this.props.verifyUserByToken(token);
     }
   }
 
