@@ -54,8 +54,15 @@ class BarChart extends React.Component {
 			reversedScores = scores.slice().reverse();
 		}
 
+		const stat = "differential";
+
 		//Min and Max values of gross scores
-		const max = d3.max(reversedScores.map(score => score.gross));
+		const max = d3.max(
+			reversedScores.map(score => {
+				console.log(`score.${stat}`);
+				return `score.${stat}`;
+			})
+		);
 
 		//Update scales with score data
 		this.xScale.domain(reversedScores.map(score => score.id));
@@ -82,7 +89,7 @@ class BarChart extends React.Component {
 	componentDidUpdate(prevProps) {
 		if (prevProps.scores.length !== this.props.scores.length) {
 			//Score data sorted in chronological order
-			const { scores } = this.props;
+			const { scores, displayStat } = this.props;
 			let reversedScores;
 			if (scores.length > 20) {
 				reversedScores = scores.slice(0, 20).reverse();
@@ -90,12 +97,14 @@ class BarChart extends React.Component {
 				reversedScores = scores.slice().reverse();
 			}
 
-			//Min and Max values of gross scores
-			const max = d3.max(reversedScores.map(score => score.gross));
+			//Min and Max values of selected stat
+			const [min, max] = d3.extent(
+				reversedScores.map(score => score[displayStat])
+			);
 
 			//Update scales with score data
 			this.xScale.domain(reversedScores.map(score => score.id));
-			this.yScale.domain([0, max]);
+			this.yScale.domain([min, max]);
 
 			//Update x-axis labels with score data
 			this.xAxis.tickFormat(tick => {
@@ -119,6 +128,7 @@ class BarChart extends React.Component {
 	}
 
 	render() {
+		const { displayStat } = this.props;
 		let bars = null;
 		if (this.state.reversedScores.length > 0) {
 			const { reversedScores } = this.state;
@@ -128,11 +138,11 @@ class BarChart extends React.Component {
 						className="bars"
 						key={score.id}
 						x={this.xScale(score.id)}
-						y={this.yScale(score.gross)}
+						y={this.yScale(score[displayStat])}
 						height={
 							this.svgDimensions.height -
 							this.margins.bottom -
-							this.yScale(score.gross)
+							this.yScale(score[displayStat])
 						}
 						width={this.xScale.bandwidth()}
 					/>

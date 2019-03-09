@@ -53,8 +53,11 @@ export function deleteScore(token, scoreId) {
 					if (response.data.deleted) {
 						dispatch(clearScores());
 						dispatch(fetchScores(token));
+					} else {
+						//TODO Error handling for score deletion
 					}
 				},
+				//TODO Error handling for score deletion
 				error => console.log(error)
 			);
 	};

@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => {
 };
 
 const DashboardScores = props => {
+	//TODO Create Spinner Component to display during any redux isFetching state
 	if (props.isFetching) return <h1>Fetching...</h1>;
 	return (
 		<table className="table table-hover text-center">

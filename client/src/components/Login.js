@@ -63,7 +63,7 @@ class Login extends React.Component {
 								<div className="card-body">
 									{/*TODO Show Spinner Component if redux user state isFetching=true (use ternary within bootstrap containers)*/}
 									{this.props.isFetching ? (
-										<h4>Fetching...user</h4>
+										<h4>Fetching User...</h4>
 									) : (
 										<form>
 											<div className="form-group my-0">
