@@ -228,7 +228,7 @@ class DashboardAddScore extends React.Component {
 	render() {
 		if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
 		//TODO check redux courses isFetching component and display a spinner if true
-		if (this.props.isFetching) return <h1>Fetching...</h1>;
+		//if (this.props.isFetching) return <h1>Fetching...</h1>;
 
 		return (
 			<React.Fragment>
@@ -244,6 +244,7 @@ class DashboardAddScore extends React.Component {
 							placeholder="Pebble Beach..."
 							options={this.state.courseOptions}
 							isClearable={true}
+							isLoading={this.props.isFetching}
 							onChange={this.handleCourseChange}
 						/>
 					</div>

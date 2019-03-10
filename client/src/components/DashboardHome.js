@@ -14,27 +14,27 @@ class DashboardHome extends React.Component {
 				{ value: "adjustedGross", label: "Adjusted Gross" },
 				{ value: "net", label: "Net" }
 			],
-			statToDisplay: "gross"
+			statToDisplay: "differential"
 		};
 	}
 
 	onSelectChange = option => {
-		console.log(option);
 		this.setState({ statToDisplay: option.value });
 	};
 
 	render() {
 		return (
 			<React.Fragment>
-				<h1>Dashboard Home</h1>
 				<Select
-					id="courseNameSearch"
+					id="statSelect"
 					autoFocus={true}
+					isClearable={false}
+					isSearchable={false}
+					defaultValue={this.state.selectOptions[0]}
 					options={this.state.selectOptions}
 					onChange={this.onSelectChange}
 				/>
 				<HandicapGraphic />
-				{/*TODO Pass in stat from selected*/}
 				<BarChart displayStat={this.state.statToDisplay} />
 			</React.Fragment>
 		);

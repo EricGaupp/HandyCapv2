@@ -8,10 +8,18 @@
 	text-anchor: end;
 }
 
-.bars {
+.positive {
 	fill: #0075c4;
 }
 
-.bars:hover {
+.positive:hover {
 	fill: #2f4858;
+}
+
+.negative {
+	fill: #ba2d0b;
+}
+
+.negative:hover {
+	fill: #550c18;
 }

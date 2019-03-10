@@ -6,6 +6,7 @@ const db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 	operatorsAliases: false,
 	host: "localhost",
 	dialect: "mysql",
+	dialectOptions: { decimalNumbers: true },
 	pool: {
 		max: 10,
 		min: 0,

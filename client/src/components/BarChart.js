@@ -45,69 +45,44 @@ class BarChart extends React.Component {
 
 	componentDidMount() {
 		//Score data sorted in chronological order
-		const { scores } = this.props;
-		//Grab 20 latest scores or all of them if <20 total
+		const { scores, displayStat } = this.props;
 		let reversedScores;
+		//Store up to the latest 20 scores in chronological order for handicap calculation
 		if (scores.length > 20) {
 			reversedScores = scores.slice(0, 20).reverse();
 		} else {
 			reversedScores = scores.slice().reverse();
 		}
 
-		const stat = "differential";
-
-		//Min and Max values of gross scores
-		const max = d3.max(
-			reversedScores.map(score => {
-				console.log(`score.${stat}`);
-				return `score.${stat}`;
-			})
-		);
+		//Determine Min and Max values for various stat data for chart y-axis scaling
+		let min = 0,
+			max;
+		switch (displayStat) {
+			case "differential": {
+				[min, max] = d3.extent(
+					reversedScores.map(score => score[displayStat])
+				);
+				break;
+			}
+			default: {
+				max = d3.max(reversedScores.map(score => score[displayStat]));
+			}
+		}
 
 		//Update scales with score data
 		this.xScale.domain(reversedScores.map(score => score.id));
-		this.yScale.domain([0, max]);
+		this.yScale.domain([min, max]);
 
 		//Update x-axis labels with score data
-		this.xAxis.tickFormat(tick => {
-			//Find score where id matches the tick value
-			const filtered = reversedScores.filter(score => {
-				return score.id === tick;
-			});
-			//Return the date for the tick format
-			const dateString = dayjs(filtered[0].date).format("MMM D[,] YYYY");
-			return dateString;
-		});
-
-		//Draw Axes
-		d3.select(this.refs.xAxis).call(this.xAxis);
-		d3.select(this.refs.yAxis).call(this.yAxis);
-
-		this.setState({ reversedScores });
-	}
-
-	componentDidUpdate(prevProps) {
-		if (prevProps.scores.length !== this.props.scores.length) {
-			//Score data sorted in chronological order
-			const { scores, displayStat } = this.props;
-			let reversedScores;
-			if (scores.length > 20) {
-				reversedScores = scores.slice(0, 20).reverse();
-			} else {
-				reversedScores = scores.slice().reverse();
-			}
-
-			//Min and Max values of selected stat
-			const [min, max] = d3.extent(
-				reversedScores.map(score => score[displayStat])
-			);
-
-			//Update scales with score data
-			this.xScale.domain(reversedScores.map(score => score.id));
-			this.yScale.domain([min, max]);
-
-			//Update x-axis labels with score data
-			this.xAxis.tickFormat(tick => {
+		this.xAxis
+			.tickSizeOuter(
+				-(
+					this.svgDimensions.height -
+					this.margins.top -
+					this.margins.bottom
+				)
+			)
+			.tickFormat(tick => {
 				//Find score where id matches the tick value
 				const filtered = reversedScores.filter(score => {
 					return score.id === tick;
@@ -118,6 +93,81 @@ class BarChart extends React.Component {
 				);
 				return dateString;
 			});
+		this.yAxis.tickSize(
+			-(this.svgDimensions.width - this.margins.right - this.margins.left)
+		);
+
+		//Draw Axes
+		d3.select(this.refs.xAxis).call(this.xAxis);
+		d3.select(this.refs.yAxis).call(this.yAxis);
+
+		this.setState({ reversedScores });
+	}
+
+	componentDidUpdate(prevProps) {
+		//If a user has added a score or changed the stat to display update the chart axes and data
+		if (
+			prevProps.scores.length !== this.props.scores.length ||
+			prevProps.displayStat !== this.props.displayStat
+		) {
+			//Score data sorted in chronological order
+			const { scores, displayStat } = this.props;
+			let reversedScores;
+			//Store up to the latest 20 scores in chronological order for handicap calculation
+			if (scores.length > 20) {
+				reversedScores = scores.slice(0, 20).reverse();
+			} else {
+				reversedScores = scores.slice().reverse();
+			}
+
+			//Determine Min and Max values for various stat data for chart y-axis scaling
+			let min = 0,
+				max;
+			switch (displayStat) {
+				case "differential": {
+					[min, max] = d3.extent(
+						reversedScores.map(score => score[displayStat])
+					);
+					break;
+				}
+				default: {
+					max = d3.max(
+						reversedScores.map(score => score[displayStat])
+					);
+				}
+			}
+
+			//Update scales with score data
+			this.xScale.domain(reversedScores.map(score => score.id));
+			this.yScale.domain([min, max]);
+
+			//Update x-axis labels with score data
+			this.xAxis
+				.tickSizeOuter(
+					-(
+						this.svgDimensions.height -
+						this.margins.top -
+						this.margins.bottom
+					)
+				)
+				.tickFormat(tick => {
+					//Find score where id matches the tick value
+					const filtered = reversedScores.filter(score => {
+						return score.id === tick;
+					});
+					//Return the date for the tick format
+					const dateString = dayjs(filtered[0].date).format(
+						"MMM D[,] YYYY"
+					);
+					return dateString;
+				});
+			this.yAxis.tickSize(
+				-(
+					this.svgDimensions.width -
+					this.margins.right -
+					this.margins.left
+				)
+			);
 
 			//Draw Axes
 			d3.select(this.refs.xAxis).call(this.xAxis);
@@ -133,22 +183,38 @@ class BarChart extends React.Component {
 		if (this.state.reversedScores.length > 0) {
 			const { reversedScores } = this.state;
 			bars = reversedScores.map(score => {
+				let color = "positive";
+				if (score.differential < 0 && displayStat === "differential") {
+					color = "negative";
+				}
 				return (
 					<rect
-						className="bars"
+						className={color}
 						key={score.id}
 						x={this.xScale(score.id)}
-						y={this.yScale(score[displayStat])}
-						height={
-							this.svgDimensions.height -
-							this.margins.bottom -
-							this.yScale(score[displayStat])
-						}
+						y={Math.min(
+							this.yScale(score[displayStat]),
+							this.yScale(0)
+						)}
+						height={Math.abs(
+							this.yScale(score[displayStat]) - this.yScale(0)
+						)}
 						width={this.xScale.bandwidth()}
 					/>
 				);
 			});
 		}
+		// if (displayStat === "differential" && this.state.reversedScores.length > 0)
+		// 			{zeroLine = return <rect
+		// 				x={this.margins.left}
+		// 				y={this.yScale(0)}
+		// 				width={
+		// 					this.svgDimensions.width -
+		// 					this.margins.left -
+		// 					this.margins.right
+		// 				}
+		// 				height={1}
+		// 			/>}
 
 		return (
 			<svg
