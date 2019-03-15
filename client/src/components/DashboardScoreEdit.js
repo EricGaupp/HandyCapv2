@@ -32,8 +32,8 @@ const DashboardScoreEdit = props => {
 				<div className="col-md-6">
 					<div className="card">
 						<h4 className="card-header">Score Details</h4>
-						<div className="card-body px-0">
-							<table className="table text-center">
+						<div className="card-body px-0 py-0">
+							<table className="table text-center my-0">
 								<thead className="thead-dark">
 									<tr>
 										<th scope="col">Date</th>

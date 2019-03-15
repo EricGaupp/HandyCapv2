@@ -6,7 +6,16 @@ import BarChart from "./BarChart";
 class DashboardStats extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.container = null;
+
+		this.setRef = element => {
+			this.container = element;
+		};
+
 		this.state = {
+			containerWidth: null,
+			containerHeight: null,
 			selectOptions: [
 				{ value: "differential", label: "Differentials" },
 				{ value: "gross", label: "Gross" },
@@ -21,19 +30,55 @@ class DashboardStats extends React.Component {
 		this.setState({ statToDisplay: option.value });
 	};
 
+	updateDimensions = () => {
+		const dimensions = this.container.getBoundingClientRect();
+		this.setState({
+			containerWidth: dimensions.width,
+			containerHeight: dimensions.height
+		});
+	};
+
+	componentDidMount() {
+		this.setState({
+			containerWidth: this.container.offsetWidth,
+			containerHeight: this.container.offsetHeight
+		});
+
+		window.addEventListener("resize", this.updateDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("resize", this.updateDimensions);
+	}
+
 	render() {
+		const {
+			containerWidth,
+			containerHeight,
+			selectOptions,
+			statToDisplay
+		} = this.state;
 		return (
-			<div className="container-fluid">
-				<Select
-					id="statSelect"
-					autoFocus={true}
-					isClearable={false}
-					isSearchable={false}
-					defaultValue={this.state.selectOptions[0]}
-					options={this.state.selectOptions}
-					onChange={this.onSelectChange}
-				/>
-				<BarChart displayStat={this.state.statToDisplay} />
+			<div className="container-fluid" ref={this.setRef}>
+				{containerWidth && (
+					<React.Fragment>
+						<h1>{`Width: ${containerWidth}, Height: ${containerHeight}`}</h1>
+						<Select
+							id="statSelect"
+							autoFocus={true}
+							isClearable={false}
+							isSearchable={false}
+							defaultValue={this.state.selectOptions[0]}
+							options={selectOptions}
+							onChange={this.onSelectChange}
+						/>
+						<BarChart
+							displayStat={statToDisplay}
+							width={containerWidth}
+							height={containerHeight}
+						/>
+					</React.Fragment>
+				)}
 			</div>
 		);
 	}

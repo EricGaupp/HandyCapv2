@@ -1,17 +1,17 @@
-.sidebar {
-	display: none;
-	/* Instead make it a dropdown inside the main navbar when collapsed*/
-}
-
 .dashboardContainer {
 	position: relative;
-	display: flex;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 @media screen and (min-width: 768px) {
-	.sidebar {
+	.dashboardContainer {
 		position: relative;
+		display: flex;
+		flex-direction: row;
+	}
+	.sidebar {
 		display: flex;
 		flex-basis: 200px;
 		flex-grow: 0;

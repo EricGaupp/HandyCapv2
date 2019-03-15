@@ -19,8 +19,8 @@ class BarChart extends React.Component {
 		};
 		//SVG dimensions
 		this.svgDimensions = {
-			width: 900,
-			height: 300
+			width: this.props.width,
+			height: this.props.height
 		};
 		this.margins = { top: 20, right: 5, bottom: 60, left: 35 };
 		//Scales
@@ -168,6 +168,90 @@ class BarChart extends React.Component {
 			d3.select(this.refs.yAxis).call(this.yAxis);
 
 			this.setState({ reversedScores });
+		}
+		//Handle Window Resize
+		if (
+			prevProps.width !== this.props.width ||
+			prevProps.height !== this.props.height
+		) {
+			//Scales
+			this.xScale = d3
+				.scaleBand()
+				.padding(0.5)
+				.rangeRound([
+					this.margins.left,
+					this.props.width - this.margins.right
+				]);
+			this.yScale = d3
+				.scaleLinear()
+				.range([
+					this.props.height - this.margins.bottom,
+					this.margins.top
+				]);
+
+			//Axes
+			this.xAxis = d3
+				.axisBottom(this.xScale)
+				.tickSizeOuter(
+					-(
+						this.props.height -
+						this.margins.top -
+						this.margins.bottom
+					)
+				);
+			this.yAxis = d3
+				.axisLeft(this.yScale)
+				.tickSize(
+					-(this.props.width - this.margins.right - this.margins.left)
+				);
+			//Score data sorted in chronological order
+			const { scores, displayStat } = this.props;
+			let reversedScores;
+			//Store up to the latest 20 scores in chronological order for handicap calculation
+			if (scores.length > 20) {
+				reversedScores = scores.slice(0, 20).reverse();
+			} else {
+				reversedScores = scores.slice().reverse();
+			}
+
+			//Determine Min and Max values for various stat data for chart y-axis scaling
+			let min = 0,
+				max;
+			switch (displayStat) {
+				case "differential": {
+					[min, max] = d3.extent(
+						reversedScores.map(score => score[displayStat])
+					);
+					if (min > 0) {
+						min = 0;
+					}
+					break;
+				}
+				default: {
+					max = d3.max(
+						reversedScores.map(score => score[displayStat])
+					);
+				}
+			}
+			//Update scales with score data
+			this.xScale.domain(reversedScores.map(score => score.id));
+			this.yScale.domain([min, max]);
+
+			//Update x-axis labels with score data
+			this.xAxis.tickFormat(tick => {
+				//Find score where id matches the tick value
+				const filtered = reversedScores.filter(score => {
+					return score.id === tick;
+				});
+				//Return the date for the tick format
+				const dateString = dayjs(filtered[0].date).format(
+					"MMM D[,] YYYY"
+				);
+				return dateString;
+			});
+			//Draw Axes
+			d3.select(this.refs.xAxis).call(this.xAxis);
+			d3.select(this.refs.yAxis).call(this.yAxis);
 		}
 	}
 
