@@ -58,6 +58,9 @@ class DashboardStats extends React.Component {
 			selectOptions,
 			statToDisplay
 		} = this.state;
+		//Account for container padding
+		const width = containerWidth - 30;
+		const height = containerHeight - 56 - 38;
 		return (
 			<div className="container-fluid" ref={this.setRef}>
 				{containerWidth && (
@@ -74,8 +77,8 @@ class DashboardStats extends React.Component {
 						/>
 						<BarChart
 							displayStat={statToDisplay}
-							width={containerWidth}
-							height={containerHeight}
+							width={width}
+							height={height}
 						/>
 					</React.Fragment>
 				)}

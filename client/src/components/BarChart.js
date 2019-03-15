@@ -284,15 +284,12 @@ class BarChart extends React.Component {
 		}
 
 		return (
-			<svg
-				width={this.svgDimensions.width}
-				height={this.svgDimensions.height}
-			>
+			<svg width={this.props.width} height={this.props.height}>
 				<g>
 					<g
 						className="axis axis-bottom"
 						ref="xAxis"
-						transform={`translate(0, ${this.svgDimensions.height -
+						transform={`translate(0, ${this.props.height -
 							this.margins.bottom})`}
 					/>
 					<g
