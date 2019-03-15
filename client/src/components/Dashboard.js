@@ -7,11 +7,9 @@ import DashboardContent from "DashboardContent";
 
 const Dashboard = props => {
 	return (
-		<div className="container-fluid">
-			<div className="row">
-				<DashboardNav {...props} />
-				<DashboardContent {...props} />
-			</div>
+		<div className="dashboardContainer">
+			<DashboardNav {...props} />
+			<DashboardContent {...props} />
 		</div>
 	);
 };

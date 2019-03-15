@@ -5,9 +5,11 @@
 	width: 100%;
 	min-height: 100vh;
 	background-attachment: fixed;
+	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 50% 50%;
 	background-image: url("../images/splash.jpeg");
+	z-index: -1;
 }
 
 .transparent {

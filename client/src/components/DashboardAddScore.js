@@ -229,7 +229,7 @@ class DashboardAddScore extends React.Component {
 		if (this.state.redirect) return <Redirect to="/dashboard/scores" />;
 
 		return (
-			<React.Fragment>
+			<div className="container-fluid">
 				<h1 className="text-center">Post A Score</h1>
 				<form>
 					<div className="form-group">
@@ -424,7 +424,7 @@ class DashboardAddScore extends React.Component {
 					Don't see your course listed? Add one{" "}
 					<Link to="/AddCourse">here</Link>
 				</p>
-			</React.Fragment>
+			</div>
 		);
 	}
 }

@@ -7,11 +7,9 @@ import DashboardStats from "./DashboardStats";
 import DashboardScores from "./DashboardScores";
 import DashboardScoreEdit from "./DashboardScoreEdit";
 
-import "DashboardContent.css";
-
 const DashboardContent = props => {
 	return (
-		<div className="dashboardContent col">
+		<div className="dashboardContent">
 			<Switch>
 				<Route exact path={props.match.url} component={DashboardHome} />
 				<Route

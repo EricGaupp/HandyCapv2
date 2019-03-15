@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 import UserNav from "./UserNav";
 import LoginNav from "./LoginNav";
 
-import "Navbar.css";
-
 const mapStateToProps = state => ({
 	user: state.user
 });

@@ -39,8 +39,24 @@ class BarChart extends React.Component {
 			]);
 
 		//Axes
-		this.xAxis = d3.axisBottom(this.xScale);
-		this.yAxis = d3.axisLeft(this.yScale);
+		this.xAxis = d3
+			.axisBottom(this.xScale)
+			.tickSizeOuter(
+				-(
+					this.svgDimensions.height -
+					this.margins.top -
+					this.margins.bottom
+				)
+			);
+		this.yAxis = d3
+			.axisLeft(this.yScale)
+			.tickSize(
+				-(
+					this.svgDimensions.width -
+					this.margins.right -
+					this.margins.left
+				)
+			);
 	}
 
 	componentDidMount() {
@@ -62,6 +78,9 @@ class BarChart extends React.Component {
 				[min, max] = d3.extent(
 					reversedScores.map(score => score[displayStat])
 				);
+				if (min > 0) {
+					min = 0;
+				}
 				break;
 			}
 			default: {
@@ -74,28 +93,15 @@ class BarChart extends React.Component {
 		this.yScale.domain([min, max]);
 
 		//Update x-axis labels with score data
-		this.xAxis
-			.tickSizeOuter(
-				-(
-					this.svgDimensions.height -
-					this.margins.top -
-					this.margins.bottom
-				)
-			)
-			.tickFormat(tick => {
-				//Find score where id matches the tick value
-				const filtered = reversedScores.filter(score => {
-					return score.id === tick;
-				});
-				//Return the date for the tick format
-				const dateString = dayjs(filtered[0].date).format(
-					"MMM D[,] YYYY"
-				);
-				return dateString;
+		this.xAxis.tickFormat(tick => {
+			//Find score where id matches the tick value
+			const filtered = reversedScores.filter(score => {
+				return score.id === tick;
 			});
-		this.yAxis.tickSize(
-			-(this.svgDimensions.width - this.margins.right - this.margins.left)
-		);
+			//Return the date for the tick format
+			const dateString = dayjs(filtered[0].date).format("MMM D[,] YYYY");
+			return dateString;
+		});
 
 		//Draw Axes
 		d3.select(this.refs.xAxis).call(this.xAxis);
@@ -128,6 +134,9 @@ class BarChart extends React.Component {
 					[min, max] = d3.extent(
 						reversedScores.map(score => score[displayStat])
 					);
+					if (min > 0) {
+						min = 0;
+					}
 					break;
 				}
 				default: {
@@ -142,32 +151,17 @@ class BarChart extends React.Component {
 			this.yScale.domain([min, max]);
 
 			//Update x-axis labels with score data
-			this.xAxis
-				.tickSizeOuter(
-					-(
-						this.svgDimensions.height -
-						this.margins.top -
-						this.margins.bottom
-					)
-				)
-				.tickFormat(tick => {
-					//Find score where id matches the tick value
-					const filtered = reversedScores.filter(score => {
-						return score.id === tick;
-					});
-					//Return the date for the tick format
-					const dateString = dayjs(filtered[0].date).format(
-						"MMM D[,] YYYY"
-					);
-					return dateString;
+			this.xAxis.tickFormat(tick => {
+				//Find score where id matches the tick value
+				const filtered = reversedScores.filter(score => {
+					return score.id === tick;
 				});
-			this.yAxis.tickSize(
-				-(
-					this.svgDimensions.width -
-					this.margins.right -
-					this.margins.left
-				)
-			);
+				//Return the date for the tick format
+				const dateString = dayjs(filtered[0].date).format(
+					"MMM D[,] YYYY"
+				);
+				return dateString;
+			});
 
 			//Draw Axes
 			d3.select(this.refs.xAxis).call(this.xAxis);
@@ -204,17 +198,6 @@ class BarChart extends React.Component {
 				);
 			});
 		}
-		// if (displayStat === "differential" && this.state.reversedScores.length > 0)
-		// 			{zeroLine = return <rect
-		// 				x={this.margins.left}
-		// 				y={this.yScale(0)}
-		// 				width={
-		// 					this.svgDimensions.width -
-		// 					this.margins.left -
-		// 					this.margins.right
-		// 				}
-		// 				height={1}
-		// 			/>}
 
 		return (
 			<svg

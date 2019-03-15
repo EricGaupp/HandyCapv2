@@ -5,9 +5,10 @@ import "./Home.css";
 
 const Home = () => {
 	return (
-		<div className="contentWrapper splashBackground">
-			<div className="container">
-				<div className="jumbotron transparent mt-4">
+		<React.Fragment>
+			<div className="splashBackground" />
+			<div className="container mt-4">
+				<div className="jumbotron transparent">
 					<h1 className="display-4">Welcome to HandyCap!</h1>
 					<p className="lead">
 						HandyCap is a score tracking and handicap calculation
@@ -22,7 +23,7 @@ const Home = () => {
 					<p>More potential information about HandyCap.</p>
 				</div>
 			</div>
-		</div>
+		</React.Fragment>
 	);
 };
 

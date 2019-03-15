@@ -10,16 +10,20 @@
 
 .positive {
 	fill: #0075c4;
+	stroke: #000;
 }
 
 .positive:hover {
 	fill: #2f4858;
+	stroke: #000;
 }
 
 .negative {
 	fill: #ba2d0b;
+	stroke: #000;
 }
 
 .negative:hover {
 	fill: #550c18;
+	stroke: #000;
 }

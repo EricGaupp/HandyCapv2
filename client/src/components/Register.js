@@ -60,103 +60,85 @@ class Register extends React.Component {
 			return <Redirect to="/dashboard" />;
 		}
 		return (
-			<div className="d-flex align-items-center splashBackground">
-				<div className="container">
-					<div className="row justify-content-center">
-						<div className="col registerContainer">
-							<div className="card shadow">
-								<div className="card-header">
-									<h3 className="text-center my-0">
-										Register
-									</h3>
+			<React.Fragment>
+				<div className="splashBackground" />
+				<div className="registerContainer">
+					<div className="registerCard card shadow">
+						<div className="card-header">
+							<h3 className="text-center my-0">Register</h3>
+						</div>
+						<div className="card-body">
+							<form>
+								<div className="form-group">
+									<label htmlFor="registerEmail">Email</label>
+									<input
+										type="email"
+										className="form-control"
+										id="registerEmail"
+										aria-describedby="emailHelp"
+										value={this.state.email}
+										onChange={this.handleEmailChange}
+									/>
 								</div>
-								<div className="card-body">
-									<form>
-										<div className="form-group">
-											<label htmlFor="registerEmail">
-												Email
-											</label>
-											<input
-												type="email"
-												className="form-control"
-												id="registerEmail"
-												aria-describedby="emailHelp"
-												value={this.state.email}
-												onChange={
-													this.handleEmailChange
-												}
-											/>
-										</div>
-										<div className="form-group">
-											<label htmlFor="registerPassword">
-												Password
-											</label>
-											<input
-												type="password"
-												className="form-control"
-												id="registerPassword"
-												value={this.state.password}
-												onChange={
-													this.handlePasswordChange
-												}
-											/>
-										</div>
-										<div className="form-group">
-											<label htmlFor="registerFirstName">
-												First Name
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="registerFirstName"
-												value={this.state.firstName}
-												onChange={
-													this.handleFirstNameChange
-												}
-											/>
-										</div>
-										<div className="form-group">
-											<label htmlFor="registerLastName">
-												Last Name
-											</label>
-											<input
-												type="text"
-												className="form-control"
-												id="registerLastName"
-												value={this.state.lastName}
-												onChange={
-													this.handleLastNameChange
-												}
-											/>
-										</div>
-										{/*Display Registration Error Messages*/}
-										{this.props.registerError && (
-											<p className="text-center loginError">
-												{
-													this.props
-														.registerErrorMessage
-												}
-											</p>
-										)}
-
-										<button
-											className="btn btn-lg btn-block btn-primary"
-											onClick={this.handleSubmit}
-										>
-											Submit
-										</button>
-									</form>
-									<hr />
-									<p className="text-center my-0">
-										Already Registered? Login{" "}
-										<Link to="/login">here</Link>
+								<div className="form-group">
+									<label htmlFor="registerPassword">
+										Password
+									</label>
+									<input
+										type="password"
+										className="form-control"
+										id="registerPassword"
+										value={this.state.password}
+										onChange={this.handlePasswordChange}
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="registerFirstName">
+										First Name
+									</label>
+									<input
+										type="text"
+										className="form-control"
+										id="registerFirstName"
+										value={this.state.firstName}
+										onChange={this.handleFirstNameChange}
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="registerLastName">
+										Last Name
+									</label>
+									<input
+										type="text"
+										className="form-control"
+										id="registerLastName"
+										value={this.state.lastName}
+										onChange={this.handleLastNameChange}
+									/>
+								</div>
+								{/*Display Registration Error Messages*/}
+								{this.props.registerError && (
+									<p className="text-center loginError">
+										{this.props.registerErrorMessage}
 									</p>
-								</div>
-							</div>
+								)}
+
+								<button
+									className="btn btn-lg btn-block btn-primary"
+									onClick={this.handleSubmit}
+								>
+									Submit
+								</button>
+							</form>
+							<hr />
+							<p className="text-center my-0">
+								Already Registered? Login{" "}
+								<Link to="/login">here</Link>
+							</p>
 						</div>
 					</div>
 				</div>
-			</div>
+			</React.Fragment>
 		);
 	}
 }

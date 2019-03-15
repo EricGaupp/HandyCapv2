@@ -3,9 +3,34 @@
 	/* Instead make it a dropdown inside the main navbar when collapsed*/
 }
 
+.dashboardContainer {
+	position: relative;
+	display: flex;
+	height: 100%;
+}
+
 @media screen and (min-width: 768px) {
 	.sidebar {
+		position: relative;
 		display: flex;
-		min-height: 100%;
+		flex-basis: 200px;
+		flex-grow: 0;
+		flex-shrink: 0;
+		height: 100%;
+		flex-direction: column;
+	}
+
+	.sidebar-item {
+		display: flex;
+		width: 100%;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.dashboardContent {
+		display: flex;
+		overflow: scroll;
+		width: 100%;
+		height: 100%;
 	}
 }
