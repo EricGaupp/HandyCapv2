@@ -16,7 +16,9 @@ class LineGraph extends React.Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		//Redraw SVG when window size changes
+		//Clear SVG when window size changes
+		select("#lineGraph").remove();
+		//Redraw chart with new dimensions
 		this.drawChart();
 	}
 
@@ -45,6 +47,7 @@ class LineGraph extends React.Component {
 		//Create SVG
 		const svg = select("#lineGraphContainer")
 			.append("svg")
+			.attr("id", "lineGraph")
 			.attr("width", width)
 			.attr("height", height);
 

@@ -1,3 +1,7 @@
+#lineGraphContainer {
+	height: 100%;
+}
+
 .line {
 	fill: none;
 	stroke: #ffab00;
