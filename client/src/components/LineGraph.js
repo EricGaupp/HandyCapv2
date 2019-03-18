@@ -35,6 +35,8 @@ class LineGraph extends React.Component {
 			);
 		});
 
+		console.log(lineData);
+
 		//Create SVG
 		const svg = select("#lineGraphContainer")
 			.append("svg")
@@ -63,6 +65,7 @@ class LineGraph extends React.Component {
 		//Create line generator
 		const line = d3Shape
 			.line(lineData)
+			.defined(d => d.y !== null)
 			.x(d => {
 				return xScale(d.x);
 			})
