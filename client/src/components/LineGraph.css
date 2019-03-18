@@ -3,3 +3,14 @@
 	stroke: #ffab00;
 	stroke-width: 3;
 }
+
+.dot {
+	fill: #ffab00;
+	stroke: #fff;
+	stroke-width: 3;
+}
+
+.dot:hover {
+	fill: #aabb00;
+	stroke: #fff;
+}

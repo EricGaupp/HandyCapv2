@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import LineGraph from "./LineGraph";
 
-import calculateHandicapIndex from "../utilities/calculateHandicapIndex";
+import calculateHandicapIndex from "utilities/calculateHandicapIndex";
 
 const mapStateToProps = state => {
 	return {
@@ -21,9 +21,18 @@ const HandicapGraphic = ({ scores }) => {
 		indexArray.push(index);
 	}
 
+	console.log(indexArray);
+
+	//Arrange up to the 20 latest scores in chronological order
+	//let lineGraphScores = scores.slice(0, 20).reverse();
+
+	//Determine and remove any null handicap index values
+	//const lastNull = indexArray.lastIndexOf(null);
+	//indexArray = indexArray.slice(lastNull,20)
+
 	if (indexArray[0]) {
 		return (
-			<React.Fragment>
+			<div id="lineGraphContainer">
 				<h3>{`Current Index: ${indexArray[0]}`}</h3>
 				<LineGraph
 					width={600}
@@ -31,7 +40,7 @@ const HandicapGraphic = ({ scores }) => {
 					scores={scores}
 					handicaps={indexArray}
 				/>
-			</React.Fragment>
+			</div>
 		);
 	} else {
 		return <h3>Need at least 5 rounds to have a valid handicap</h3>;

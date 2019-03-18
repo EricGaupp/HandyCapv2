@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { extent } from "d3-array";
 import * as d3Shape from "d3-shape";
-import { select } from "d3-selection";
+import { select, selectAll } from "d3-selection";
 import { axisBottom, axisLeft } from "d3-axis";
 
 import "./LineGraph.css";
@@ -15,13 +15,18 @@ class LineGraph extends React.Component {
 		this.drawChart();
 	}
 
-	componentDidUpdate(prevProps) {}
+	componentDidUpdate(prevProps) {
+		//Redraw SVG when window size changes
+		this.drawChart();
+	}
 
 	drawChart() {
 		const { width, height } = this.props;
 
 		//Consolidate Index and ScoreId data to a single array
-		const scores = this.props.scores.reverse();
+		const scores = this.props.scores
+			.slice(0, this.props.scores.length)
+			.reverse();
 		const handicaps = this.props.handicaps.reverse();
 
 		const lineData = scores.map((score, i) => {
@@ -56,11 +61,11 @@ class LineGraph extends React.Component {
 		]);
 
 		//Create Scale Domains based on score data
-		xScale.domain(scores.map(score => score.id));
+		xScale.domain(
+			lineData.filter(data => data.y !== null).map(data => data.x)
+		);
 		let [min, max] = extent(handicaps);
-		min = Math.round(min);
-		max = Math.round(max);
-		yScale.domain([min, max]);
+		yScale.domain([min, max]).nice();
 
 		//Create line generator
 		const line = d3Shape
@@ -71,20 +76,27 @@ class LineGraph extends React.Component {
 			})
 			.y(d => {
 				return yScale(d.y);
-			});
+			})
+			.curve(d3Shape.curveMonotoneX);
 
 		//Define Axes
 		const xAxis = axisBottom(xScale);
 		const yAxis = axisLeft(yScale);
-		xAxis.tickFormat(tick => {
-			//Find score where id matches the tick value
-			const filtered = scores.filter(score => {
-				return score.id === tick;
-			});
-			//Return the date for the tick format
-			const dateString = dayjs(filtered[0].date).format("MMM D[,] YYYY");
-			return dateString;
-		});
+
+		//Format ticks and labels
+		xAxis
+			.tickFormat(tick => {
+				//Find score where id matches the tick value
+				const filtered = scores.filter(score => {
+					return score.id === tick;
+				});
+				//Return the date for the tick format
+				const dateString = dayjs(filtered[0].date).format(
+					"MMM D[,] YYYY"
+				);
+				return dateString;
+			})
+			.tickSizeOuter(0);
 
 		//Draw Axes
 		svg.append("g")
@@ -110,10 +122,24 @@ class LineGraph extends React.Component {
 			)
 			.attr("class", "line")
 			.attr("d", line);
+
+		//Draw Circles on each datapoint
+		// svg.selectAll(".dot")
+		// 	.data(lineData)
+		// 	.enter()
+		// 	.append("circle") // Uses the enter().append() method
+		// 	.attr("class", "dot") // Assign a class for styling
+		// 	.attr("cx", d => {
+		// 		return xScale(d.x);
+		// 	})
+		// 	.attr("cy", d => {
+		// 		return yScale(d.y);
+		// 	})
+		// 	.attr("r", 5);
 	}
 
 	render() {
-		return <div id="lineGraphContainer" />;
+		return null;
 	}
 }
 
