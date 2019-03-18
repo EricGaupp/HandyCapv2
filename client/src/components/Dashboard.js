@@ -1,9 +1,9 @@
 import React from "react";
 
-import "Dashboard.css";
+import "./Dashboard.css";
 
-import DashboardNav from "DashboardNav";
-import DashboardContent from "DashboardContent";
+import DashboardNav from "./DashboardNav";
+import DashboardContent from "./DashboardContent";
 
 const Dashboard = props => {
 	return (

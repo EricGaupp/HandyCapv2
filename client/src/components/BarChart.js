@@ -1,6 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import * as d3 from "d3";
+import { scaleBand, scaleLinear } from "d3-scale";
+import { axisBottom, axisLeft } from "d3-axis";
+import { extent, max } from "d3-array";
+import { select } from "d3-selection";
 import dayjs from "dayjs";
 
 import "./BarChart.css";
@@ -24,39 +27,28 @@ class BarChart extends React.Component {
 		};
 		this.margins = { top: 20, right: 5, bottom: 60, left: 35 };
 		//Scales
-		this.xScale = d3
-			.scaleBand()
+		this.xScale = scaleBand()
 			.padding(0.5)
 			.rangeRound([
 				this.margins.left,
 				this.svgDimensions.width - this.margins.right
 			]);
-		this.yScale = d3
-			.scaleLinear()
-			.range([
-				this.svgDimensions.height - this.margins.bottom,
-				this.margins.top
-			]);
+		this.yScale = scaleLinear().range([
+			this.svgDimensions.height - this.margins.bottom,
+			this.margins.top
+		]);
 
 		//Axes
-		this.xAxis = d3
-			.axisBottom(this.xScale)
-			.tickSizeOuter(
-				-(
-					this.svgDimensions.height -
-					this.margins.top -
-					this.margins.bottom
-				)
-			);
-		this.yAxis = d3
-			.axisLeft(this.yScale)
-			.tickSize(
-				-(
-					this.svgDimensions.width -
-					this.margins.right -
-					this.margins.left
-				)
-			);
+		this.xAxis = axisBottom(this.xScale).tickSizeOuter(
+			-(
+				this.svgDimensions.height -
+				this.margins.top -
+				this.margins.bottom
+			)
+		);
+		this.yAxis = axisLeft(this.yScale).tickSize(
+			-(this.svgDimensions.width - this.margins.right - this.margins.left)
+		);
 	}
 
 	componentDidMount() {
@@ -75,7 +67,7 @@ class BarChart extends React.Component {
 			max;
 		switch (displayStat) {
 			case "differential": {
-				[min, max] = d3.extent(
+				[min, max] = extent(
 					reversedScores.map(score => score[displayStat])
 				);
 				if (min > 0) {
@@ -84,7 +76,7 @@ class BarChart extends React.Component {
 				break;
 			}
 			default: {
-				max = d3.max(reversedScores.map(score => score[displayStat]));
+				max = max(reversedScores.map(score => score[displayStat]));
 			}
 		}
 
@@ -104,8 +96,8 @@ class BarChart extends React.Component {
 		});
 
 		//Draw Axes
-		d3.select(this.refs.xAxis).call(this.xAxis);
-		d3.select(this.refs.yAxis).call(this.yAxis);
+		select(this.refs.xAxis).call(this.xAxis);
+		select(this.refs.yAxis).call(this.yAxis);
 
 		this.setState({ reversedScores });
 	}
@@ -131,7 +123,7 @@ class BarChart extends React.Component {
 				max;
 			switch (displayStat) {
 				case "differential": {
-					[min, max] = d3.extent(
+					[min, max] = extent(
 						reversedScores.map(score => score[displayStat])
 					);
 					if (min > 0) {
@@ -140,9 +132,7 @@ class BarChart extends React.Component {
 					break;
 				}
 				default: {
-					max = d3.max(
-						reversedScores.map(score => score[displayStat])
-					);
+					max = max(reversedScores.map(score => score[displayStat]));
 				}
 			}
 
@@ -164,8 +154,8 @@ class BarChart extends React.Component {
 			});
 
 			//Draw Axes
-			d3.select(this.refs.xAxis).call(this.xAxis);
-			d3.select(this.refs.yAxis).call(this.yAxis);
+			select(this.refs.xAxis).call(this.xAxis);
+			select(this.refs.yAxis).call(this.yAxis);
 
 			this.setState({ reversedScores });
 		}
@@ -175,35 +165,24 @@ class BarChart extends React.Component {
 			prevProps.height !== this.props.height
 		) {
 			//Scales
-			this.xScale = d3
-				.scaleBand()
+			this.xScale = scaleBand()
 				.padding(0.5)
 				.rangeRound([
 					this.margins.left,
 					this.props.width - this.margins.right
 				]);
-			this.yScale = d3
-				.scaleLinear()
-				.range([
-					this.props.height - this.margins.bottom,
-					this.margins.top
-				]);
+			this.yScale = scaleLinear().range([
+				this.props.height - this.margins.bottom,
+				this.margins.top
+			]);
 
 			//Axes
-			this.xAxis = d3
-				.axisBottom(this.xScale)
-				.tickSizeOuter(
-					-(
-						this.props.height -
-						this.margins.top -
-						this.margins.bottom
-					)
-				);
-			this.yAxis = d3
-				.axisLeft(this.yScale)
-				.tickSize(
-					-(this.props.width - this.margins.right - this.margins.left)
-				);
+			this.xAxis = axisBottom(this.xScale).tickSizeOuter(
+				-(this.props.height - this.margins.top - this.margins.bottom)
+			);
+			this.yAxis = axisLeft(this.yScale).tickSize(
+				-(this.props.width - this.margins.right - this.margins.left)
+			);
 			//Score data sorted in chronological order
 			const { scores, displayStat } = this.props;
 			let reversedScores;
@@ -219,7 +198,7 @@ class BarChart extends React.Component {
 				max;
 			switch (displayStat) {
 				case "differential": {
-					[min, max] = d3.extent(
+					[min, max] = extent(
 						reversedScores.map(score => score[displayStat])
 					);
 					if (min > 0) {
@@ -228,9 +207,7 @@ class BarChart extends React.Component {
 					break;
 				}
 				default: {
-					max = d3.max(
-						reversedScores.map(score => score[displayStat])
-					);
+					max = max(reversedScores.map(score => score[displayStat]));
 				}
 			}
 			//Update scales with score data
@@ -250,8 +227,8 @@ class BarChart extends React.Component {
 				return dateString;
 			});
 			//Draw Axes
-			d3.select(this.refs.xAxis).call(this.xAxis);
-			d3.select(this.refs.yAxis).call(this.yAxis);
+			select(this.refs.xAxis).call(this.xAxis);
+			select(this.refs.yAxis).call(this.yAxis);
 		}
 	}
 

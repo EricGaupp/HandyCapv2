@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { registerUser } from "../actions/userActions";
 import { Link, Redirect } from "react-router-dom";
 
-import "Register.css";
+import { registerUser } from "actions/userActions";
+
+import "./Register.css";
 
 const mapStateToProps = state => {
 	return {

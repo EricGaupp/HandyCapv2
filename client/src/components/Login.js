@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { login } from "../actions/userActions";
 import { Link, Redirect } from "react-router-dom";
 
-import "Login.css";
+import { login } from "actions/userActions";
+
+import "./Login.css";
 
 const mapStateToProps = state => {
 	return {

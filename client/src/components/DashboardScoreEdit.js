@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 import { deleteScore } from "../actions/scoresActions";
 
-import "DashboardScoreEdit.css";
+import "./DashboardScoreEdit.css";
 
 const mapStateToProps = state => {
 	return {

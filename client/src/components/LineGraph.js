@@ -1,13 +1,12 @@
 import React from "react";
-import {
-	axisBottom,
-	axisLeft,
-	extent,
-	line,
-	select,
-	scalePoint,
-	scaleLinear
-} from "d3";
+import dayjs from "dayjs";
+import { scaleLinear, scalePoint } from "d3-scale";
+import { extent } from "d3-array";
+import * as d3Shape from "d3-shape";
+import { select } from "d3-selection";
+import { axisBottom, axisLeft } from "d3-axis";
+
+import "./LineGraph.css";
 
 class LineGraph extends React.Component {
 	margins = { top: 20, right: 5, bottom: 60, left: 35 };
@@ -20,6 +19,22 @@ class LineGraph extends React.Component {
 
 	drawChart() {
 		const { width, height } = this.props;
+
+		//Consolidate Index and ScoreId data to a single array
+		const scores = this.props.scores.reverse();
+		const handicaps = this.props.handicaps.reverse();
+
+		const lineData = scores.map((score, i) => {
+			return Object.assign(
+				{},
+				{
+					x: score.id,
+					y: handicaps[i],
+					date: score.date
+				}
+			);
+		});
+
 		//Create SVG
 		const svg = select("#lineGraphContainer")
 			.append("svg")
@@ -39,21 +54,36 @@ class LineGraph extends React.Component {
 		]);
 
 		//Create Scale Domains based on score data
-		xScale.domain(this.props.scores.map(score => score.id));
-		yScale.domain(extent(this.props.handicaps));
+		xScale.domain(scores.map(score => score.id));
+		let [min, max] = extent(handicaps);
+		min = Math.round(min);
+		max = Math.round(max);
+		yScale.domain([min, max]);
 
-		//Create line
-		// //const line = line()
-		// 	.x(d => {
-		// 		return xScale(d.id);
-		// 	})
-		// 	.y(d => {
-		// 		d;
-		// 	});
+		//Create line generator
+		const line = d3Shape
+			.line(lineData)
+			.x(d => {
+				return xScale(d.x);
+			})
+			.y(d => {
+				return yScale(d.y);
+			});
 
-		//Axes
+		//Define Axes
 		const xAxis = axisBottom(xScale);
 		const yAxis = axisLeft(yScale);
+		xAxis.tickFormat(tick => {
+			//Find score where id matches the tick value
+			const filtered = scores.filter(score => {
+				return score.id === tick;
+			});
+			//Return the date for the tick format
+			const dateString = dayjs(filtered[0].date).format("MMM D[,] YYYY");
+			return dateString;
+		});
+
+		//Draw Axes
 		svg.append("g")
 			.attr(
 				"transform",
@@ -67,6 +97,16 @@ class LineGraph extends React.Component {
 				`translate(${this.margins.left},${this.margins.top})`
 			)
 			.call(yAxis);
+
+		//Draw Line
+		svg.append("path")
+			.datum(lineData)
+			.attr(
+				"transform",
+				`translate(${this.margins.left},${this.margins.top})`
+			)
+			.attr("class", "line")
+			.attr("d", line);
 	}
 
 	render() {

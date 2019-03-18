@@ -2,18 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import { verifyUserByToken } from "../actions/userActions";
+import { verifyUserByToken } from "actions/userActions";
 
-import Dashboard from "Dashboard";
-import Footer from "Footer";
-import Home from "Home";
-import Login from "Login";
-import Navbar from "Navbar";
-import News from "News";
-import Register from "Register";
-import PrivateRoute from "PrivateRoute";
+import Dashboard from "components/Dashboard";
+import Footer from "components/Footer";
+import Home from "components/Home";
+import Login from "components/Login";
+import Navbar from "components/Navbar";
+import News from "components/News";
+import Register from "components/Register";
+import PrivateRoute from "components/PrivateRoute";
 
-import "App.css";
+import "./App.css";
 
 const mapDispatchToProps = dispatch => {
   return {

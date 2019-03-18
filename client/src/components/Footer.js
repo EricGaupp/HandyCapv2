@@ -1,7 +1,7 @@
 import React from "react";
 
 import { FiGithub, FiLinkedin, FiLink } from "react-icons/fi";
-import "Footer.css";
+import "./Footer.css";
 
 const Footer = () => {
 	return (
