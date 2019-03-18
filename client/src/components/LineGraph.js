@@ -124,18 +124,22 @@ class LineGraph extends React.Component {
 			.attr("d", line);
 
 		//Draw Circles on each datapoint
-		// svg.selectAll(".dot")
-		// 	.data(lineData)
-		// 	.enter()
-		// 	.append("circle") // Uses the enter().append() method
-		// 	.attr("class", "dot") // Assign a class for styling
-		// 	.attr("cx", d => {
-		// 		return xScale(d.x);
-		// 	})
-		// 	.attr("cy", d => {
-		// 		return yScale(d.y);
-		// 	})
-		// 	.attr("r", 5);
+		svg.selectAll(".dot")
+			.data(lineData)
+			.enter()
+			.append("circle") // Uses the enter().append() method
+			.attr(
+				"transform",
+				`translate(${this.margins.left},${this.margins.top})`
+			)
+			.attr("class", "dot") // Assign a class for styling
+			.attr("cx", d => {
+				return xScale(d.x);
+			})
+			.attr("cy", d => {
+				return yScale(d.y);
+			})
+			.attr("r", 5);
 	}
 
 	render() {
