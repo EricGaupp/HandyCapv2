@@ -1,30 +1,33 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import Select from "react-select";
 import BarChart from "./BarChart";
 
+const mapStateToProps = state => {
+	return {
+		scores: state.scores.data
+	};
+};
+
 class DashboardStats extends React.Component {
-	constructor(props) {
-		super(props);
+	state = {
+		containerWidth: 0,
+		containerHeight: 0,
+		selectOptions: [
+			{ value: "differential", label: "Differentials" },
+			{ value: "gross", label: "Gross" },
+			{ value: "adjustedGross", label: "Adjusted Gross" },
+			{ value: "net", label: "Net" }
+		],
+		statToDisplay: "differential"
+	};
 
-		this.container = null;
+	container = null;
 
-		this.setRef = element => {
-			this.container = element;
-		};
-
-		this.state = {
-			containerWidth: null,
-			containerHeight: null,
-			selectOptions: [
-				{ value: "differential", label: "Differentials" },
-				{ value: "gross", label: "Gross" },
-				{ value: "adjustedGross", label: "Adjusted Gross" },
-				{ value: "net", label: "Net" }
-			],
-			statToDisplay: "differential"
-		};
-	}
+	setRef = element => {
+		this.container = element;
+	};
 
 	onSelectChange = option => {
 		this.setState({ statToDisplay: option.value });
@@ -58,33 +61,36 @@ class DashboardStats extends React.Component {
 			selectOptions,
 			statToDisplay
 		} = this.state;
-		//Account for container padding
-		const width = containerWidth - 30;
-		const height = containerHeight - 56 - 38;
+		//Arrange 20 most recent scores in chronological order to pass to BarChart component
+		const scores = this.props.scores.slice(0, 20).reverse();
+
 		return (
-			<div className="container-fluid" ref={this.setRef}>
-				{containerWidth && (
-					<React.Fragment>
-						<h1>{`Width: ${containerWidth}, Height: ${containerHeight}`}</h1>
-						<Select
-							id="statSelect"
-							autoFocus={true}
-							isClearable={false}
-							isSearchable={false}
-							defaultValue={this.state.selectOptions[0]}
-							options={selectOptions}
-							onChange={this.onSelectChange}
-						/>
+			<div className="container-fluid">
+				<div id="barChartContainer" ref={this.setRef}>
+					<Select
+						id="statSelect"
+						autoFocus={true}
+						isClearable={false}
+						isSearchable={false}
+						defaultValue={this.state.selectOptions[0]}
+						options={selectOptions}
+						onChange={this.onSelectChange}
+					/>
+					{containerHeight > 0 && (
 						<BarChart
 							displayStat={statToDisplay}
-							width={width}
-							height={height}
+							width={containerWidth}
+							height={containerHeight - 38}
+							scores={scores}
 						/>
-					</React.Fragment>
-				)}
+					)}
+				</div>
 			</div>
 		);
 	}
 }
 
-export default DashboardStats;
+export default connect(
+	mapStateToProps,
+	null
+)(DashboardStats);

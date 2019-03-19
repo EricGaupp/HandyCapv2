@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { extent } from "d3-array";
 import * as d3Shape from "d3-shape";
-import { select, selectAll } from "d3-selection";
+import { select } from "d3-selection";
 import { axisBottom, axisLeft } from "d3-axis";
 
 import "./LineGraph.css";
@@ -41,8 +41,6 @@ class LineGraph extends React.Component {
 				}
 			);
 		});
-
-		console.log(lineData);
 
 		//Create SVG
 		const svg = select("#lineGraphContainer")
