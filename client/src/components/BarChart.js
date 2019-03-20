@@ -2,6 +2,7 @@ import React from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
 import { axisBottom, axisLeft } from "d3-axis";
 import * as d3Array from "d3-array";
+import * as d3Shape from "d3-shape";
 import { select } from "d3-selection";
 import dayjs from "dayjs";
 
@@ -61,6 +62,7 @@ class BarChart extends React.Component {
 		const xAxis = axisBottom(xScale);
 		const yAxis = axisLeft(yScale);
 
+		//Format ticks
 		xAxis
 			.tickFormat(tick => {
 				//Find score where id matches the tick value
@@ -73,7 +75,8 @@ class BarChart extends React.Component {
 				);
 				return dateString;
 			})
-			.tickSizeOuter(0);
+			.tickSizeOuter(-(height - this.margins.top - this.margins.bottom));
+		yAxis.tickSize(-(width - this.margins.right - this.margins.left));
 
 		//Draw Axes
 		chartArea
@@ -84,13 +87,27 @@ class BarChart extends React.Component {
 					this.margins.bottom -
 					this.margins.top})`
 			)
+			.attr("class", "xAxis")
 			.call(xAxis);
-		chartArea.append("g").call(yAxis);
+		chartArea
+			.append("g")
+			.attr("class", "yAxis")
+			.call(yAxis);
+
+		//Draw Line at y=0 for differential
+		// if (displayStat === "differential") {
+		// 	const yLineData = { x: this.margins.left, y: yScale(0) };
+		// 	const yLine = d3Shape.line(yLineData)
+		// 	chartArea
+		// 		.select(".yLine")
+		// 		.data(yLine)
+		// 		.enter()
+		// 		.append();
+		// }
 
 		//Draw Bars
-		//TODO: Deal with Negative differentials and conditionally adding a class name
 		chartArea
-			.selectAll(".positive")
+			.selectAll(".bar")
 			.data(
 				scores.map(score => {
 					return Object.assign(
@@ -101,17 +118,20 @@ class BarChart extends React.Component {
 			)
 			.enter()
 			.append("rect")
-			.attr("class", "positive")
+			.attr("class", "bar")
+			.classed("positive", d => {
+				return d.y > 0;
+			})
+			.classed("negative", d => {
+				return d.y <= 0;
+			})
 			.attr("x", d => xScale(d.x))
-			.attr("y", d => yScale(d.y))
+			.attr("y", d => {
+				return Math.min(yScale(d.y), yScale(0));
+			})
 			.attr("width", xScale.bandwidth())
 			.attr("height", d => {
-				return (
-					height -
-					this.margins.top -
-					this.margins.bottom -
-					yScale(d.y)
-				);
+				return Math.abs(yScale(d.y) - yScale(0));
 			});
 	}
 

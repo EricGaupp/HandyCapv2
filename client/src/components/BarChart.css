@@ -3,32 +3,38 @@
 	min-height: 350px;
 }
 
-.axis text {
+.xAxis text {
 	font-size: 11px;
 	fill: black;
-}
-
-.axis-bottom text {
 	transform: rotate(-45deg);
 	text-anchor: end;
 }
 
+.yAxis text {
+	font-size: 11px;
+	color: black;
+}
+
+.yAxis line {
+	stroke: lightgrey;
+	opacity: 0.3;
+}
+
+.bar {
+	stroke: #000;
+}
 .positive {
 	fill: #0075c4;
-	stroke: #000;
 }
 
 .positive:hover {
 	fill: #2f4858;
-	stroke: #000;
 }
 
 .negative {
 	fill: #ba2d0b;
-	stroke: #000;
 }
 
 .negative:hover {
 	fill: #550c18;
-	stroke: #000;
 }

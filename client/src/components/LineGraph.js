@@ -126,7 +126,11 @@ class LineGraph extends React.Component {
 
 		//Draw Circles on each datapoint
 		svg.selectAll(".dot")
-			.data(lineData)
+			.data(
+				lineData.filter(d => {
+					return d.y !== null;
+				})
+			)
 			.enter()
 			.append("circle") // Uses the enter().append() method
 			.attr(
