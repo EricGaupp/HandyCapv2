@@ -5,8 +5,8 @@ import { FiEdit2, FiFlag, FiHome, FiTrendingUp } from "react-icons/fi";
 
 const DashboardNav = props => {
 	return (
-		<div className="sidebar bg-light">
-			<Link to={`${props.match.url}`} className="nav-link text-dark">
+		<div className="sidebar">
+			<Link to={`${props.match.url}`} className="nav-link text-light">
 				<div className="sidebar-item">
 					<FiHome />
 					<span className="ml-1">Home</span>
@@ -14,7 +14,7 @@ const DashboardNav = props => {
 			</Link>
 			<Link
 				to={`${props.match.url}/scores`}
-				className="nav-link text-dark"
+				className="nav-link text-light"
 			>
 				<div className="sidebar-item">
 					<FiFlag />
@@ -23,14 +23,17 @@ const DashboardNav = props => {
 			</Link>
 			<Link
 				to={`${props.match.url}/stats`}
-				className="nav-link text-dark"
+				className="nav-link text-light"
 			>
 				<div className="sidebar-item">
 					<FiTrendingUp />
 					<span className="ml-1">Stats</span>
 				</div>
 			</Link>
-			<Link to={`${props.match.url}/post`} className="nav-link text-dark">
+			<Link
+				to={`${props.match.url}/post`}
+				className="nav-link text-light"
+			>
 				<div className="sidebar-item">
 					<FiEdit2 />
 					<span className="ml-1">Post Score</span>

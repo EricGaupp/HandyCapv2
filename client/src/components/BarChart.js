@@ -94,17 +94,6 @@ class BarChart extends React.Component {
 			.attr("class", "yAxis")
 			.call(yAxis);
 
-		//Draw Line at y=0 for differential
-		// if (displayStat === "differential") {
-		// 	const yLineData = { x: this.margins.left, y: yScale(0) };
-		// 	const yLine = d3Shape.line(yLineData)
-		// 	chartArea
-		// 		.select(".yLine")
-		// 		.data(yLine)
-		// 		.enter()
-		// 		.append();
-		// }
-
 		//Draw Bars
 		chartArea
 			.selectAll(".bar")

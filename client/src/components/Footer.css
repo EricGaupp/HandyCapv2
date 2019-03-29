@@ -1,14 +1,15 @@
 .footer {
 	width: 100%;
-	height: 46px; /* Set the fixed height of the footer here */
+	height: 46px;
+	background-color: #d9d9d6;
+}
+
+.footer a {
+	color: #fade47;
 }
 
 .logoContainer {
-	background-color: #50c721;
+	background-color: #406347;
 	height: 38px;
 	width: 38px;
-}
-
-.svgLink {
-	color: black;
 }

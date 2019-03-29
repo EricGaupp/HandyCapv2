@@ -5,7 +5,7 @@ import "./Footer.css";
 
 const Footer = () => {
 	return (
-		<footer className="d-flex align-items-center footer bg-dark fixed-bottom">
+		<footer className="d-flex align-items-center footer fixed-bottom">
 			<div className="container">
 				<div className="row">
 					<div className="d-flex col align-items-center justify-content-end">
@@ -13,26 +13,17 @@ const Footer = () => {
 							{"\u00A9"} Eric Gaupp 2018
 						</span>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a
-								className="svgLink align-middle"
-								href="https://www.linkedin.com/in/ericgaupp"
-							>
+							<a href="https://www.linkedin.com/in/ericgaupp">
 								<FiLink />
 							</a>
 						</div>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a
-								className="svgLink align-middle"
-								href="https://www.linkedin.com/in/ericgaupp"
-							>
+							<a href="https://www.linkedin.com/in/ericgaupp">
 								<FiLinkedin />
 							</a>
 						</div>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a
-								className="svgLink"
-								href="https://github.com/EricGaupp"
-							>
+							<a href="https://github.com/EricGaupp">
 								<FiGithub />
 							</a>
 						</div>

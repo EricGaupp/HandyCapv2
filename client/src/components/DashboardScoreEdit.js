@@ -30,8 +30,8 @@ const DashboardScoreEdit = props => {
 		<div className="container-fluid">
 			<div className="row justify-content-center">
 				<div className="col-md-6">
-					<div className="card">
-						<h4 className="card-header">Score Details</h4>
+					<div className="card shadow mt-2">
+						<h4 className="card-header">Round Details</h4>
 						<div className="card-body px-0 py-0">
 							<table className="table text-center my-0">
 								<thead className="thead-dark">

@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 
 import { logout } from "../actions/userActions";
 
+import { IconContext } from "react-icons";
+import { FiMenu } from "react-icons/fi";
+
 const mapDispatchToProps = dispatch => {
 	return {
 		logout: () => dispatch(logout())
@@ -13,7 +16,7 @@ const mapDispatchToProps = dispatch => {
 
 const UserNav = props => {
 	return (
-		<nav className="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+		<nav className="navbar navbar-expand-md fixed-top">
 			<Link to="/" className="navbar-brand">
 				HandyCap
 			</Link>
@@ -26,7 +29,11 @@ const UserNav = props => {
 				aria-expanded="false"
 				aria-label="Toggle navigation"
 			>
-				<span className="navbar-toggler-icon" />
+				<IconContext.Provider
+					value={{ color: "#406347", size: "1.25em" }}
+				>
+					<FiMenu />
+				</IconContext.Provider>
 			</button>
 			<div
 				className="collapse navbar-collapse justify-content-end"

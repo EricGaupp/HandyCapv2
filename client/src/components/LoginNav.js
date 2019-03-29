@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const LoginNav = () => {
 	return (
-		<nav className="navbar navbar-dark fixed-top bg-dark">
+		<nav className="navbar fixed-top">
 			<Link to="/" className="navbar-brand">
 				HandyCap
 			</Link>
