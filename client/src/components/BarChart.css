@@ -24,15 +24,15 @@
 	stroke: #000;
 }
 .positive {
-	fill: #0075c4;
+	fill: #fade47;
 }
 
 .positive:hover {
-	fill: #2f4858;
+	fill: #86bbd8;
 }
 
 .negative {
-	fill: #ba2d0b;
+	fill: #d7544d;
 }
 
 .negative:hover {

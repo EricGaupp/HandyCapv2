@@ -2,7 +2,6 @@ import React from "react";
 import { scaleBand, scaleLinear } from "d3-scale";
 import { axisBottom, axisLeft } from "d3-axis";
 import * as d3Array from "d3-array";
-import * as d3Shape from "d3-shape";
 import { select } from "d3-selection";
 import dayjs from "dayjs";
 
@@ -55,6 +54,8 @@ class BarChart extends React.Component {
 				max = d3Array.max(scores.map(score => score[displayStat]));
 			}
 		}
+		min = min * 1.05;
+		max = max * 1.05;
 		xScale.domain(scores.map(score => score.id));
 		yScale.domain([min, max]).nice();
 

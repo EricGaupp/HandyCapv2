@@ -41,13 +41,24 @@ class DashboardHome extends React.Component {
 
 	render() {
 		const { scores } = this.props;
-		let indexArray = [];
+
+		//Create an array of objects containing date, scoreId and handicap index data to pass in as a prop to linegraph
+		const handicapIndexArray = [];
+
 		//Calculate the handicap index for each of the 20 most recent scores
 		for (let i = 0; i < Math.min(scores.length, 20); i++) {
-			//Grab the interval of scores
-			let indexScores = scores.slice(i, i + 20);
-			const index = calculateHandicapIndex(indexScores);
-			indexArray.push(index);
+			//Grab the interval of scores relevant to handicap calculation (previous 20 rounds at most)
+			const indexScores = scores.slice(i, i + 20);
+			const handicapIndex = calculateHandicapIndex(indexScores);
+			const dataPoint = Object.assign(
+				{},
+				{
+					id: scores[i].id,
+					date: scores[i].date,
+					handicapIndex: handicapIndex
+				}
+			);
+			handicapIndexArray.unshift(dataPoint);
 		}
 
 		return (
@@ -57,8 +68,7 @@ class DashboardHome extends React.Component {
 						<LineGraph
 							width={this.state.containerWidth}
 							height={this.state.containerHeight}
-							scores={scores}
-							handicaps={indexArray}
+							handicaps={handicapIndexArray}
 						/>
 					) : (
 						<h3>Need at least 5 rounds to have a valid handicap</h3>

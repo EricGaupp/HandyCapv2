@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import "./Home.css";
 
@@ -17,10 +16,15 @@ const Home = () => {
 						enter your score. HandyCap will automatically calculate
 						your handicap after enough rounds have been tracked.
 						Learn more about handicap calculation{" "}
-						<Link to="/calculate">here</Link>.
+						<a
+							rel="noopener noreferrer"
+							target="_blank"
+							href="http://www.usga.org/handicapping/handicap-manual.html#!rule-14367"
+						>
+							here
+						</a>
+						.
 					</p>
-					<hr className="my-4" />
-					<p>More potential information about HandyCap.</p>
 				</div>
 			</div>
 		</React.Fragment>

@@ -13,17 +13,29 @@ const Footer = () => {
 							{"\u00A9"} Eric Gaupp 2018
 						</span>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a href="https://www.linkedin.com/in/ericgaupp">
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								href="https://www.linkedin.com/in/ericgaupp"
+							>
 								<FiLink />
 							</a>
 						</div>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a href="https://www.linkedin.com/in/ericgaupp">
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								href="https://www.linkedin.com/in/ericgaupp"
+							>
 								<FiLinkedin />
 							</a>
 						</div>
 						<div className="d-flex align-items-center justify-content-center logoContainer rounded-circle mx-1">
-							<a href="https://github.com/EricGaupp">
+							<a
+								rel="noopener noreferrer"
+								target="_blank"
+								href="https://github.com/EricGaupp"
+							>
 								<FiGithub />
 							</a>
 						</div>

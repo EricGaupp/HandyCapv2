@@ -3,13 +3,14 @@ import dayjs from "dayjs";
 import { scaleLinear, scalePoint } from "d3-scale";
 import { extent } from "d3-array";
 import * as d3Shape from "d3-shape";
-import { select } from "d3-selection";
+import * as d3Select from "d3-selection";
+import "d3-transition";
 import { axisBottom, axisLeft } from "d3-axis";
 
 import "./LineGraph.css";
 
 class LineGraph extends React.Component {
-	margins = { top: 20, right: 5, bottom: 60, left: 35 };
+	margins = { top: 20, right: 5, bottom: 70, left: 70 };
 
 	componentDidMount() {
 		this.drawChart();
@@ -17,37 +18,42 @@ class LineGraph extends React.Component {
 
 	componentDidUpdate(prevProps) {
 		//Clear SVG when window size changes
-		select("#lineGraph").remove();
+		d3Select.select("#lineGraph").remove();
 		//Redraw chart with new dimensions
 		this.drawChart();
 	}
 
 	drawChart() {
-		const { width, height } = this.props;
+		const { width, height, handicaps } = this.props;
 
-		//Consolidate Index and ScoreId data to a single array
-		const scores = this.props.scores
-			.slice(0, this.props.scores.length)
-			.reverse();
-		const handicaps = this.props.handicaps.reverse();
-
-		const lineData = scores.map((score, i) => {
-			return Object.assign(
-				{},
-				{
-					x: score.id,
-					y: handicaps[i],
-					date: score.date
-				}
-			);
-		});
+		//Filter out null data and map to d3 linedata format
+		const lineData = handicaps
+			.filter(d => d.handicapIndex !== null)
+			.map(d => {
+				return Object.assign(
+					{},
+					{
+						x: d.id,
+						y: d.handicapIndex,
+						date: d.date
+					}
+				);
+			});
 
 		//Create SVG
-		const svg = select("#lineGraphContainer")
+		const svg = d3Select
+			.select("#lineGraphContainer")
 			.append("svg")
 			.attr("id", "lineGraph")
 			.attr("width", width)
 			.attr("height", height);
+
+		//Create Tooltip Div
+		const tooltip = d3Select
+			.select("body")
+			.append("div")
+			.attr("class", "tooltip")
+			.style("opacity", 0);
 
 		//Create Scale Ranges based on container size
 		const xScale = scalePoint()
@@ -62,16 +68,17 @@ class LineGraph extends React.Component {
 		]);
 
 		//Create Scale Domains based on score data
-		xScale.domain(
-			lineData.filter(data => data.y !== null).map(data => data.x)
-		);
-		let [min, max] = extent(handicaps);
+		xScale.domain(lineData.map(data => data.x));
+
+		//Buffer y scale range by 5% of min and max values
+		let [min, max] = extent(lineData.map(data => data.y));
+		min = min * 1.05;
+		max = max * 1.05;
 		yScale.domain([min, max]).nice();
 
 		//Create line generator
 		const line = d3Shape
 			.line(lineData)
-			.defined(d => d.y !== null)
 			.x(d => {
 				return xScale(d.x);
 			})
@@ -88,7 +95,7 @@ class LineGraph extends React.Component {
 		xAxis
 			.tickFormat(tick => {
 				//Find score where id matches the tick value
-				const filtered = scores.filter(score => {
+				const filtered = handicaps.filter(score => {
 					return score.id === tick;
 				});
 				//Return the date for the tick format
@@ -106,13 +113,26 @@ class LineGraph extends React.Component {
 				`translate(${this.margins.left},${height -
 					this.margins.bottom})`
 			)
+			.attr("class", "xAxis")
 			.call(xAxis);
+
 		svg.append("g")
 			.attr(
 				"transform",
 				`translate(${this.margins.left},${this.margins.top})`
 			)
 			.call(yAxis);
+
+		//Draw Y Axis Label
+		svg.append("text")
+			.attr("class", "axisLabel")
+			.attr(
+				"transform",
+				`translate(${5},${this.margins.top +
+					(height - this.margins.top - this.margins.bottom) /
+						2}) rotate(-90)`
+			)
+			.text("Handicap Index");
 
 		//Draw Line
 		svg.append("path")
@@ -126,25 +146,37 @@ class LineGraph extends React.Component {
 
 		//Draw Circles on each datapoint
 		svg.selectAll(".dot")
-			.data(
-				lineData.filter(d => {
-					return d.y !== null;
-				})
-			)
+			.data(lineData)
 			.enter()
-			.append("circle") // Uses the enter().append() method
+			.append("circle")
 			.attr(
 				"transform",
 				`translate(${this.margins.left},${this.margins.top})`
 			)
-			.attr("class", "dot") // Assign a class for styling
+			.attr("class", "dot")
 			.attr("cx", d => {
 				return xScale(d.x);
 			})
 			.attr("cy", d => {
 				return yScale(d.y);
 			})
-			.attr("r", 5);
+			.attr("r", 6)
+			.on("mouseover", d => {
+				tooltip
+					.transition()
+					.duration(200)
+					.style("opacity", 0.9);
+				tooltip
+					.html(d.y)
+					.style("left", `${d3Select.event.pageX}px`)
+					.style("top", `${d3Select.event.pageY - 28}px`);
+			})
+			.on("mouseout", d => {
+				tooltip
+					.transition()
+					.duration(100)
+					.style("opacity", 0);
+			});
 	}
 
 	render() {

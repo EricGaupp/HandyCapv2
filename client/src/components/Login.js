@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
-import { login } from "actions/userActions";
+import { clearLoginError, login } from "actions/userActions";
 
 import "./Login.css";
 
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		login: (email, password) => dispatch(login(email, password))
+		login: (email, password) => dispatch(login(email, password)),
+		clearLoginError: () => dispatch(clearLoginError())
 	};
 };
 
@@ -47,6 +48,10 @@ class Login extends React.Component {
 		this.props.login(email, password);
 	};
 
+	componentWillUnmount() {
+		this.props.clearLoginError();
+	}
+
 	render() {
 		//Redirect to dashboard if user is authenticated in redux user state
 		if (this.props.isAuthenticated) {
@@ -57,11 +62,11 @@ class Login extends React.Component {
 				<div className="splashBackground" />
 				<div className="loginContainer">
 					<div className="loginCard card shadow text-center">
-						<div className="card-header">
+						<div className="card-header loginHeader">
 							<h3 className="my-0">Sign In</h3>
 						</div>
-						<div className="card-body">
-							{/*TODO Show Spinner Component if redux user state isFetching=true (use ternary within bootstrap containers)*/}
+						<div className="card-body loginBody">
+							{/*TODO Show Spinner Component if redux user state isFetching=true */}
 							{this.props.isFetching ? (
 								<h4>Fetching User...</h4>
 							) : (
@@ -105,10 +110,12 @@ class Login extends React.Component {
 										</p>
 									)}
 									<button
-										className="btn btn-lg btn-block btn-primary"
+										className="btn btn-lg btn-block submitButton"
 										onClick={this.handleSubmit}
 									>
-										Submit
+										<span className="text-white">
+											Submit
+										</span>
 									</button>
 								</form>
 							)}

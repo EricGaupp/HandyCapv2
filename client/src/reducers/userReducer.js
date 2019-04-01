@@ -1,12 +1,14 @@
 import {
+	CLEAR_LOGIN_ERROR,
+	CLEAR_REGISTER_ERROR,
+	LOGOUT_USER,
 	FETCH_USER_REQUEST,
 	FETCH_USER_SUCCESS,
 	FETCH_USER_FAILURE,
 	REGISTER_USER_FAILURE,
 	REGISTER_USER_SUCCESS,
-	LOGOUT_USER,
-	VERIFY_TOKEN_FAILURE,
-	SET_TOKEN
+	SET_TOKEN,
+	VERIFY_TOKEN_FAILURE
 } from "../actions/userActions";
 
 const initialState = {
@@ -103,6 +105,14 @@ function userReducer(state = initialState, action) {
 		}
 		case LOGOUT_USER: {
 			return Object.assign({}, initialState);
+		}
+		case CLEAR_LOGIN_ERROR: {
+			const { loginError, loginErrorMessage, ...rest } = state;
+			return Object.assign({}, { ...rest });
+		}
+		case CLEAR_REGISTER_ERROR: {
+			const { registerError, registerErrorMessage, ...rest } = state;
+			return Object.assign({}, { ...rest });
 		}
 		default: {
 			return state;

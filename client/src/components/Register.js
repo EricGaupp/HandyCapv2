@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
-import { registerUser } from "actions/userActions";
+import { clearRegisterError, registerUser } from "actions/userActions";
 
 import "./Register.css";
 
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
 	return {
 		register: (email, password, firstName, lastName) =>
-			dispatch(registerUser(email, password, firstName, lastName))
+			dispatch(registerUser(email, password, firstName, lastName)),
+		clearRegisterError: () => dispatch(clearRegisterError())
 	};
 };
 
@@ -55,6 +56,10 @@ class Register extends React.Component {
 		this.props.register(email, password, firstName, lastName);
 	};
 
+	componentWillUnmount() {
+		this.props.clearRegisterError();
+	}
+
 	render() {
 		//Redirect to dashboard on succesful registration
 		if (this.props.isAuthenticated) {
@@ -65,10 +70,10 @@ class Register extends React.Component {
 				<div className="splashBackground" />
 				<div className="registerContainer">
 					<div className="registerCard card shadow">
-						<div className="card-header">
+						<div className="card-header loginHeader">
 							<h3 className="text-center my-0">Register</h3>
 						</div>
-						<div className="card-body">
+						<div className="card-body loginBody">
 							<form>
 								<div className="form-group">
 									<label htmlFor="registerEmail">Email</label>
@@ -125,10 +130,10 @@ class Register extends React.Component {
 								)}
 
 								<button
-									className="btn btn-lg btn-block btn-primary"
+									className="btn btn-lg btn-block submitButton"
 									onClick={this.handleSubmit}
 								>
-									Submit
+									<span className="text-white">Submit</span>
 								</button>
 							</form>
 							<hr />

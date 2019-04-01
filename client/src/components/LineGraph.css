@@ -5,17 +5,46 @@
 
 .line {
 	fill: none;
-	stroke: #ffab00;
+	stroke: #fade47;
 	stroke-width: 3;
 }
 
 .dot {
-	fill: #ffab00;
+	fill: #406347;
 	stroke: #fff;
 	stroke-width: 3;
 }
 
 .dot:hover {
-	fill: #aabb00;
-	stroke: #fff;
+	fill: #ff6b6b;
+}
+
+.axisLabel {
+	font-size: 1.2em;
+	fill: black !important;
+	text-anchor: middle;
+	alignment-baseline: hanging;
+}
+
+div.tooltip {
+	display: flex;
+	position: absolute;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 28px;
+	padding: 2px;
+	font: 12px sans-serif;
+	background: lightsteelblue;
+	border: 1px;
+	border-radius: 4px;
+	border-color: black;
+	pointer-events: none;
+}
+
+.xAxis text {
+	font-size: 11px;
+	fill: black;
+	transform: rotate(-45deg);
+	text-anchor: end;
 }

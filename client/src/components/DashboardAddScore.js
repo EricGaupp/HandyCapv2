@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import axios from "axios";
 
@@ -138,7 +138,6 @@ class DashboardAddScore extends React.Component {
 	};
 
 	handleDateChange = e => {
-		console.log(e.target.value);
 		this.setState({ date: e.target.value });
 	};
 
@@ -408,10 +407,12 @@ class DashboardAddScore extends React.Component {
 											</div>
 											<button
 												type="submit"
-												className="btn btn-primary btn-block"
+												className="btn submitButton btn-block"
 												onClick={this.handleSubmit}
 											>
-												Submit
+												<span className="text-white">
+													Submit
+												</span>
 											</button>
 										</div>
 									</div>
@@ -420,10 +421,6 @@ class DashboardAddScore extends React.Component {
 						</React.Fragment>
 					)}
 				</form>
-				<p className="text-center">
-					Don't see your course listed? Add one{" "}
-					<Link to="/AddCourse">here</Link>
-				</p>
 			</div>
 		);
 	}
