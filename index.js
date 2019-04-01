@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 8080;
 app.use(bodyParser.json());
 
 //Serve static client files from build directory
-app.use("/", express.static(path.resolve(__dirname, "./build")));
+app.use("/", express.static(path.join(__dirname, "client", "build")));
 //Serve static build for any other request
 app.get("*", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
+	res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
 
 //Public Routes for User Login Registration
