@@ -1,24 +1,28 @@
-const Sequelize = require("sequelize");
-const db = require("../config/database");
-
-const Course = db.define("course", {
-	name: {
-		type: Sequelize.STRING,
-		allowNull: false
-	},
-	city: {
-		type: Sequelize.STRING,
-		allowNull: false
-	},
-	state: {
-		//Convert to ENUM type to choose from an array of states
-		type: Sequelize.STRING,
-		allowNull: false
-	}
-});
-
-const Tee = require("./Tee");
-Course.hasMany(Tee);
-
-module.exports = Course;
-
+"use strict";
+module.exports = (sequelize, DataTypes) => {
+	const Course = sequelize.define(
+		"Course",
+		{
+			name: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: { notEmpty: true }
+			},
+			city: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: { notEmpty: true }
+			},
+			state: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				validate: { notEmpty: true }
+			}
+		},
+		{}
+	);
+	Course.associate = function(models) {
+		Course.hasMany(models.Tee);
+	};
+	return Course;
+};

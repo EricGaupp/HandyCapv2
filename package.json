@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "build": "cd client && npm install && npm run build",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "engines": {
     "node": "10.4.1",

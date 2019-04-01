@@ -27,33 +27,18 @@ app.use(require("./routes/jwtVerification"));
 //Protected routes for adding, updating, or deleting scores
 app.use("/scores", require("./routes/scores"));
 
-//Can test connection to db with authenticate method
-// db.authenticate()
-// 	.then(() => console.log("Connected to Database"))
-// 	.catch(err => console.log(err));
+//Configure Database
+const db = require("./models/index");
 
-//Database Configuration
-const db = require("./config/database");
-//Model Definitions
-const User = require("./models/User");
-const Tee = require("./models/Tee");
-const Score = require("./models/Score");
-const Course = require("./models/Course");
-//Model Associations
-//TODO look into onDelete and onUpdate to cascade changes to associated records i.e. deleting a user should delete all their scores
-Tee.hasMany(Score, { foreignKey: { allowNull: false } });
-User.hasMany(Score, { foreignKey: { allowNull: false } });
-Score.belongsTo(User);
-Score.belongsTo(Tee);
-Tee.belongsTo(Course);
-Course.hasMany(Tee);
-
-//Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions
-db.sync({ match: /_dev$/, logging: false })
+//Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions only when database ends in '_dev'
+db.sequelize
+	.authenticate()
 	.then(() => {
-		console.log("Connecting to dev DB, dropping and creating tables");
+		console.log("Connection has been established successfully.");
 	})
-	.catch(err => console.log(err));
+	.catch(err => {
+		console.error("Unable to connect to the database:", err);
+	});
 
 app.listen(PORT, () => {
 	console.log("Server listening on port %s", PORT);
