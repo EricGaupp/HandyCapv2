@@ -11,6 +11,10 @@ app.use(bodyParser.json());
 
 //Serve static client files from build directory
 app.use("/", express.static(path.resolve(__dirname, "./build")));
+//Serve static build for any other request
+app.get("*", (req, res) => {
+	res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
+});
 
 //Public Routes for User Login Registration
 app.use("/login", require("./routes/login"));
@@ -22,11 +26,6 @@ app.use("/api", require("./routes/api"));
 app.use(require("./routes/jwtVerification"));
 //Protected routes for adding, updating, or deleting scores
 app.use("/scores", require("./routes/scores"));
-
-//Serve static build for any other request
-app.get("*", (req, res) => {
-	res.sendFile(path.resolve(__dirname, "./client/build/index.html"));
-});
 
 //Can test connection to db with authenticate method
 // db.authenticate()
