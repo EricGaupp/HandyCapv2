@@ -3,7 +3,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const db = require("../models");
+const { User, Score, Course, Tee } = require("../models");
 
 const saltRounds = 10;
 
@@ -11,22 +11,22 @@ const saltRounds = 10;
 router.post("/", (req, res) => {
 	const { email, password } = req.body;
 	//Search for existing user by unique email address and include associated scores
-	db.User.findOne({
+	User.findOne({
 		where: { email: email },
 		include: [
 			{
-				model: db.Score,
+				model: Score,
 				//Include Tee and Course Data for Scores
 				include: [
 					{
-						model: db.Tee,
-						include: [{ model: db.Course }]
+						model: Tee,
+						include: [{ model: Course }]
 					}
 				]
 			}
 		],
 		//Order by most recent score date
-		order: [[db.Score, "date", "DESC"]]
+		order: [[Score, "date", "DESC"]]
 	})
 		.then(user => {
 			//console.log(user);

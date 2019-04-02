@@ -58,7 +58,7 @@ class DashboardAddScore extends React.Component {
 				return course.id === option.value;
 			})[0];
 			//Map Tees options
-			const teeOptions = course.tees.map(tee => {
+			const teeOptions = course.Tees.map(tee => {
 				return Object.assign(
 					{},
 					{
@@ -67,8 +67,8 @@ class DashboardAddScore extends React.Component {
 					}
 				);
 			});
-			//Initially select the first set of tees (Ordered by descending rating from sequelize query)
-			const teeDetails = course.tees[0];
+			//Initially select the first set of tees (Ordered by descending yardage from sequelize query)
+			const teeDetails = course.Tees[0];
 			//Save to local state for react-select Select and TeeInfo Components
 			this.setState(
 				{
@@ -103,7 +103,7 @@ class DashboardAddScore extends React.Component {
 
 	handleTeeChange = option => {
 		//Find tee details from Course details via matching Id and save to local state to display in react-select and TeeInfo components
-		const teeDetails = this.state.courseDetails.tees.filter(
+		const teeDetails = this.state.courseDetails.Tees.filter(
 			tee => tee.id === option.value
 		)[0];
 		this.setState(

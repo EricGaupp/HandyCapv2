@@ -8,7 +8,7 @@ router.get("/courses", (req, res) => {
 	db.Course.findAll({
 		include: [db.Tee],
 		//Order by alphabetical course name then by descending course rating
-		order: ["name", [{ model: db.Tee }, "rating", "DESC"]]
+		order: ["name", [{ model: db.Tee }, "yardage", "DESC"]]
 	})
 		.then(results => {
 			res.json(results);
