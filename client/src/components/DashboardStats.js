@@ -42,12 +42,14 @@ class DashboardStats extends React.Component {
 	};
 
 	componentDidMount() {
-		this.setState({
-			containerWidth: this.container.offsetWidth,
-			containerHeight: this.container.offsetHeight
-		});
+		if (this.container !== null) {
+			this.setState({
+				containerWidth: this.container.offsetWidth,
+				containerHeight: this.container.offsetHeight
+			});
 
-		window.addEventListener("resize", this.updateDimensions);
+			window.addEventListener("resize", this.updateDimensions);
+		}
 	}
 
 	componentWillUnmount() {
@@ -55,6 +57,9 @@ class DashboardStats extends React.Component {
 	}
 
 	render() {
+		if (this.props.scores.length < 1) {
+			return <h3>Need Scores to show stats!</h3>;
+		}
 		const {
 			containerWidth,
 			containerHeight,

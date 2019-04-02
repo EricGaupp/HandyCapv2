@@ -12,7 +12,6 @@ router.get("/", (req, res) => {
 		order: [["date", "DESC"]]
 	})
 		.then(results => {
-			console.log(results);
 			const scores = results.map(score => {
 				return Object.assign(
 					{},
