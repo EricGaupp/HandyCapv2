@@ -37,25 +37,7 @@ class BarChart extends React.Component {
 			0
 		]);
 
-		//Create scale domains based on score data
-		//TODO figure out d3Array.extent for negative singular differential value
-		// let min = 0,
-		// 	max;
-		// switch (displayStat) {
-		// 	case "differential": {
-		// 		[min, max] = d3Array.extent(
-		// 			scores.map(score => score[displayStat])
-		// 		);
-		// 		console.log(min, max);
-		// 		if (min > 0) {
-		// 			min = 0;
-		// 		}
-		// 		break;
-		// 	}
-		// 	default: {
-		// 		max = d3Array.max(scores.map(score => score[displayStat]));
-		// 	}
-		// }
+		//Logic for calculating range of differntial values which can be negative
 		let min = 0,
 			max;
 		if (displayStat === "differential") {
