@@ -1,4 +1,5 @@
 "use strict";
+const bcrypt = require("bcrypt");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -48,9 +49,8 @@ module.exports = {
       "SELECT id from COURSES"
     );
     const courseRows = courses[0];
-    console.log(courseRows);
 
-    return await queryInterface.bulkInsert(
+    await queryInterface.bulkInsert(
       "Tees",
       [
         {
@@ -106,25 +106,55 @@ module.exports = {
       ],
       {}
     );
-    // return bcrypt.hash("BigCat1", 10).then(hash => {
-    //   return queryInterface.bulkInsert(
-    //     "Users",
-    //     [
-    //       {
-    //         firstName: "Tiger",
-    //         lastName: "Woods",
-    //         email: "tiger.woods@thegoat.com",
-    //         password: hash,
-    //         createdAt: Sequelize.literal("NOW()"),
-    //         updatedAt: Sequelize.literal("NOW()")
-    //       }
-    //     ],
-    //     {}
-    //   );
-    // });
+
+    const tees = await queryInterface.sequelize.query("SELECT id from TEES");
+    const teeRows = tees[0];
+
+    await bcrypt.hash("BigCat1", 10).then(hash => {
+      return queryInterface.bulkInsert(
+        "Users",
+        [
+          {
+            firstName: "Tiger",
+            lastName: "Woods",
+            email: "tiger.woods@thegoat.com",
+            password: hash,
+            createdAt: Sequelize.literal("NOW()"),
+            updatedAt: Sequelize.literal("NOW()")
+          }
+        ],
+        {}
+      );
+    });
+
+    const users = await queryInterface.sequelize.query("SELECT id from USERS");
+    const userRows = users[0];
+
+    return await queryInterface.bulkInsert(
+      "Scores",
+      [
+        {
+          date: Sequelize.literal("NOW()"),
+          gross: 69,
+          adjustedGross: 69,
+          courseHandicap: 0,
+          net: 69,
+          differential: -1.4,
+          UserId: userRows[0].id,
+          TeeId: teeRows[0].id,
+          createdAt: Sequelize.literal("NOW()"),
+          updatedAt: Sequelize.literal("NOW()")
+        }
+      ],
+      {}
+    );
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete("Courses", null, {});
+  down: async (queryInterface, Sequelize) => {
+    const users = await queryInterface.sequelize.query("SELECT id from TEES");
+    const userRow = users[0];
+
+    //Where userRow.id === 1 or userRow.email === 'tiger.woods@thegoat.com'
+    return await queryInterface.bulkDelete("Courses", null, {});
   }
 };

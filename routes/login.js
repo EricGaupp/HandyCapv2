@@ -68,15 +68,15 @@ router.post("/", (req, res) => {
 										net: score.net,
 										differential: score.differential,
 										tee: score.teeId,
-										teeName: score.tee.name,
-										yardage: score.tee.yardage,
-										par: score.tee.par,
-										rating: score.tee.rating,
-										slope: score.tee.slope,
-										courseId: score.tee.courseId,
-										courseName: score.tee.course.name,
-										courseCity: score.tee.course.city,
-										courseState: score.tee.course.state
+										teeName: score.Tee.name,
+										yardage: score.Tee.yardage,
+										par: score.Tee.par,
+										rating: score.Tee.rating,
+										slope: score.Tee.slope,
+										courseId: score.Tee.courseId,
+										courseName: score.Tee.Course.name,
+										courseCity: score.Tee.Course.city,
+										courseState: score.Tee.Course.state
 									}
 								);
 							});

@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
 
-const db = require("../models");
+const { Score, Tee, Course } = require("../models");
 
 router.get("/", (req, res) => {
 	//Query Scores table for all scores belonging to userId passed thru res.locals after being decoded in JWT verification middleware
-	db.Score.findAll({
+	Score.findAll({
 		where: { userId: res.locals.id },
-		include: [{ model: db.Tee, include: [db.Course] }],
+		include: [{ model: Tee, include: [Course] }],
 		//Sort by most recent score first
 		order: [["date", "DESC"]]
 	})
 		.then(results => {
+			console.log(results);
 			const scores = results.map(score => {
 				return Object.assign(
 					{},
@@ -23,16 +24,16 @@ router.get("/", (req, res) => {
 						courseHandicap: score.courseHandicap,
 						net: score.net,
 						differential: score.differential,
-						tee: score.teeId,
-						teeName: score.tee.name,
-						yardage: score.tee.yardage,
-						par: score.tee.par,
-						rating: score.tee.rating,
-						slope: score.tee.slope,
-						courseId: score.tee.courseId,
-						courseName: score.tee.course.name,
-						courseCity: score.tee.course.city,
-						courseState: score.tee.course.state
+						tee: score.TeeId,
+						teeName: score.Tee.name,
+						yardage: score.Tee.yardage,
+						par: score.Tee.par,
+						rating: score.Tee.rating,
+						slope: score.Tee.slope,
+						courseId: score.Tee.CourseId,
+						courseName: score.Tee.Course.name,
+						courseCity: score.Tee.Course.city,
+						courseState: score.Tee.Course.state
 					}
 				);
 			});
@@ -53,15 +54,15 @@ router.post("/add", (req, res) => {
 		differential
 	} = req.body;
 	const { id, email, firstName, lastName } = res.locals;
-	db.Score.create({
+	Score.create({
 		date: date,
 		gross: gross,
 		adjustedGross: adjustedGross,
 		courseHandicap: courseHandicap,
 		net: net,
 		differential: differential,
-		userId: id,
-		teeId: selectedTeeId
+		UserId: id,
+		TeeId: selectedTeeId
 	})
 		.then(result => {
 			res.json({ message: "Score Added", redirect: true });
@@ -72,7 +73,7 @@ router.post("/add", (req, res) => {
 router.post("/delete", (req, res) => {
 	const { scoreId } = req.body;
 	//Find score by scoreId and also that userId matches id provided from authorization token
-	db.Score.findOne({ where: { id: scoreId, userId: res.locals.id } })
+	Score.findOne({ where: { id: scoreId, userId: res.locals.id } })
 		.then(score => {
 			//If score exists delete it
 			if (score) {
