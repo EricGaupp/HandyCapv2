@@ -1,4 +1,5 @@
 "use strict";
+const bcrypt = require("bcrypt");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -12,19 +13,22 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert(
-      "Users",
-      [
-        {
-          firstName: "Tiger",
-          lastName: "Woods",
-          email: "tiger.woods@thegoat.com",
-          createdAt: Sequelize.literal("NOW()"),
-          updatedAt: Sequelize.literal("NOW()")
-        }
-      ],
-      {}
-    );
+    return bcrypt.hash("BigCat1", 10).then(hash => {
+      return queryInterface.bulkInsert(
+        "Users",
+        [
+          {
+            firstName: "Tiger",
+            lastName: "Woods",
+            email: "tiger.woods@thegoat.com",
+            password: hash,
+            createdAt: Sequelize.literal("NOW()"),
+            updatedAt: Sequelize.literal("NOW()")
+          }
+        ],
+        {}
+      );
+    });
   },
 
   down: (queryInterface, Sequelize) => {

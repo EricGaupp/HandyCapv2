@@ -3,7 +3,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const User = require("../models/User");
+const db = require("../models");
 
 const saltRounds = 10;
 
@@ -11,7 +11,7 @@ const saltRounds = 10;
 router.post("/", (req, res) => {
 	const { email, password, firstName, lastName } = req.body;
 	//Search for existing user by unique email address and only continue with registration if no record found
-	User.findOne({ where: { email: email } })
+	db.User.findOne({ where: { email: email } })
 		.then(user => {
 			if (user) {
 				//If user exists send error message to client
@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
 						console.log(error);
 					} else {
 						//Create new record in User table with provided inputs and hashed password
-						User.create({
+						db.User.create({
 							email: email,
 							password: hash,
 							firstName: firstName,

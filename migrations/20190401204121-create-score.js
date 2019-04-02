@@ -9,28 +9,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: DataTypes.DATEONLY,
+        type: Sequelize.DATEONLY,
         allowNull: false
       },
       gross: {
-        type: DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       adjustedGross: {
-        type: DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       courseHandicap: {
-        type: DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false,
         defaultValue: 0
       },
       net: {
-        type: DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       differential: {
-        type: DataTypes.DECIMAL(3, 1),
+        type: Sequelize.DECIMAL(3, 1),
         allowNull: false
       },
       createdAt: {

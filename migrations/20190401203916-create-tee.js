@@ -9,23 +9,23 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull: false
       },
       yardage: {
-        type: DataTypes.SMALLINT.UNSIGNED,
+        type: Sequelize.SMALLINT.UNSIGNED,
         allowNull: false
       },
       par: {
-        type: DataTypes.TINYINT.UNSIGNED,
+        type: Sequelize.TINYINT.UNSIGNED,
         allowNull: false
       },
       rating: {
-        type: DataTypes.DECIMAL(3, 1),
+        type: Sequelize.DECIMAL(3, 1),
         allowNull: false
       },
       slope: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
         validate: { min: 55, max: 155 }
       },

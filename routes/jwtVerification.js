@@ -2,10 +2,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const User = require("../models/User");
-const Score = require("../models/Score");
-// const Tee = require("../models/Tee");
-// const Course = require("../models/Course");
+const db = require("../models");
 
 //JWT Verification Middleware
 router.use((req, res, next) => {
@@ -37,16 +34,16 @@ router.use((req, res, next) => {
 //Route to verify and log user in via stored JWT upon app initialization
 router.get("/verify", (req, res) => {
 	//Find User by Id
-	User.findOne({
+	db.User.findOne({
 		where: { id: res.locals.id },
 		include: [{ all: true, nested: true }],
 		//Order by most recent score date
-		order: [[Score, "date", "DESC"]]
+		order: [[db.Score, "date", "DESC"]]
 	})
 		.then(user => {
-			const { id, email, firstName, lastName } = user;
+			const { id, email, firstName, lastName } = user.dataValues;
 			//Extract associated scores with Tee and Course data from sequelize query results
-			const scores = user.scores.map(score => {
+			const scores = user.Scores.map(score => {
 				return Object.assign(
 					{},
 					{

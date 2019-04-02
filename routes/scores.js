@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const Course = require("../models/Course");
-const Score = require("../models/Score");
-const Tee = require("../models/Tee");
-const User = require("../models/User");
+const db = require("../models");
 
 router.get("/", (req, res) => {
 	//Query Scores table for all scores belonging to userId passed thru res.locals after being decoded in JWT verification middleware
-	Score.findAll({
+	db.Score.findAll({
 		where: { userId: res.locals.id },
-		include: [{ model: Tee, include: [Course] }],
+		include: [{ model: db.Tee, include: [db.Course] }],
 		//Sort by most recent score first
 		order: [["date", "DESC"]]
 	})
@@ -56,7 +53,7 @@ router.post("/add", (req, res) => {
 		differential
 	} = req.body;
 	const { id, email, firstName, lastName } = res.locals;
-	Score.create({
+	db.Score.create({
 		date: date,
 		gross: gross,
 		adjustedGross: adjustedGross,
@@ -75,7 +72,7 @@ router.post("/add", (req, res) => {
 router.post("/delete", (req, res) => {
 	const { scoreId } = req.body;
 	//Find score by scoreId and also that userId matches id provided from authorization token
-	Score.findOne({ where: { id: scoreId, userId: res.locals.id } })
+	db.Score.findOne({ where: { id: scoreId, userId: res.locals.id } })
 		.then(score => {
 			//If score exists delete it
 			if (score) {

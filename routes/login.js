@@ -3,10 +3,7 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-const Course = require("../models/Course");
-const Score = require("../models/Score");
-const Tee = require("../models/Tee");
-const User = require("../models/User");
+const db = require("../models");
 
 const saltRounds = 10;
 
@@ -14,22 +11,22 @@ const saltRounds = 10;
 router.post("/", (req, res) => {
 	const { email, password } = req.body;
 	//Search for existing user by unique email address and include associated scores
-	User.findOne({
+	db.User.findOne({
 		where: { email: email },
 		include: [
 			{
-				model: Score,
+				model: db.Score,
 				//Include Tee and Course Data for Scores
 				include: [
 					{
-						model: Tee,
-						include: [{ model: Course }]
+						model: db.Tee,
+						include: [{ model: db.Course }]
 					}
 				]
 			}
 		],
 		//Order by most recent score date
-		order: [[Score, "date", "DESC"]]
+		order: [[db.Score, "date", "DESC"]]
 	})
 		.then(user => {
 			//console.log(user);
@@ -52,9 +49,14 @@ router.post("/", (req, res) => {
 						}
 						//If password and hash do match -> send authorization JWT to client
 						else {
-							const { id, email, firstName, lastName } = user;
+							const {
+								id,
+								email,
+								firstName,
+								lastName
+							} = user.dataValues;
 							//Extract associated scores with Tee and Course data from sequelize query results
-							const scores = user.scores.map(score => {
+							const scores = user.Scores.map(score => {
 								return Object.assign(
 									{},
 									{
