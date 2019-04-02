@@ -8,6 +8,8 @@ import { logout } from "../actions/userActions";
 import { IconContext } from "react-icons";
 import { FiMenu } from "react-icons/fi";
 
+import { ReactComponent as Logo } from "../images/svgLogo.svg";
+
 const mapDispatchToProps = dispatch => {
 	return {
 		logout: () => dispatch(logout())
@@ -17,9 +19,10 @@ const mapDispatchToProps = dispatch => {
 const UserNav = props => {
 	return (
 		<nav className="navbar navbar-expand-md fixed-top">
-			<Link to="/" className="navbar-brand">
-				HandyCap
-			</Link>
+			<div className="navbarLogoContainer">
+				<Logo width="24px" height="24px" />
+				<span className="ml-2">HandyCap</span>
+			</div>
 			<button
 				className="navbar-toggler"
 				type="button"

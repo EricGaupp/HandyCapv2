@@ -9,3 +9,14 @@
 .navbar-nav a:hover {
 	color: #2f3e2d;
 }
+
+.navbarLogoContainer {
+	display: flex;
+	justify-content: flex-start;
+	align-content: center;
+}
+
+.navbarLogoContainer span {
+	display: inline-flex;
+	align-items: center;
+}
