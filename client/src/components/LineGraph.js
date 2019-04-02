@@ -71,9 +71,19 @@ class LineGraph extends React.Component {
 		xScale.domain(lineData.map(data => data.x));
 
 		//Buffer y scale range by 5% of min and max values
+		//TODO Logic for when both values are > 0 => min should be min*0.95 to lower yScale. Currently only works when min is negative and max is positive
 		let [min, max] = extent(lineData.map(data => data.y));
-		min = min * 1.05;
-		max = max * 1.05;
+		if (min > 0 && max > 0) {
+			const totalY = (max - min) / 0.9;
+			min = min - totalY * 0.05;
+			max = max + totalY * 0.05;
+		} else if (min < 0 && max < 0) {
+			min = 1.05 * min;
+			max = 0.95 * max;
+		} else {
+			min = min * 1.05;
+			max = max * 1.05;
+		}
 		yScale.domain([min, max]).nice();
 
 		//Create line generator

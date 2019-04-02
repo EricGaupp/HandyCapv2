@@ -74,6 +74,7 @@ class DashboardStats extends React.Component {
 				<div id="barChartContainer" ref={this.setRef}>
 					<Select
 						id="statSelect"
+						className="mt-3"
 						autoFocus={true}
 						isClearable={false}
 						isSearchable={false}
@@ -85,7 +86,7 @@ class DashboardStats extends React.Component {
 						<BarChart
 							displayStat={statToDisplay}
 							width={containerWidth}
-							height={containerHeight - 38}
+							height={containerHeight - 16 - 38}
 							scores={scores}
 						/>
 					)}
