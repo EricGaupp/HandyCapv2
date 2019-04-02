@@ -38,22 +38,44 @@ class BarChart extends React.Component {
 		]);
 
 		//Create scale domains based on score data
+		//TODO figure out d3Array.extent for negative singular differential value
+		// let min = 0,
+		// 	max;
+		// switch (displayStat) {
+		// 	case "differential": {
+		// 		[min, max] = d3Array.extent(
+		// 			scores.map(score => score[displayStat])
+		// 		);
+		// 		console.log(min, max);
+		// 		if (min > 0) {
+		// 			min = 0;
+		// 		}
+		// 		break;
+		// 	}
+		// 	default: {
+		// 		max = d3Array.max(scores.map(score => score[displayStat]));
+		// 	}
+		// }
 		let min = 0,
 			max;
-		switch (displayStat) {
-			case "differential": {
-				[min, max] = d3Array.extent(
-					scores.map(score => score[displayStat])
-				);
-				if (min > 0) {
-					min = 0;
-				}
-				break;
+		if (displayStat === "differential") {
+			const differentials = scores.map(score => score.differential);
+			const [diffMin, diffMax] = d3Array.extent(differentials);
+			if (diffMin < 0 && diffMax < 0) {
+				min = diffMin;
+				max = 0;
+			} else if (diffMin > 0 && diffMax > 0) {
+				min = 0;
+				max = diffMax;
+			} else {
+				min = diffMin;
+				max = diffMax;
 			}
-			default: {
-				max = d3Array.max(scores.map(score => score[displayStat]));
-			}
+		} else {
+			max = d3Array.max(scores.map(score => score[displayStat]));
 		}
+
+		//Buffer yScale values by 5%
 		min = min * 1.05;
 		max = max * 1.05;
 		xScale.domain(scores.map(score => score.id));
