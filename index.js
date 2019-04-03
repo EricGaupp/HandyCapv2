@@ -61,7 +61,7 @@ const umzug = new Umzug({
 });
 
 //Run Migrations and Start server when done
-umzug.pending().then(migrations => {
+umzug.up().then(migrations => {
 	console.log(migrations);
 	app.listen(PORT, () => {
 		console.log("Server listening on port %s", PORT);
