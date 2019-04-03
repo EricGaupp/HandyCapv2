@@ -603,12 +603,17 @@ module.exports = {
       {}
     );
   },
-
+  //Down function will not work unless seed data is stored (http://docs.sequelizejs.com/manual/migrations.html#seed-storage),
   down: async (queryInterface, Sequelize) => {
-    const users = await queryInterface.sequelize.query("SELECT id from TEES");
-    const userRow = users[0];
+    const users = await queryInterface.sequelize.query(
+      "SELECT id from USERS WHERE email='tiger.woods@thegoat.com'"
+    );
+    const tiger = users[0];
 
-    //Where userRow.id === 1 or userRow.email === 'tiger.woods@thegoat.com'
-    return await queryInterface.bulkDelete("Courses", null, {});
+    //Delete Tiger's Scores
+    await queryInterface.bulkDelete("Scores", { UserId: tiger.id }, {});
+
+    //Delete Tiger's User
+    return await queryInterface.bulkDelete("Users", { id: tiger.id }, {});
   }
 };

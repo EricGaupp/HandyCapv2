@@ -3,6 +3,7 @@ require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const path = require("path");
+const Sequelize = require("sequelize");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -31,7 +32,24 @@ app.get("*", (req, res) => {
 //Configure Database
 const db = require("./models/index");
 
-//Create tables from model definitions if nonexistent when in the development database. {force: true, match: /_dev$/} will drop all tables then create new ones from model definitions only when database ends in '_dev'
+//Configure Umzug
+// const Umzug = require("umzug");
+// const umzug = new Umzug({
+// 	storage: "sequelize",
+// 	storageOptions: {
+// 		sequelize: db.sequelize
+// 	},
+// 	logging: false,
+// 	upName: "up",
+// 	downName: "down",
+// 	migrations: {
+// 		params: [db.sequelize.getQueryInterface(), Sequelize],
+// 		path: "migrations",
+// 		pattern: /^\d+[\w-]+\.js$/
+// 	}
+// });
+
+//Test Connection
 db.sequelize
 	.authenticate()
 	.then(() => {
@@ -40,6 +58,13 @@ db.sequelize
 	.catch(err => {
 		console.error("Unable to connect to the database:", err);
 	});
+
+//Run Migrations and Start server when done
+// umzug.up().then(migrations => {
+// 	app.listen(PORT, () => {
+// 		console.log("Server listening on port %s", PORT);
+// 	});
+// });
 
 app.listen(PORT, () => {
 	console.log("Server listening on port %s", PORT);

@@ -5,7 +5,7 @@
   "main": "server/index.js",
   "scripts": {
     "build": "cd client && npm install && npm run build",
-    "start": "node index.js",
+    "start": "node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && node index.js",
     "dev": "NODE_ENV=development nodemon index.js"
   },
   "engines": {
@@ -29,6 +29,8 @@
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
     "mysql2": "^1.6.4",
-    "sequelize": "^4.42.0"
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
+    "umzug": "^2.2.0"
   }
 }

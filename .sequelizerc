@@ -1,3 +1,4 @@
+//This file is only used for sequelize CLI commands not in the web application
 const path = require('path');
 
 module.exports = {
