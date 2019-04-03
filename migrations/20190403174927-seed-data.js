@@ -335,7 +335,7 @@ module.exports = {
     const tees = await queryInterface.sequelize.query("SELECT id from Tees");
     const teeRows = tees[0];
 
-    await bcrypt.hash("BigCat1", 10).then(hash => {
+    await bcrypt.hash(process.env.TIGERS_PASSWORD, 10).then(hash => {
       return queryInterface.bulkInsert(
         "Users",
         [
