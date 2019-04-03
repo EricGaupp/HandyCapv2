@@ -60,6 +60,8 @@ const umzug = new Umzug({
 	logging: false
 });
 
+umzug.down({ to: 0 });
+
 //Run Migrations and Start server when done
 umzug.up().then(migrations => {
 	console.log(migrations);
