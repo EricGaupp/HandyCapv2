@@ -46,7 +46,7 @@ module.exports = {
     );
 
     const courses = await queryInterface.sequelize.query(
-      "SELECT id from COURSES"
+      "SELECT id from Courses"
     );
     const courseRows = courses[0];
 
