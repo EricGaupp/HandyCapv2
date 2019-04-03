@@ -332,7 +332,7 @@ module.exports = {
       {}
     );
 
-    const tees = await queryInterface.sequelize.query("SELECT id from TEES");
+    const tees = await queryInterface.sequelize.query("SELECT id from Tees");
     const teeRows = tees[0];
 
     await bcrypt.hash("BigCat1", 10).then(hash => {
@@ -352,7 +352,7 @@ module.exports = {
       );
     });
 
-    const users = await queryInterface.sequelize.query("SELECT id from USERS");
+    const users = await queryInterface.sequelize.query("SELECT id from Users");
     const userRows = users[0];
 
     return await queryInterface.bulkInsert(
@@ -606,7 +606,7 @@ module.exports = {
   //Down function will not work unless seed data is stored (http://docs.sequelizejs.com/manual/migrations.html#seed-storage),
   down: async (queryInterface, Sequelize) => {
     const users = await queryInterface.sequelize.query(
-      "SELECT id from USERS WHERE email='tiger.woods@thegoat.com'"
+      "SELECT id from Users WHERE email='tiger.woods@thegoat.com'"
     );
     const tiger = users[0];
 
