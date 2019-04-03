@@ -64,7 +64,7 @@ const umzug = new Umzug({
 const startServer = async () => {
 	//Removes seed data for Tiger's user
 	await umzug
-		.down({ to: "20190403174927-seed-data" })
+		.down({ to: "20190403212309-tiger-data.js" })
 		.then(rollbacks => {
 			console.log(rollbacks);
 		})
@@ -74,7 +74,6 @@ const startServer = async () => {
 		.up()
 		.then(migrations => {
 			console.log(migrations);
-
 			app.listen(PORT, () => {
 				console.log("Server listening on port %s", PORT);
 			});
