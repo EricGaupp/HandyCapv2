@@ -32,23 +32,6 @@ app.get("*", (req, res) => {
 //Configure Database
 const db = require("./models/index");
 
-//Configure Umzug
-// const Umzug = require("umzug");
-// const umzug = new Umzug({
-// 	storage: "sequelize",
-// 	storageOptions: {
-// 		sequelize: db.sequelize
-// 	},
-// 	logging: false,
-// 	upName: "up",
-// 	downName: "down",
-// 	migrations: {
-// 		params: [db.sequelize.getQueryInterface(), Sequelize],
-// 		path: "migrations",
-// 		pattern: /^\d+[\w-]+\.js$/
-// 	}
-// });
-
 //Test Connection
 db.sequelize
 	.authenticate()
@@ -59,13 +42,28 @@ db.sequelize
 		console.error("Unable to connect to the database:", err);
 	});
 
-//Run Migrations and Start server when done
-// umzug.up().then(migrations => {
-// 	app.listen(PORT, () => {
-// 		console.log("Server listening on port %s", PORT);
-// 	});
-// });
+//Configure Umzug
+const Umzug = require("umzug");
+const umzug = new Umzug({
+	storage: "sequelize",
+	storageOptions: {
+		sequelize: db.sequelize
+	},
+	logging: false,
+	upName: "up",
+	downName: "down",
+	migrations: {
+		params: [db.sequelize.getQueryInterface(), Sequelize],
+		path: path.resolve(__dirname, "migrations"),
+		pattern: /^\d+[\w-]+\.js$/
+	},
+	logging: false
+});
 
-app.listen(PORT, () => {
-	console.log("Server listening on port %s", PORT);
+//Run Migrations and Start server when done
+umzug.pending().then(migrations => {
+	console.log(migrations);
+	app.listen(PORT, () => {
+		console.log("Server listening on port %s", PORT);
+	});
 });
