@@ -611,9 +611,9 @@ module.exports = {
     const tiger = users[0];
 
     //Delete Tiger's Scores
-    await queryInterface.bulkDelete("Scores", { UserId: tiger.id }, {});
+    await queryInterface.bulkDelete("Scores", { UserId: tiger[0].id }, {});
 
     //Delete Tiger's User
-    return await queryInterface.bulkDelete("Users", { id: tiger.id }, {});
+    return await queryInterface.bulkDelete("Users", { id: tiger[0].id }, {});
   }
 };

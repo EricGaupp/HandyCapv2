@@ -60,12 +60,26 @@ const umzug = new Umzug({
 	logging: false
 });
 
-umzug.down({ to: 0 });
-
 //Run Migrations and Start server when done
-umzug.up().then(migrations => {
-	console.log(migrations);
-	app.listen(PORT, () => {
-		console.log("Server listening on port %s", PORT);
-	});
-});
+const startServer = async () => {
+	//Removes seed data for Tiger's user
+	await umzug
+		.down({ to: "20190403174927-seed-data" })
+		.then(rollbacks => {
+			console.log(rollbacks);
+		})
+		.catch(err => console.log(err));
+	//Reseeds Tiger's user data
+	await umzug
+		.up()
+		.then(migrations => {
+			console.log(migrations);
+
+			app.listen(PORT, () => {
+				console.log("Server listening on port %s", PORT);
+			});
+		})
+		.catch(err => console.log(err));
+};
+
+startServer();
