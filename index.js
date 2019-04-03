@@ -42,7 +42,7 @@ db.sequelize
 		console.error("Unable to connect to the database:", err);
 	});
 
-//Configure Umzug
+//Configure Umzug Migrations
 const Umzug = require("umzug");
 const umzug = new Umzug({
 	storage: "sequelize",
