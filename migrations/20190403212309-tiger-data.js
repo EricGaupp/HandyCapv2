@@ -23,8 +23,15 @@ module.exports = {
       );
     });
 
-    const users = await queryInterface.sequelize.query("SELECT id from Users");
-    const userRows = users[0];
+    const users = await queryInterface.sequelize.query(
+      "SELECT * from Users WHERE email = ? ",
+      {
+        replacements: ["tiger.woods@thegoat.com"],
+        type: queryInterface.sequelize.QueryTypes.SELECT
+      }
+    );
+
+    const tiger = users[0];
 
     return await queryInterface.bulkInsert(
       "Scores",
@@ -37,7 +44,7 @@ module.exports = {
           courseHandicap: 0,
           net: 65,
           differential: -7.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -49,7 +56,7 @@ module.exports = {
           courseHandicap: 0,
           net: 68,
           differential: -4.9,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -61,7 +68,7 @@ module.exports = {
           courseHandicap: 0,
           net: 65,
           differential: -7.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -73,7 +80,7 @@ module.exports = {
           courseHandicap: 0,
           net: 71,
           differential: -2.4,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -85,7 +92,7 @@ module.exports = {
           courseHandicap: 0,
           net: 73,
           differential: -0.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -97,7 +104,7 @@ module.exports = {
           courseHandicap: 0,
           net: 71,
           differential: -2.4,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -109,7 +116,7 @@ module.exports = {
           courseHandicap: 0,
           net: 69,
           differential: -4.1,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -121,7 +128,7 @@ module.exports = {
           courseHandicap: 0,
           net: 67,
           differential: -5.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -133,7 +140,7 @@ module.exports = {
           courseHandicap: 0,
           net: 66,
           differential: -6.6,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -145,7 +152,7 @@ module.exports = {
           courseHandicap: 0,
           net: 73,
           differential: -0.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -157,7 +164,7 @@ module.exports = {
           courseHandicap: 0,
           net: 67,
           differential: -5.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -169,7 +176,7 @@ module.exports = {
           courseHandicap: 0,
           net: 72,
           differential: -1.6,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -181,7 +188,7 @@ module.exports = {
           courseHandicap: 0,
           net: 67,
           differential: -5.7,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -193,7 +200,7 @@ module.exports = {
           courseHandicap: 0,
           net: 68,
           differential: -4.9,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -205,7 +212,7 @@ module.exports = {
           courseHandicap: 0,
           net: 69,
           differential: -4.1,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -217,7 +224,7 @@ module.exports = {
           courseHandicap: 0,
           net: 70,
           differential: -3.2,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -229,7 +236,7 @@ module.exports = {
           courseHandicap: 0,
           net: 64,
           differential: -8.2,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -241,7 +248,7 @@ module.exports = {
           courseHandicap: 0,
           net: 63,
           differential: -9.1,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -253,7 +260,7 @@ module.exports = {
           courseHandicap: 0,
           net: 64,
           differential: -8.2,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -265,7 +272,7 @@ module.exports = {
           courseHandicap: 0,
           net: 66,
           differential: -6.6,
-          UserId: userRows[0].id,
+          UserId: tiger.id,
           TeeId: teeRows[23].id,
           createdAt: Sequelize.literal("NOW()"),
           updatedAt: Sequelize.literal("NOW()")
@@ -277,14 +284,19 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     const users = await queryInterface.sequelize.query(
-      "SELECT id from Users WHERE email='tiger.woods@thegoat.com'"
+      "SELECT * from Users WHERE email = ? ",
+      {
+        replacements: ["tiger.woods@thegoat.com"],
+        type: queryInterface.sequelize.QueryTypes.SELECT
+      }
     );
+
     const tiger = users[0];
 
     //Delete Tiger's Scores
-    await queryInterface.bulkDelete("Scores", { UserId: tiger[0].id }, {});
+    await queryInterface.bulkDelete("Scores", { UserId: tiger.id }, {});
 
     //Delete Tiger's User
-    return await queryInterface.bulkDelete("Users", { id: tiger[0].id }, {});
+    return await queryInterface.bulkDelete("Users", { id: tiger.id }, {});
   }
 };
