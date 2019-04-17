@@ -16,7 +16,7 @@ const Footer = () => {
 							<a
 								rel="noopener noreferrer"
 								target="_blank"
-								href="https://www.linkedin.com/in/ericgaupp"
+								href="https://ericgaupp.github.io"
 							>
 								<FiLink />
 							</a>
