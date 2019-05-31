@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import styled from "styled-components";
 
 import { verifyUserByToken } from "actions/userActions";
 
@@ -13,7 +14,12 @@ import News from "components/News";
 import Register from "components/Register";
 import PrivateRoute from "components/PrivateRoute";
 
-import "./App.css";
+const ContentWrapper = styled.div`
+  position: relative;
+  height: calc(100vh - 102px);
+  margin-top: 56px;
+  overflow: scroll;
+`;
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -32,9 +38,9 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <React.Fragment>
+        <div>
           <Navbar />
-          <div className="contentWrapper">
+          <ContentWrapper>
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/login" component={Login} />
@@ -49,9 +55,9 @@ class App extends Component {
                 }}
               />
             </Switch>
-          </div>
+          </ContentWrapper>
           <Footer />
-        </React.Fragment>
+        </div>
       </Router>
     );
   }
