@@ -5,8 +5,8 @@ import { IconContext } from "react-icons";
 import { FaListOl, FaCalculator, FaChartBar } from "react-icons/fa";
 
 const StyledDiv = styled.div`
-	margin-top: 2rem;
-	margin-bottom: 1rem;
+	margin-top: 8em;
+	margin-bottom: 5em;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-evenly;
@@ -20,14 +20,14 @@ const StyledCard = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
 	flex: 0 0 30%;
-	margin-bottom: 3rem;
+	margin-bottom: 3em;
 `;
 
 const StyledSVGContainer = styled.div`
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	margin-bottom: 1rem;
+	margin-bottom: 1em;
 `;
 
 const StyledCardTitle = styled.h2`
@@ -44,9 +44,7 @@ const Overview = () => (
 	<StyledDiv>
 		<StyledCard>
 			<StyledSVGContainer>
-				<IconContext.Provider
-					value={{ color: "#7D8CC4", size: "8rem" }}
-				>
+				<IconContext.Provider value={{ color: "#7D8CC4", size: "8em" }}>
 					<FaListOl />
 				</IconContext.Provider>
 			</StyledSVGContainer>

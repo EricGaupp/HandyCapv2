@@ -21,7 +21,7 @@ const UserNav = props => {
 		<nav className="navbar navbar-expand-md fixed-top">
 			<div className="navbarLogoContainer">
 				<Logo width="24px" height="24px" />
-				<span className="ml-2">HandyCap</span>
+				<span className="ml-2">SwingStats</span>
 			</div>
 			<button
 				className="navbar-toggler"

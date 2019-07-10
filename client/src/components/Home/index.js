@@ -23,18 +23,16 @@ import Overview from "./Overview";
 
 const Home = () => {
 	return (
-		<Container>
-			<Row>
-				<Col>
-					<Hero />
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<Overview />
-				</Col>
-			</Row>
-		</Container>
+		<React.Fragment>
+			<Hero />
+			<Container>
+				<Row>
+					<Col>
+						<Overview />
+					</Col>
+				</Row>
+			</Container>
+		</React.Fragment>
 	);
 };
 

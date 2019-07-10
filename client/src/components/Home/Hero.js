@@ -1,18 +1,24 @@
 import React from "react";
 import styled from "styled-components";
+import splash from "../../images/splash.png";
 
 const HeroDiv = styled.div`
-	margin-top: 10rem;
-	margin-bottom: 3rem;
+	background-image: url(${splash});
+	background-position: center bottom;
+	background-repeat: no-repeat;
+	background-size: cover;
+	text-align: center;
 
-	@media (max-width: 450px) {
-		margin-top: 2rem;
-		margin-bottom: 1rem;
-	}
+	height: 700px;
 `;
 
 const Title = styled.h1`
-	text-align: center;
+	padding-top: 5em;
+
+	@media (max-width: 450px) {
+		margin-top: 2em;
+		margin-bottom: 1em;
+	}
 `;
 
 const Hero = () => (

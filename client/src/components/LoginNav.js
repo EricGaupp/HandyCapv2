@@ -9,7 +9,7 @@ const LoginNav = () => {
 			<div className="container">
 				<div className="navbarLogoContainer">
 					<Logo width="24px" height="24px" />
-					<span className="ml-2">HandyCap</span>
+					<span className="ml-2">SwingStats</span>
 				</div>
 				<div className="navbar-nav">
 					<Link className="nav-item nav-link" to="/login">
