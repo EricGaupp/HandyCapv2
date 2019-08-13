@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom";
 
 import axios from "axios";
 
-import { fetchCourses } from "../actions/coursesActions";
-import { fetchScores } from "../actions/scoresActions";
+import { fetchCourses } from "../../actions/coursesActions";
+import { fetchScores } from "../../actions/scoresActions";
 
 import Select from "react-select";
 import TeeInfo from "./TeeInfo";

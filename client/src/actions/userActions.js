@@ -1,4 +1,5 @@
 import axios from "axios";
+import history from "../router/history";
 import { setScores, clearScores } from "./scoresActions";
 import { clearCourses } from "./coursesActions";
 
@@ -23,6 +24,7 @@ export const LOGOUT_USER = "LOGOUT_USER";
 //Reset Error Types
 export const CLEAR_LOGIN_ERROR = "CLEAR_LOGIN_ERROR";
 export const CLEAR_REGISTER_ERROR = "CLEAR_REGISTER_ERROR";
+
 //Login Action Creators
 export const requestUser = () => ({
 	type: FETCH_USER_REQUEST
@@ -79,6 +81,7 @@ export const logoutUser = () => ({
 export const clearLoginError = () => ({
 	type: CLEAR_LOGIN_ERROR
 });
+
 export const clearRegisterError = () => ({
 	type: CLEAR_REGISTER_ERROR
 });
@@ -96,10 +99,13 @@ export const login = (email, password) => {
 					dispatch(loginError(response));
 				} else {
 					//Update Redux User State on successful login
+					dispatch(clearLoginError());
 					dispatch(setUser(response));
 					dispatch(setScores(response.data.scores));
 					//Store JWT token in localStorage
 					localStorage.setItem("token", response.data.token);
+					//Redirect user to dashboard page
+					history.push("/dashboard");
 				}
 			},
 			error => console.log(error)

@@ -3,6 +3,9 @@
 	min-height: 350px;
 }
 
+.block {
+	display: block;
+}
 .line {
 	fill: none;
 	stroke: #fade47;

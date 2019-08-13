@@ -4,7 +4,7 @@ import splash from "../../images/splash.png";
 
 const HeroDiv = styled.div`
 	background-image: url(${splash});
-	background-position: center bottom;
+	background-position: center top;
 	background-repeat: no-repeat;
 	background-size: cover;
 	text-align: center;
@@ -13,12 +13,8 @@ const HeroDiv = styled.div`
 `;
 
 const Title = styled.h1`
+	margin-top: 0;
 	padding-top: 5em;
-
-	@media (max-width: 450px) {
-		margin-top: 2em;
-		margin-bottom: 1em;
-	}
 `;
 
 const Hero = () => (

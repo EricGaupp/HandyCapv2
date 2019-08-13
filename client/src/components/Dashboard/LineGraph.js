@@ -45,6 +45,7 @@ class LineGraph extends React.Component {
 			.select("#lineGraphContainer")
 			.append("svg")
 			.attr("id", "lineGraph")
+			.attr("class", "block")
 			.attr("width", width)
 			.attr("height", height);
 

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
 
-import { deleteScore } from "../actions/scoresActions";
+import { deleteScore } from "../../actions/scoresActions";
 
 import "./DashboardScoreEdit.css";
 
