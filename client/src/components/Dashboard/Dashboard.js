@@ -7,10 +7,11 @@ import DashboardContent from "./DashboardContent";
 const DashboardContainer = styled.div`
 	position: relative;
 	width: 100%;
+	max-width: 100%
 	display: grid;
 	overflow: hidden;
 	grid-template-columns: 1fr;
-	grid-template-rows: auto auto;
+	grid-template-rows: auto 90vh;
 	grid-template-areas:
 		"dashboardSidebar"
 		"dashboardContent";

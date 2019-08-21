@@ -1,8 +1,3 @@
-import React from "react";
-
-import Hero from "./Hero";
-import Overview from "./Overview";
-
 //import SplashImage from "../images/splash.jpeg";
 
 // const SplashContainer = styled.div`

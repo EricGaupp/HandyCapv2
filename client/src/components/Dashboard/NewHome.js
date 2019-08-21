@@ -14,7 +14,8 @@ const mapStateToProps = state => {
 };
 
 const Container = styled.div`
-	grid-area: dashboardContent;
+	width: 100%;
+	height: 100%;
 	overflow: auto;
 `;
 
@@ -39,7 +40,7 @@ const NewHome = ({ scores }) => {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [container.current]);
+	});
 
 	const handicapIndexArray = [];
 
@@ -65,12 +66,12 @@ const NewHome = ({ scores }) => {
 	);
 
 	return (
-		<Container id="lineGraphContainer" ref={container}>
-			{scores.length > 4 ? (
+		<Container ref={container}>
+			{scores.length > 4 && width && height ? (
 				<NewLineGraph
 					width={width}
 					height={height}
-					handicaps={graphValues}
+					values={graphValues}
 				/>
 			) : (
 				<h3>Must have at least 5 scores to have a valid handicap</h3>

@@ -41,6 +41,7 @@ router.get("/verify", (req, res) => {
 		order: [[db.Score, "date", "DESC"]]
 	})
 		.then(user => {
+			console.log(user);
 			const { id, email, firstName, lastName } = user.dataValues;
 			//Extract associated scores with Tee and Course data from sequelize query results
 			const scores = user.Scores.map(score => {

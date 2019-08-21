@@ -1,16 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import dayjs from "dayjs";
+
+const Table = styled.table``;
 
 const mapStateToProps = state => {
 	return {
 		scores: state.scores.data,
 		isFetching: state.scores.isFetching
 	};
-};
-
-const mapDispatchToProps = dispatch => {
-	return {};
 };
 
 const DashboardScores = props => {
@@ -70,5 +69,5 @@ const DashboardScores = props => {
 
 export default connect(
 	mapStateToProps,
-	mapDispatchToProps
+	null
 )(DashboardScores);

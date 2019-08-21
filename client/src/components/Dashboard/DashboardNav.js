@@ -7,6 +7,7 @@ import { FiEdit2, FiFlag, FiHome, FiTrendingUp } from "react-icons/fi";
 const Header = styled.nav`
 	grid-area: dashboardSidebar;
 	background-color: #406347;
+	z-index: 99;
 `;
 
 const NavList = styled.ul`
