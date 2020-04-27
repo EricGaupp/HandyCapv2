@@ -4,7 +4,6 @@ const GlobalStyles = createGlobalStyle`
 	body {
 		margin: 0;
 		padding: 0;
-		@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 		font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI",
 			"Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
 			"Helvetica Neue", sans-serif;
