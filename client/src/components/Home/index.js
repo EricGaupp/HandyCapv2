@@ -11,9 +11,17 @@
 // 	background-image: url(${SplashImage});
 // 	z-index: -1;
 // `;
+import React from "react";
+import Hero from "./Hero";
+import Overview from "./Overview";
 
 const Home = () => {
-	return null;
+  return (
+    <>
+      <Hero />
+      <Overview />
+    </>
+  );
 };
 
 export default Home;
